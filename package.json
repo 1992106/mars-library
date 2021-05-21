@@ -1,9 +1,17 @@
 {
   "name": "mars-library",
   "version": "0.0.1",
+  "main": "dist/mars-library.cjs.js",
+  "browser": "dist/mars-library.iife.js",
+  "module": "dist/mars-library.es.js",
+  "unpkg": "dist/mars-library.umd.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "vite build --mode lib",
     "serve": "vite preview",
     "lint": "npm run lint:es & npm run lint:style",
     "lint:es": "eslint src --ext .js,.jsx,.ts,.tsx,.vue --fix",
@@ -53,8 +61,8 @@
   },
   "homepage": "https://github.com/1992106/mars-library",
   "keywords": [
-    "vue",
-    "mars components"
+    "vue3",
+    "mars library"
   ],
   "license": "MIT",
   "bugs": {
