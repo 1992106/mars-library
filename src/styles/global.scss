@@ -1,0 +1,12 @@
+@import './transition.scss';
+
+$color: #333;
+$header-height: 50px;
+$footer-height: 70px;
+
+.page-content {
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  margin: 16px;
+  background: #fff;
+}
