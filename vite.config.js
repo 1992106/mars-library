@@ -11,7 +11,7 @@ export default ({ mode }) => {
   if (mode === 'lib') {
     build = {
       lib: {
-        entry: './packages/index.js',
+        entry: './src/entry.js',
         name: 'mars',
         formats: ['es', 'cjs', 'iife', 'umd'],
         fileName: 'mars-library'
@@ -34,7 +34,6 @@ export default ({ mode }) => {
     ],
     resolve: {
       alias: {
-        '@packages': pathResolve('packages'),
         '@src': pathResolve('src'),
         '@components': pathResolve('src/components'),
         '@views': pathResolve('src/views'),
@@ -56,17 +55,11 @@ export default ({ mode }) => {
       }
     },
     server: {
-      port: 8888
+      port: 8888,
+      open: true
     },
     optimizeDeps: {
-      include: [
-        '@ant-design/icons-vue',
-        'ant-design-vue/es/locale/zh_CN',
-        'ant-design-vue/es/locale/en_US',
-        'lodash',
-        'dayjs'
-      ],
-      exclude: []
+      include: ['lodash']
     },
     build: {
       ...build,

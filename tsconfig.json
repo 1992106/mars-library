@@ -24,7 +24,6 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@packages/*": ["packages/*"],
       "@src/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@views/*": ["src/views/*"],
@@ -35,7 +34,6 @@
     }
   },
   "include": [
-    "packages/**/*.vue",
     "src/**/*.vue",
     "src/**/*.jsx",
     "src/**/*.js",

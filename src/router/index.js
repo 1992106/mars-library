@@ -55,6 +55,16 @@ export const routes = [
           icon: 'icon-user',
           ignoreKeepAlive: true
         }
+      },
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('../views/List.vue'),
+        meta: {
+          title: '列表',
+          icon: 'icon-user',
+          ignoreKeepAlive: true
+        }
       }
     ]
   },
