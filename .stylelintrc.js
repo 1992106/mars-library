@@ -6,6 +6,9 @@ module.exports = {
       'ignorePseudoElements': [
         'v-deep'
       ]
-    }]
+    }],
+    'selector-pseudo-class-no-unknown': null,
+    'declaration-empty-line-before': null,
+    'at-rule-no-unknown': null
   }
 }

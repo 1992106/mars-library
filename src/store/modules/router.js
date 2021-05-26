@@ -36,12 +36,6 @@ const router = {
       if (cachedIdx !== -1) {
         state.cachedTabList.splice(cachedIdx, 1)
       }
-    },
-
-    // 清除
-    reset(state) {
-      state.visitedRoutes = []
-      state.cachedTabList = []
     }
   },
 

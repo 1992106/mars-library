@@ -16,7 +16,7 @@
       >
         <template #tab>
           {{ item.meta.title }}
-          <ReloadOutlined v-show="activeKey === item.fullPath" @click.stop.prevent="onRefresh(item)" />
+          <ReloadOutlined v-show="activeKey === item.fullPath" @click.stop.prevent="onRefresh()" />
         </template>
       </TabPane>
     </Tabs>
@@ -58,7 +58,7 @@ export default defineComponent({
     watch(
       () => router.currentRoute.value.fullPath,
       (val) => {
-        if (['Redirect', '404'].includes(router.currentRoute.value.name)) return
+        if (['Redirect', 'ErrorPage', 'Login'].includes(router.currentRoute.value.name)) return
         activeKey.value = val
         addVisitedRoutes(val)
       }
@@ -101,18 +101,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .multi-tabs-box {
-  padding-top: 6px;
+  background: $bg-color;
   margin: 0;
-  background: #fff;
+  padding-top: 6px;
   ::v-deep(.ant-tabs-bar) {
     padding-left: 16px;
     .anticon {
+      margin: 0 0 0 8px;
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 12px;
       width: 16px;
       height: 14px;
-      margin: 0 0 0 8px;
       overflow: hidden;
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.45);
       vertical-align: middle;
       transition: all 0.3s;
       &:hover {

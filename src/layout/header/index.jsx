@@ -2,6 +2,8 @@ import { defineComponent } from 'vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { Layout } from 'ant-design-vue'
 import styles from './index.module.scss'
+import Breadcrumb from '../breadcrumb/index.vue'
+import Avatar from '../avatar/index.jsx'
 
 const PageHeader = defineComponent({
   name: 'page-header',
@@ -17,8 +19,9 @@ const PageHeader = defineComponent({
           <span onClick={() => emit('update:collapsed', !props.collapsed)} className={styles.menuFold}>
             {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </span>
-          {/* <Breadcrumb /> */}
+          <Breadcrumb />
         </div>
+        <Avatar />
       </Layout.Header>
     )
   }

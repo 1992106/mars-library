@@ -2,8 +2,9 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import path from 'path'
 import styleImport from 'vite-plugin-style-import'
-
-const pathResolve = (pathUrl) => path.join(__dirname, pathUrl)
+import html from 'vite-plugin-html'
+import { viteMockServe } from 'vite-plugin-mock'
+import setting from './src/config'
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -11,10 +12,28 @@ export default ({ mode }) => {
   if (mode === 'lib') {
     build = {
       lib: {
-        entry: './src/entry.js',
-        name: 'mars',
-        formats: ['es', 'cjs', 'iife', 'umd'],
-        fileName: 'mars-library'
+        entry: path.resolve(__dirname, 'src/entry.js'),
+        name: 'MarsLibrary',
+        formats: ['es', 'cjs', 'iife', 'umd']
+      },
+      rollupOptions: {
+        output: {
+          exports: 'named',
+          globals: {
+            vue: 'vue',
+            lodash: 'lodash'
+          }
+        },
+        external: [
+          'vue',
+          'vue-router',
+          'vuex',
+          'ant-design-vue',
+          '@ant-design/icons-vue',
+          'vxe-table',
+          'xe-utils',
+          'lodash'
+        ]
       }
     }
   }
@@ -30,17 +49,29 @@ export default ({ mode }) => {
             resolveStyle: (name) => `ant-design-vue/es/${name}/style/index`
           }
         ]
+      }),
+      viteMockServe({
+        mockPath: 'mock',
+        ignore: /^_/
+      }),
+      html({
+        minify: true,
+        inject: {
+          injectData: {
+            title: setting.title
+          }
+        }
       })
     ],
     resolve: {
       alias: {
-        '@src': pathResolve('src'),
-        '@components': pathResolve('src/components'),
-        '@views': pathResolve('src/views'),
-        '@layout': pathResolve('src/layout'),
-        '@config': pathResolve('src/config'),
-        '@utils': pathResolve('src/utils'),
-        '@store': pathResolve('src/store')
+        '@src': path.resolve(__dirname, 'src'),
+        '@components': path.resolve(__dirname, 'src/components'),
+        '@views': path.resolve(__dirname, 'src/views'),
+        '@layout': path.resolve(__dirname, 'src/layout'),
+        '@config': path.resolve(__dirname, 'src/config'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+        '@store': path.resolve(__dirname, 'src/store')
       }
     },
     css: {
@@ -59,7 +90,13 @@ export default ({ mode }) => {
       open: true
     },
     optimizeDeps: {
-      include: ['lodash']
+      include: [
+        'ant-design-vue/es/locale/zh_CN',
+        'moment/dist/locale/zh-cn',
+        'ant-design-vue/es/locale/en_US',
+        'moment/dist/locale/eu'
+      ],
+      exclude: []
     },
     build: {
       ...build,

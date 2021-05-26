@@ -20,7 +20,7 @@
 import { defineComponent, reactive, watch, computed, toRefs } from 'vue'
 import { Menu } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { routes } from '@src/router'
+import { routes as routeList } from '@src/router'
 import MenuItem from './item.vue'
 
 export default defineComponent({
@@ -46,8 +46,15 @@ export default defineComponent({
     const state = reactive({
       openKeys: getOpenKeys(), // menu当前展开的keys
       selectedKeys: [currentRoute.name], // menu选中的keys
-      rootSubmenuKeys: routes.filter((item) => !!item?.children?.length && item.path !== '/').map((item) => item.name) // 从routes筛选所有根菜单的名字
+      routes: routeList.flatMap((val) => {
+        return val.path === '/' ? val.children : [val]
+      })
     })
+
+    // 从routes筛选所有根菜单的名字
+    const rootSubmenuKeys = computed(() =>
+      state.routes.filter((item) => !!item?.children?.length && item.path !== '/').map((item) => item.name)
+    )
 
     // 监听菜单收缩状态
     watch(
@@ -76,7 +83,7 @@ export default defineComponent({
     // 展开菜单
     const onOpenChange = (openKeys) => {
       const latestOpenKey = openKeys.find((key) => state.openKeys.indexOf(key) === -1)
-      if (state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      if (rootSubmenuKeys.value.indexOf(latestOpenKey) === -1) {
         state.openKeys = openKeys
       } else {
         state.openKeys = latestOpenKey ? [latestOpenKey] : []
@@ -85,11 +92,6 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      routes: computed(() =>
-        routes.flatMap((val) => {
-          return val.path === '/' ? val.children : [val]
-        })
-      ),
       clickMenuItem,
       onOpenChange
     }
@@ -99,12 +101,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .menus {
-  position: relative;
-  z-index: 2;
   flex: 1 1 0;
   overflow: hidden auto;
-  background-color: #fff;
+  background-color: $bg-color;
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+  position: relative;
+  z-index: 2;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -130,45 +132,6 @@ export default defineComponent({
     }
   }
 
-  //   > .ant-menu-item {
-  //     height: 36px;
-  //     line-height: 36px;
-  //     &:not(:last-child) {
-  //       margin: 2px 0;
-  //     }
-  //   }
-  //   > .ant-menu-submenu > .ant-menu-submenu-title {
-  //     height: 36px;
-  //     line-height: 36px;
-  //     margin: 2px 0;
-  //   }
-  // }
-  // ::v-deep(.ant-menu-vertical) {
-  //   > .ant-menu-item {
-  //     width: 48px;
-  //     padding: 0 16px !important;
-  //     &:not(:last-child) {
-  //       margin: 2px 0;
-  //     }
-  //   }
-  //   > .ant-menu-submenu > .ant-menu-submenu-title {
-  //     height: 36px;
-  //     line-height: 36px;
-  //     margin: 0;
-  //     &:not(:last-child) {
-  //       margin: 2px 0;
-  //     }
-  //   }
-  //   .anticon {
-  //     line-height: 36px;
-  //   }
-  //   .ant-menu-submenu-vertical {
-  //     margin: 2px 0;
-  //     &:last-child {
-  //       margin: 4px 0;
-  //     }
-  //   }
-  // }
   ::v-deep(.ant-menu-inline-collapsed) {
     width: 48px;
 

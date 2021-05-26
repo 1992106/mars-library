@@ -1,0 +1,48 @@
+@mixin flex {
+  display: flex;
+}
+
+@mixin flex-row {
+  @include flex;
+
+  flex-direction: row;
+}
+
+@mixin flex-column {
+  @include flex;
+
+  flex-direction: column;
+}
+
+@mixin flexRAC {
+  @include flex-row;
+  align-items: center;
+}
+
+@mixin flexRJC {
+  @include flex-row;
+  justify-content: center;
+}
+
+@mixin flexRCC {
+  @include flexRAC;
+  justify-content: center;
+}
+
+@mixin flexCAC {
+  @include flex-column;
+
+  align-items: center;
+}
+
+@mixin flexCJC {
+  @include flex-column;
+
+  justify-content: center;
+}
+
+@mixin flexCCC {
+  @include flexCAC;
+
+  justify-content: center;
+}

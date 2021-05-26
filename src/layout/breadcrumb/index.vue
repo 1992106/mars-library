@@ -4,9 +4,9 @@
       <span v-if="routes.indexOf(route) === routes.length - 1">
         {{ route.meta.title }}
       </span>
-      <router-link v-else :to="route.path">
-        {{ print(route, routes, paths) }}
-        {{ route.meta.title }}-----{{ paths }}
+      <span v-else-if="route.path === '/'">首页</span>
+      <router-link v-else :to="handlePath(route, paths)">
+        {{ route.meta.title }}
       </router-link>
     </template>
   </Breadcrumb>
@@ -23,22 +23,22 @@ export default defineComponent({
     const router = useRouter()
     const routes = ref([])
 
+    const handlePath = (route, paths) => {
+      return route.children ? route.redirect || `/${paths.slice(-1)}` : `/${paths.slice(-2).join('/')}`
+    }
+
     watch(
       () => router.currentRoute.value.fullPath,
       () => {
-        if (['Redirect', '404'].includes(router.currentRoute.value.name)) return
+        if (['ErrorPage', 'Login', 'Redirect'].includes(router.currentRoute.value.name)) return
         routes.value = router.currentRoute.value.matched
       },
       { immediate: true }
     )
 
-    const print = (route) => {
-      console.log(route.path, 888)
-    }
-
     return {
-      routes,
-      print
+      handlePath,
+      routes
     }
   }
 })

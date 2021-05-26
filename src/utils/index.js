@@ -1,1 +1,2 @@
-export * from './is.js'
+export * from './is'
+export * from './fn'

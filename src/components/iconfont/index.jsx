@@ -1,6 +1,6 @@
 import { defineComponent, unref, computed } from 'vue'
 import { createFromIconfontCN } from '@ant-design/icons-vue'
-import { isString } from '@utils'
+import { isString } from '@utils/is'
 
 let MyIconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2381444_haah5fbnt3f.js'

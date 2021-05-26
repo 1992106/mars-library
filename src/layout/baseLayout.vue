@@ -57,8 +57,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout {
   display: flex;
-  height: 100vh;
   overflow: hidden;
+  height: 100vh;
 
   .layout-sider ::v-deep(.ant-layout-sider-children) {
     display: flex;

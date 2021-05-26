@@ -1,12 +1,10 @@
+@import './variables.scss';
 @import './transition.scss';
-
-$color: #333;
-$header-height: 50px;
-$footer-height: 70px;
+@import './mixin.scss';
 
 .page-content {
   width: calc(100% - 32px);
   height: calc(100% - 32px);
+  background: $bg-color;
   margin: 16px;
-  background: #fff;
 }

@@ -18,16 +18,16 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  position: relative;
-  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
   height: $header-height;
-  overflow: hidden;
   line-height: $header-height;
+  overflow: hidden;
   white-space: nowrap;
-  background: #fff;
+  position: relative;
+  z-index: 3;
+  background: $bg-color;
   img {
     height: 32px;
   }

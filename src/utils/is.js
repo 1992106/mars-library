@@ -11,7 +11,7 @@ export function is(val, type) {
  * @description:  是否为函数
  */
 export function isFunction(val) {
-  return is(val, 'Function')
+  return is(val, 'Function') || is(val, 'AsyncFunction')
 }
 
 /**
@@ -100,4 +100,12 @@ export const isElement = (val) => {
 // 是否为图片节点
 export function isImageDom(o) {
   return o && ['IMAGE', 'IMG'].includes(o.tagName)
+}
+
+export const isSet = (val) => {
+  return is(val, 'Set')
+}
+
+export const isMap = (val) => {
+  return is(val, 'Map')
 }

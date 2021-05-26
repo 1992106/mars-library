@@ -1,0 +1,62 @@
+$header-height: 50px;
+$footer-height: 70px;
+
+/* 行为相关颜色 */
+$color-primary: #007aff;
+$color-success: #4cd964;
+$color-warning: #f0ad4e;
+$color-error: #dd524d;
+
+/* 文字基本颜色 */
+$text-color: #333; //基本色
+$text-color-white: #fff;
+$text-color-grey: #999; //辅助灰色，如加载更多的提示信息
+$text-color-placeholder: #808080;
+$text-color-disable: #c0c0c0;
+$text-color-desc: #606060;
+$text-color-link: #2a9bff;
+
+/* 背景颜色 */
+$bg-color: #fff;
+$bg-color-grey: #f8f8f8;
+$bg-color-blue: #4c9cf8;
+$bg-color-blue10: #ecf5fe;
+$bg-color-orange: #f4ad45;
+$bg-color-hover: #f1f1f1; //点击状态颜色
+$bg-color-mask: rgba(0, 0, 0, 0.4); //遮罩颜色
+$bg-color-red: #ec5048;
+$bg-color-cancel: #c0c3c9;
+
+/* 边框颜色 */
+$border-color: #c8c7cc;
+$border-color-grey: #f5f6fa;
+
+/* 尺寸变量 */
+
+/* 文字尺寸 */
+$font-size-mini: 10px;
+$font-size-sm: 12px;
+$font-size-base: 14px;
+$font-size-lg: 16px;
+
+/* 图片尺寸 */
+$img-size-sm: 20px;
+$img-size-base: 26px;
+$img-size-lg: 40px;
+
+/* Border Radius */
+$border-radius-sm: 2px;
+$border-radius-base: 3px;
+$border-radius-lg: 6px;
+$border-radius-circle: 50%;
+
+/* 透明度 */
+$opacity-disabled: 0.3; // 组件禁用态的透明度
+
+/* 文章场景相关 */
+$color-title: #2c405a; // 文章标题颜色
+$font-size-title: 20px;
+$color-subtitle: #555; // 二级标题颜色
+$font-size-subtitle: 18px;
+$color-paragraph: #3f536e; // 文章段落颜色
+$font-size-paragraph: 14px;

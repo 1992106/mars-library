@@ -1,14 +1,14 @@
 .layoutHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: $header-height !important;
+  background-color: $bg-color !important;
   padding: 0 10px !important;
+  height: $header-height !important;
   line-height: $header-height !important;
-  background-color: #fff !important;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   .leftOptions {
     display: flex;
