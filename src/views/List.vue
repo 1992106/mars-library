@@ -1,35 +1,26 @@
 <template>
-  <vxe-grid v-bind="gridOptions" @page-change="test">
-    <template #toolbar_buttons>
-      <vxe-button @click="gridOptions.align = 'left'">居左</vxe-button>
-      <vxe-button @click="gridOptions.align = 'center'">居中</vxe-button>
-      <vxe-button @click="gridOptions.align = 'right'">居右</vxe-button>
-    </template>
-  </vxe-grid>
+  <mars-grid v-bind="gridOptions" v-model:pagination="gridOptions.pagination"></mars-grid>
 </template>
 
 <script>
 import { defineComponent, reactive, ref } from 'vue'
-import { VXETable } from 'vxe-table'
 
 export default defineComponent({
   setup() {
     const xGrid = ref({})
 
     const gridOptions = reactive({
-      border: true,
-      resizable: true,
-      keepSource: true,
-      id: 'toolbar_demo_1',
       editConfig: {
         trigger: 'click',
         mode: 'row',
         showStatus: true
       },
+      pagination: {
+        page: 1,
+        limit: 5
+      },
       pagerConfig: {
-        pageSize: 10,
-        pagerCount: 3,
-        total: 11
+        pageSizes: [5, 10, 15, 20, 50]
       },
       columns: [
         { type: 'checkbox', width: 50 },
@@ -44,6 +35,7 @@ export default defineComponent({
         },
         { field: 'address', title: 'Address', showOverflow: true, editRender: { name: 'input' } }
       ],
+      loading: false,
       data: [
         { id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: 'Man', age: 28, address: 'Shenzhen' },
         { id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
@@ -53,48 +45,18 @@ export default defineComponent({
         { id: 10006, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
         { id: 10007, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
         { id: 10008, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' },
-        { id: 10009, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
-        { id: 10010, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
-        { id: 10011, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' }
-      ]
+        { id: 10009, name: 'Test9', nickname: 'T9', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
+        { id: 10010, name: 'Test10', nickname: 'T10', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
+        { id: 10011, name: 'Test11', nickname: 'T11', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' },
+        { id: 10012, name: 'Test12', nickname: 'T12', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
+        { id: 10013, name: 'Test13', nickname: 'T13', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' }
+      ],
+      total: 11
     })
-
-    const toolbarButtonClickEvent = ({ code }) => {
-      const $grid = xGrid.value
-      switch (code) {
-        case 'myInsert': {
-          $grid.insert({
-            name: 'xxx'
-          })
-          break
-        }
-        case 'mySave': {
-          const { insertRecords, removeRecords, updateRecords } = $grid.getRecordset()
-          VXETable.modal.message({
-            content: `新增 ${insertRecords.length} 条，删除 ${removeRecords.length} 条，更新 ${updateRecords.length} 条`,
-            status: 'success'
-          })
-          break
-        }
-        case 'myExport': {
-          $grid.exportData({
-            type: 'csv'
-          })
-          break
-        }
-      }
-    }
-
-    const test = ({ type, currentPage, pageSize, $event }) => {
-      console.log(type, currentPage, pageSize, $event)
-      console.log(gridOptions.pagerConfig, 'gridOptions')
-    }
 
     return {
       xGrid,
-      gridOptions,
-      toolbarButtonClickEvent,
-      test
+      gridOptions
     }
   }
 })

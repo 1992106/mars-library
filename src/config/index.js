@@ -11,7 +11,7 @@ const setting = {
   modal_mask_closable: true,
 
   // 标题
-  title: 'Mars SCM',
+  title: 'Mars library',
 
   // 本地储存token的名字
   token_name: 'mars-scm',
@@ -29,7 +29,13 @@ const setting = {
   authorization_name: 'Authorization',
 
   // token前缀,设置为null则不启用 { headers: { Authorization: 'Bearer ${token}'}}
-  token_prefix: 'Bearer'
+  token_prefix: 'Bearer',
+
+  // 是否开启keep-alive
+  keep_alive: true,
+
+  // 顶部进度条
+  header_progress: true
 }
 
 export default setting

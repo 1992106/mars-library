@@ -4,7 +4,6 @@
       <span v-if="routes.indexOf(route) === routes.length - 1">
         {{ route.meta.title }}
       </span>
-      <span v-else-if="route.path === '/'">首页</span>
       <router-link v-else :to="handlePath(route, paths)">
         {{ route.meta.title }}
       </router-link>
@@ -12,7 +11,7 @@
   </Breadcrumb>
 </template>
 <script>
-import { defineComponent, watch, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Breadcrumb } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -31,7 +30,7 @@ export default defineComponent({
       () => router.currentRoute.value.fullPath,
       () => {
         if (['ErrorPage', 'Login', 'Redirect'].includes(router.currentRoute.value.name)) return
-        routes.value = router.currentRoute.value.matched
+        routes.value = router.currentRoute.value.matched.filter((item) => item.path !== '/')
       },
       { immediate: true }
     )

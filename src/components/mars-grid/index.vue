@@ -1,19 +1,18 @@
 <template>
   <vxe-grid
     ref="xGrid"
-    auto-resize
     border
+    auto-resize
     show-overflow
     keep-source
     resizable
     stripe
-    :scroll-x="getScrollX"
-    :scroll-y="getScrollY"
-    :height="tableHeight"
     :columns="columns"
     :data="data"
     :loading="loading"
-    :pager-config="getPagerConfig"
+    :scroll-x="getScrollX"
+    :scroll-y="getScrollY"
+    :height="tableHeight"
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
     :row-style="rowStyle"
@@ -30,10 +29,20 @@
     @checkbox-all="handleCheckboxAll"
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange"
-    @page-change="handlePageChange"
   >
     <template #opts="scope">
       <slot name="opts" v-bind="scope" :command="handleCommand"></slot>
+    </template>
+
+    <!--分页-->
+    <template #pager>
+      <vxe-pager
+        v-bind="getPagerConfig"
+        :current-page="pagination.page"
+        :page-size="pagination.limit"
+        :total="total"
+        @page-change="handlePageChange"
+      />
     </template>
   </vxe-grid>
 </template>
@@ -61,11 +70,10 @@ export default defineComponent({
     // 表格数据
     data: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
+    total: { type: Number, default: 0 },
     // 页码
+    pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
     pagerConfig: Object,
-    // showPagination: { type: Boolean, default: true },
-    // pagination: { type: Object, default: () => ({ limit: 20, page: 1 }) },
-    // pageSizes: { type: Array, default: () => [20, 30, 50, 100] },
     // 序号配置项
     seqConfig: Object,
     // 勾选项
@@ -115,7 +123,7 @@ export default defineComponent({
     const defaultState = {
       defaultScrollX: { enabled: false },
       defaultScrollY: { enabled: false },
-      defaultPagerConfig: { currentPage: 1, pageSize: 20, total: 0, pageSizes: [20, 40, 60, 100] },
+      defaultPagerConfig: { enabled: true, pageSizes: [20, 30, 60, 100] },
       defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true, icon: 'el-icon-edit' },
       defaultRadioConfig: { highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { highlight: true, checkMethod: () => true },
@@ -203,7 +211,11 @@ export default defineComponent({
     }
     // 页码
     const handlePageChange = ({ type, currentPage, pageSize, $event }) => {
-      emit('update:pagination', { currentPage, pageSize })
+      const pagination = {
+        page: type === 'size' ? 1 : currentPage,
+        limit: pageSize
+      }
+      emit('update:pagination', pagination)
       emit('page-change', { type, currentPage, pageSize, $event })
       emit('search')
     }

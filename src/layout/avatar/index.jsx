@@ -36,15 +36,6 @@ const PageHeader = defineComponent({
       </Menu>
     )
 
-    // <span :class="[prefixCls, `${prefixCls}--${theme}`]" class="flex">
-    //   <img :class="`${prefixCls}__header`" :src="headerImg" />
-    //   <span :class="`${prefixCls}__info hidden md:block`">
-    //     <span :class="`${prefixCls}__name  `" class="truncate">
-    //       {{ getUserInfo.realName }}
-    //     </span>
-    //   </span>
-    // </span>
-
     return () => (
       <>
         <Dropdown overlay={menu} class={styles.userDropdown}>
@@ -53,7 +44,7 @@ const PageHeader = defineComponent({
               size={28}
               src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?1621910757234'
             />
-            <span className={styles.username}>{userInfo.value?.nickname}</span>
+            <span className={styles.username}>{userInfo?.value?.nickname}</span>
             <DownOutlined class={styles.icon} />
           </div>
         </Dropdown>

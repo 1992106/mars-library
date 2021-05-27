@@ -1,18 +1,18 @@
-import type { App } from 'vue'
 import { isFunction } from '@utils/is'
 import { debounce } from 'lodash'
+import type { App } from 'vue'
 
 /**
  * @description 防抖指令v-debounce
+ * @param {number} wait 间隔时间（默认300毫秒，0代表马上执行)
  * @example
  *    1.<button v-debounce="function" />
  *    2.<button v-debounce:[argument]="function" />
  *    3.<button v-debounce="() => function(argument)" />
  *    4.<button v-debounce="function" :wait="400" />
- * {number} wait 间隔时间（默认300毫秒，0代表马上执行)
  */
 const setupDebounceDirective = (app: App) => {
-  app.directive('debounce', (el, { value: fn, arg }, vnode) => {
+  app.directive('debounce', (el, { value: fn, arg }, vnode): void => {
     const { wait = 300 } = vnode.props || {}
     if (!isFunction(fn)) {
       return console.error(el, 'v-debounce: 参数缺失, function不存在')

@@ -8,22 +8,17 @@
       @edit="onEdit"
       @tabClick="onTabClick"
     >
-      <TabPane
-        v-for="item in visitedRoutes"
-        :key="item.fullPath"
-        style="height: 0"
-        :closable="visitedRoutes.length > 1"
-      >
+      <TabPane v-for="item in visitedRoutes" :key="item.path" style="height: 0" :closable="visitedRoutes.length > 1">
         <template #tab>
           {{ item.meta.title }}
-          <ReloadOutlined v-show="activeKey === item.fullPath" @click.stop.prevent="onRefresh()" />
+          <ReloadOutlined v-show="activeKey === item.path" @click.stop.prevent="onRefresh()" />
         </template>
       </TabPane>
     </Tabs>
   </div>
 </template>
 <script>
-import { defineComponent, unref, watch, computed, ref, onMounted } from 'vue'
+import { defineComponent, unref, watch, computed, ref } from 'vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { Tabs } from 'ant-design-vue'
@@ -45,44 +40,40 @@ export default defineComponent({
     const activeKey = ref('')
     const visitedRoutes = computed(() => store.state.router.visitedRoutes)
 
-    const addVisitedRoutes = () => {
+    watch(
+      () => router.currentRoute.value,
+      (val) => {
+        if (['Redirect', 'ErrorPage', 'Login'].includes(router.currentRoute.value.name)) return
+        activeKey.value = val.path
+        addVisitedRoutes()
+      },
+      { immediate: true }
+    )
+
+    function addVisitedRoutes() {
       const { currentRoute } = router
       store.dispatch('router/addVisitedRoutes', unref(currentRoute))
     }
 
-    onMounted(() => {
-      addVisitedRoutes()
-      activeKey.value = visitedRoutes.value[visitedRoutes.value.length - 1].fullPath
-    })
-
-    watch(
-      () => router.currentRoute.value.fullPath,
-      (val) => {
-        if (['Redirect', 'ErrorPage', 'Login'].includes(router.currentRoute.value.name)) return
-        activeKey.value = val
-        addVisitedRoutes(val)
-      }
-    )
-
     const onEdit = (key, action) => {
       if (action === 'remove') {
-        store.commit('router/delVisitedRoutes', key)
+        store.dispatch('router/delVisitedRoutes', { router, key })
       }
     }
 
     const onTabClick = (key) => {
-      if (key !== router.currentRoute.value.fullPath) {
-        router.push(key)
+      if (key !== router.currentRoute.value.path) {
+        store.dispatch('router/goToVisitedPage', key)
       }
     }
 
     const onRefresh = () => {
-      const { currentRoute, push } = router
+      const { currentRoute, replace } = router
       const route = unref(currentRoute)
-      const { fullPath, params, query } = route
-      store.commit('router/delCachedTabList', fullPath)
-      push({
-        path: `/redirect${fullPath}`,
+      const { path, params, query } = route
+      store.commit('router/delCachedTabList', path)
+      replace({
+        path: `/redirect${path}`,
         query,
         params
       })

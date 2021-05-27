@@ -39,49 +39,43 @@ export default defineComponent({
     const currentRoute = useRoute()
     const router = useRouter()
 
-    // 获取当前打开的子菜单
-    // const getOpenKeys = () => [currentRoute.matched[0]?.name]
-    const getOpenKeys = () => currentRoute.matched.slice(0, -1).map((item) => item.name)
-
     const state = reactive({
-      openKeys: getOpenKeys(), // menu当前展开的keys
-      selectedKeys: [currentRoute.name], // menu选中的keys
-      routes: routeList.flatMap((val) => {
-        return val.path === '/' ? val.children : [val]
-      })
+      openKeys: [], // menu当前展开的keys
+      selectedKeys: [], // menu选中的keys
+      routes: []
     })
+    state.openKeys = getOpenKeys()
+    state.selectedKeys = [currentRoute.name]
+    state.routes = routeList.flatMap((val) => (val.path === '/' ? val.children : [val]))
 
     // 从routes筛选所有根菜单的名字
     const rootSubmenuKeys = computed(() =>
       state.routes.filter((item) => !!item?.children?.length && item.path !== '/').map((item) => item.name)
     )
 
-    // 监听菜单收缩状态
+    // 监听菜单收缩状态 && 跟随页面路由变化，切换菜单选中状态
     watch(
-      () => props.collapsed,
-      (newVal) => {
-        state.openKeys = newVal ? [] : getOpenKeys()
+      () => [props.collapsed, currentRoute.fullPath],
+      ([newCollapsedVal]) => {
+        if (['login', 'Redirect'].includes(currentRoute.name)) return
+        state.openKeys = newCollapsedVal ? [] : getOpenKeys()
         state.selectedKeys = [currentRoute.name]
       }
     )
 
-    // 跟随页面路由变化，切换菜单选中状态
-    watch(
-      () => currentRoute.fullPath,
-      () => {
-        if (currentRoute.name === 'login' || props.collapsed) return
-        state.openKeys = getOpenKeys()
-        state.selectedKeys = [currentRoute.name]
-      }
-    )
+    // 获取当前打开的子菜单
+    // const getOpenKeys = () => [currentRoute.matched[0]?.name]
+    function getOpenKeys() {
+      return currentRoute.matched.slice(0, -1).map((item) => item.name)
+    }
 
     // 点击菜单
-    const clickMenuItem = ({ key }) => {
+    function clickMenuItem({ key }) {
       router.push({ name: key })
     }
 
     // 展开菜单
-    const onOpenChange = (openKeys) => {
+    function onOpenChange(openKeys) {
       const latestOpenKey = openKeys.find((key) => state.openKeys.indexOf(key) === -1)
       if (rootSubmenuKeys.value.indexOf(latestOpenKey) === -1) {
         state.openKeys = openKeys
