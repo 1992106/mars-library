@@ -30,10 +30,9 @@
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange"
   >
-    <template #opts="scope">
-      <slot name="opts" v-bind="scope" :command="handleCommand"></slot>
+    <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
+      <slot :name="slot" v-bind="scope"></slot>
     </template>
-
     <!--分页-->
     <template #pager>
       <vxe-pager
@@ -174,6 +173,11 @@ export default defineComponent({
     /**
      * 计算属性
      */
+    const getSlots = computed(() =>
+      props.columns
+        .filter((col) => col.slots)
+        .flatMap((col) => ['default', 'edit', 'header', 'footer'].map((val) => col.slots[val]).filter(Boolean))
+    )
     const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
     const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getPagerConfig = computed(() => mergeProps(defaultState.defaultPagerConfig, props.pagerConfig))
@@ -201,14 +205,6 @@ export default defineComponent({
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize)
     })
-    // 操作项
-    const handleCommand = (index, row, command) => {
-      return {
-        index,
-        row,
-        command
-      }
-    }
     // 页码
     const handlePageChange = ({ type, currentPage, pageSize, $event }) => {
       const pagination = {
@@ -280,6 +276,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       defaultPickerOptions: defaultState.defaultPickerOptions,
+      getSlots,
       getScrollX,
       getScrollY,
       getPagerConfig,
@@ -289,7 +286,6 @@ export default defineComponent({
       getTooltipConfig,
       isQICon,
       xGrid,
-      handleCommand,
       handlePageChange,
       handleCheckboxChange,
       handleCheckboxAll,

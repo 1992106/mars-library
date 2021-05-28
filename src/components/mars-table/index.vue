@@ -1,27 +1,35 @@
 <template>
-  <a-table
-    ref="xTable"
-    border
-    :columns="columns"
-    :dataSource="dataSource"
-    :loading="loading"
-    :pagination="false"
-    :scroll="scroll"
-    :row-selection="getRowSelection"
-  />
-  <a-pagination
-    v-if="showPagination"
-    show-size-changer
-    v-bind="getPaginationConfig"
-    :current="pagination.page"
-    :pageSize="pagination.limit"
-    :total="total"
-    @change="handlePageChange"
-    @showSizeChange="handleShowSizeChange"
-  />
+  <div class="mars-table">
+    <a-table
+      ref="xTable"
+      border
+      :rowKey="rowKey"
+      :columns="getColumns"
+      :data-source="dataSource"
+      :loading="loading"
+      :pagination="false"
+      :scroll="scroll"
+      :row-selection="getRowSelection"
+      :rowClassName="handleRowClassName"
+    >
+      <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
+        <slot :name="slot" v-bind="scope"></slot>
+      </template>
+    </a-table>
+    <a-pagination
+      v-if="showPagination"
+      show-size-changer
+      v-bind="getPaginationConfig"
+      :current="pagination.page"
+      :pageSize="pagination.limit"
+      :total="total"
+      @change="handlePageChange"
+      @showSizeChange="handleShowSizeChange"
+    />
+  </div>
 </template>
 <script>
-import { computed, defineComponent, mergeProps, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRefs } from 'vue'
+import { defineComponent, computed, mergeProps, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRefs } from 'vue'
 import { Table, Pagination } from 'ant-design-vue'
 import { debounce } from 'lodash'
 export default defineComponent({
@@ -31,11 +39,13 @@ export default defineComponent({
     [Pagination.name]: Pagination
   },
   props: {
+    // 表格行 key 的取值
+    rowKey: { type: [String, Function], default: 'key' },
     // 自定义列
     columns: { type: Array, default: () => [] },
     // 表格数据
     dataSource: { type: Array, default: () => [] },
-    loading: { type: Boolean, default: false },
+    loading: { type: [Boolean, Object], default: false },
     total: { type: Number, default: 0 },
     // 页码
     pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
@@ -44,8 +54,10 @@ export default defineComponent({
     scroll: { type: Object, default: () => ({ x: null, y: null, scrollToFirstRowOnChange: false }) },
     // 选择功能的配置
     rowSelection: Object,
+    // 行的类名
+    rowClassName: Function,
     // 表格除外的高度
-    offsetHeight: { type: Number, default: 268 }
+    offsetHeight: { type: Number, default: 240 }
   },
   emits: ['search', 'update:pagination', 'update:selected-value'],
   setup(props, { emit }) {
@@ -53,6 +65,7 @@ export default defineComponent({
      * 默认值
      */
     const defaultState = {
+      defaultColumn: { ellipsis: true },
       defaultPaginationConfig: { disabled: false, pageSizeOptions: ['20', '30', '60', '100'] },
       defaultRowSelection: { selections: true }
     }
@@ -60,7 +73,7 @@ export default defineComponent({
      * data
      */
     const state = reactive({
-      tableHeight: 300,
+      scroll: {},
       filters: {}
     })
     /**
@@ -68,8 +81,10 @@ export default defineComponent({
      */
     const xTable = ref(null)
     /**
-     * 计算属性
+     * computed
      */
+    const getColumns = computed(() => props.columns.map((column) => mergeProps(defaultState.defaultColumn, column)))
+    const getSlots = computed(() => props.columns.filter((val) => val.slots).map((val) => val.slots.customRender))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     const getRowSelection = computed(() => mergeProps(defaultState.defaultRowSelection, props.rowSelection))
     /**
@@ -78,22 +93,20 @@ export default defineComponent({
     // 监听视窗大小改变
     const onResize = () => {
       const clientHeight = document.body.clientHeight - props.offsetHeight
-      state.tableHeight = clientHeight < 300 ? 300 : clientHeight
+      state.scroll.y = clientHeight < 300 ? 300 : clientHeight
     }
     onMounted(() => {
+      state.scroll = props.scroll
       nextTick(onResize)
       window.addEventListener('resize', debounce(onResize, 200))
     })
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize)
     })
-    // 操作项
-    const handleCommand = (index, row, command) => {
-      return {
-        index,
-        row,
-        command
-      }
+    // 行的类名（默认设置斑马纹）
+    const handleRowClassName = (record, index) => {
+      const result = props.rowClassName ? props.rowClassName(record, index) : null
+      return [index % 2 === 1 ? 'table-striped' : null, result].filter(Boolean).join(' ')
     }
     // 页码
     const handlePageChange = (current, pageSize) => {
@@ -114,14 +127,27 @@ export default defineComponent({
     }
     return {
       ...toRefs(state),
+      getColumns,
+      getSlots,
       showPagination: !getPaginationConfig.value.disabled,
       getPaginationConfig,
       getRowSelection,
       xTable,
-      handleCommand,
+      handleRowClassName,
       handlePageChange,
       handleShowSizeChange
     }
   }
 })
 </script>
+<style lang="scss" scoped>
+.mars-table {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  .ant-pagination {
+    padding: 10px;
+    text-align: right;
+  }
+}
+</style>

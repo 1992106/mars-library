@@ -73,11 +73,21 @@ export const routes = [
         }
       },
       {
-        path: 'list',
-        name: 'List',
-        component: () => import('../views/List.vue'),
+        path: 'grid',
+        name: 'Grid',
+        component: () => import('@views/Grid.vue'),
         meta: {
-          title: '列表',
+          title: 'GRID',
+          icon: 'icon-user',
+          ignoreKeepAlive: true
+        }
+      },
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@views/Table.vue'),
+        meta: {
+          title: 'TABLE',
           icon: 'icon-user',
           ignoreKeepAlive: true
         }
