@@ -106,7 +106,7 @@ export default defineComponent({
     // 行的类名（默认设置斑马纹）
     const handleRowClassName = (record, index) => {
       const result = props.rowClassName ? props.rowClassName(record, index) : null
-      return [index % 2 === 1 ? 'table-striped' : null, result].filter(Boolean).join(' ')
+      return [index % 2 === 1 ? 'table-striped' : null, result].filter(Boolean)
     }
     // 页码
     const handlePageChange = (current, pageSize) => {

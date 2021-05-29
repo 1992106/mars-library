@@ -173,11 +173,15 @@ export default defineComponent({
     /**
      * 计算属性
      */
-    const getSlots = computed(() =>
-      props.columns
+    const getSlots = computed(() => {
+      return props.columns
         .filter((col) => col.slots)
-        .flatMap((col) => ['default', 'edit', 'header', 'footer'].map((val) => col.slots[val]).filter(Boolean))
-    )
+        .flatMap((col) =>
+          ['default', 'edit', 'header', 'footer', 'title', 'checkbox', 'radio', 'content', 'filter']
+            .map((val) => typeof val === 'string' && col.slots[val])
+            .filter(Boolean)
+        )
+    })
     const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
     const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getPagerConfig = computed(() => mergeProps(defaultState.defaultPagerConfig, props.pagerConfig))
