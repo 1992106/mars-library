@@ -27,6 +27,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.1.6",
     "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
     "vue": "3.0.10",
     "vue-router": "^4.0.0-rc.6",
     "vuex": "^4.0.0-rc.2",

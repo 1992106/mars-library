@@ -32,7 +32,8 @@ export default ({ mode }) => {
           '@ant-design/icons-vue',
           'vxe-table',
           'xe-utils',
-          'lodash'
+          'lodash',
+          'nprogress'
         ]
       }
     }

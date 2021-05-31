@@ -3,6 +3,7 @@ import {
   notification,
   Modal,
   Table,
+  Tabs,
   Button,
   Form,
   Input,
@@ -35,6 +36,7 @@ VXETable.use(VXETablePluginAntd)
 
 const components = [
   Table,
+  Tabs,
   Button,
   Form,
   Input,

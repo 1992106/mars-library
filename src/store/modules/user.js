@@ -1,7 +1,7 @@
 const user = {
   state: {
     userInfo: {
-      nickname: 'cmx'
+      nickname: 'xxx'
     }
   },
   getters: {
