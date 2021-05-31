@@ -1,4 +1,27 @@
-import { message, notification, Modal, Table } from 'ant-design-vue'
+import {
+  message,
+  notification,
+  Modal,
+  Table,
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Cascader,
+  Checkbox,
+  Radio,
+  Switch,
+  DatePicker,
+  TimePicker,
+  Tree,
+  Image,
+  Upload,
+  Tooltip,
+  Popover,
+  Popconfirm,
+  Spin
+} from 'ant-design-vue'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import 'xe-utils'
@@ -10,7 +33,27 @@ import MarsLibrary from '../entry'
 // VXETable引入antd组件
 VXETable.use(VXETablePluginAntd)
 
-const components = [Table]
+const components = [
+  Table,
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Cascader,
+  Checkbox,
+  Radio,
+  Switch,
+  DatePicker,
+  TimePicker,
+  Tree,
+  Image,
+  Upload,
+  Tooltip,
+  Popover,
+  Popconfirm,
+  Spin
+]
 
 export function setupPlugins(app) {
   // 注册antd组件

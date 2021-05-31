@@ -73,21 +73,31 @@ export const routes = [
         }
       },
       {
+        path: 'vxe',
+        name: 'VxeTable',
+        component: () => import('@views/VxeTable.vue'),
+        meta: {
+          title: 'VxeTable',
+          icon: 'icon-user',
+          ignoreKeepAlive: true
+        }
+      },
+      {
         path: 'grid',
-        name: 'Grid',
+        name: 'MarsGrid',
         component: () => import('@views/Grid.vue'),
         meta: {
-          title: 'GRID',
+          title: 'MarsGrid',
           icon: 'icon-user',
           ignoreKeepAlive: true
         }
       },
       {
         path: 'table',
-        name: 'Table',
+        name: 'MarsTable',
         component: () => import('@views/Table.vue'),
         meta: {
-          title: 'TABLE',
+          title: 'MarsTable',
           icon: 'icon-user',
           ignoreKeepAlive: true
         }

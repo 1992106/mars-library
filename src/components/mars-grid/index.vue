@@ -24,7 +24,12 @@
     :merge-cells="mergeCells"
     :edit-config="getEditConfig"
     :edit-rules="editRules"
+    :filter-config="getFilterConfig"
     @edit-closed="handleEditClosed"
+    @valid-error="handleValidError"
+    @filter-change="handleFilterChange"
+    @clear-filter="handleClearFilter"
+    @radio-change="handleRadioChange"
     @checkbox-change="handleCheckboxChange"
     @checkbox-all="handleCheckboxAll"
     @cell-click="handleCellClick"
@@ -86,6 +91,8 @@ export default defineComponent({
     // 编辑配置
     editConfig: Object,
     editRules: { type: Object, default: () => ({}) },
+    // 筛选配置
+    filterConfig: Object,
     // 横向虚拟滚动配置
     scrollX: Object,
     // 纵向虚拟滚动配置
@@ -110,10 +117,14 @@ export default defineComponent({
     'update:pagination',
     'page-change',
     'update:selected-value',
+    'radio-change',
     'checkbox-change',
     'checkbox-all',
     'cell-click',
-    'edit-closed'
+    'edit-closed',
+    'valid-error',
+    'filter-change',
+    'clear-filter'
   ],
   setup(props, { emit }) {
     /**
@@ -123,8 +134,9 @@ export default defineComponent({
       defaultScrollX: { enabled: false },
       defaultScrollY: { enabled: false },
       defaultPagerConfig: { enabled: true, pageSizes: [20, 30, 60, 100] },
-      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true, icon: 'el-icon-edit' },
-      defaultRadioConfig: { highlight: true, checkMethod: () => true },
+      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
+      defaultFilterConfig: { remote: true, showIcon: true, filterMethod: () => true },
+      defaultRadioConfig: { highlight: true, radioMethod: () => true },
       defaultCheckboxConfig: { highlight: true, checkMethod: () => true },
       defaultTooltipConfig: { showAll: true },
       defaultPickerOptions: {
@@ -163,8 +175,7 @@ export default defineComponent({
      * data
      */
     const state = reactive({
-      tableHeight: 300,
-      filters: {}
+      tableHeight: 300
     })
     /**
      * refs
@@ -177,7 +188,7 @@ export default defineComponent({
       return props.columns
         .filter((col) => col.slots)
         .flatMap((col) =>
-          ['default', 'edit', 'header', 'footer', 'title', 'checkbox', 'radio', 'content', 'filter']
+          ['default', 'header', 'footer', 'edit', 'filter', 'title', 'checkbox', 'radio', 'content']
             .map((val) => typeof val === 'string' && col.slots[val])
             .filter(Boolean)
         )
@@ -186,14 +197,10 @@ export default defineComponent({
     const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getPagerConfig = computed(() => mergeProps(defaultState.defaultPagerConfig, props.pagerConfig))
     const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
+    const getFilterConfig = computed(() => mergeProps(defaultState.defaultFilterConfig, props.filterConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
     const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
     const getTooltipConfig = computed(() => mergeProps(defaultState.defaultTooltipConfig, props.tooltipConfig))
-    const isQICon = computed(
-      () => (editRender, children) =>
-        (editRender && editRender.enabled) ||
-        (children && children.length && children[0].editRender && children[0].editRender.enabled)
-    )
     /**
      * methods
      */
@@ -218,6 +225,10 @@ export default defineComponent({
       emit('update:pagination', pagination)
       emit('page-change', { type, currentPage, pageSize, $event })
       emit('search')
+    }
+    // 单选
+    const handleRadioChange = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
+      emit('radio-change', { row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event })
     }
     // 勾选
     const handleCheckboxChange = ({
@@ -267,6 +278,31 @@ export default defineComponent({
         emit('edit-closed', { row, field, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
       }
     }
+    // 编辑校验
+    const handleValidError = ({ rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex }) => {
+      emit('valid-error', { rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
+    }
+    // 筛选
+    const handleFilterChange = ({ column, property, values, datas, filterList, $event }) => {
+      const filters = {}
+      filterList.forEach(({ column, property, values, datas }) => {
+        // TODO:
+        if (column.filterRender) {
+          const isMultiple = column.filterRender.props.multiple || column.filterRender.props.mode === 'multiple'
+          filters[property] = isMultiple ? datas[0] : datas[0].join()
+        } else {
+          filters[property] = column.filterMultiple ? values : values.join()
+        }
+      })
+      console.log({ column, property, values, datas, filterList, $event }, 111)
+      emit('filter-change', { column, property, values, datas, filterList, $event })
+      emit('search', filters)
+    }
+    // 清除所有筛选条件
+    const handleClearFilter = ({ filterList, $event }) => {
+      emit('clear-filter', { filterList, $event })
+      emit('search', {})
+    }
     // 拖拽列
     const handleResizableChange = ({ column }) => {
       if (props.storageName && xGrid) {
@@ -285,16 +321,20 @@ export default defineComponent({
       getScrollY,
       getPagerConfig,
       getEditConfig,
+      getFilterConfig,
       getRadioConfig,
       getCheckboxConfig,
       getTooltipConfig,
-      isQICon,
       xGrid,
       handlePageChange,
+      handleRadioChange,
       handleCheckboxChange,
       handleCheckboxAll,
       handleCellClick,
       handleEditClosed,
+      handleValidError,
+      handleFilterChange,
+      handleClearFilter,
       handleResizableChange
     }
   }

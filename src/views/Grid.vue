@@ -1,5 +1,5 @@
 <template>
-  <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination">
+  <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="search">
     <template #operate="{ row }">
       <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>
     </template>
@@ -40,12 +40,61 @@ export default defineComponent({
         { type: 'seq', width: 60 },
         { field: 'name', title: 'Name', editRender: { name: 'input' } },
         {
-          title: '信息',
+          title: '基础信息',
           children: [
             { field: 'nickname', title: 'Nickname', editRender: { name: 'input' } },
-            { field: 'sex', title: 'Sex', editRender: { name: 'input' } },
+            {
+              field: 'sex',
+              title: 'Sex',
+              editRender: {
+                name: 'ASelect',
+                options: [
+                  { label: 'Man', value: '1' },
+                  { label: 'Woman', value: '0' }
+                ],
+                props: {
+                  filterOption: true
+                }
+              },
+              filters: [{ data: [] }],
+              filterRender: {
+                name: 'ASelect',
+                options: [
+                  { label: 'Man', value: '1' },
+                  { label: 'Woman', value: '0' }
+                ],
+                props: {
+                  mode: 'multiple'
+                }
+              }
+            },
             { field: 'age', title: 'Age', editRender: { name: 'input' } },
-            { field: 'role', title: 'Role', editRender: { name: 'input' } }
+            {
+              field: 'role',
+              title: 'Role',
+              editRender: {
+                name: '$select',
+                options: [
+                  { label: 'Develop', value: 'Develop' },
+                  { label: 'Test', value: 'Test' },
+                  { label: 'PM', value: 'PM' },
+                  { label: 'Designer', value: 'Designer' }
+                ]
+              },
+              filters: [{ data: [] }],
+              filterRender: {
+                name: '$select',
+                options: [
+                  { label: 'Develop', value: 'Develop' },
+                  { label: 'Test', value: 'Test' },
+                  { label: 'PM', value: 'PM' },
+                  { label: 'Designer', value: 'Designer' }
+                ],
+                props: {
+                  multiple: true
+                }
+              }
+            }
           ]
         },
         { field: 'address', title: 'Address', showOverflow: true, editRender: { name: 'input' } }
@@ -59,9 +108,14 @@ export default defineComponent({
       }
     })
 
+    const search = ($event) => {
+      console.log($event, 'search')
+    }
+
     return {
       xGrid,
-      gridOptions
+      gridOptions,
+      search
     }
   }
 })
