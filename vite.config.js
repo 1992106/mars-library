@@ -14,7 +14,7 @@ export default ({ mode }) => {
       lib: {
         entry: path.resolve(__dirname, 'src/entry.js'),
         name: 'MarsLibrary',
-        formats: ['es', 'cjs', 'iife', 'umd']
+        formats: ['es', 'cjs', 'umd']
       },
       rollupOptions: {
         output: {

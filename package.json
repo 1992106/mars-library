@@ -4,7 +4,7 @@
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
-  "browser": "dist/mars-library.iife.js",
+  "browser": "dist/mars-library.umd.js",
   "files": [
     "dist/*"
   ],

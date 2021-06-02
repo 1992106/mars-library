@@ -21,14 +21,16 @@ import {
   Tooltip,
   Popover,
   Popconfirm,
-  Spin
+  Spin,
+  Pagination
 } from 'ant-design-vue'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import 'xe-utils'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 import 'vxe-table-plugin-antd/dist/style.css'
-// import MarsLibrary from '../dist/mars-library.es'
+// import MarsLibrary from 'mars-library'
+// import 'mars-library/dist/style.css'
 import MarsLibrary from '../entry'
 
 // VXETable引入antd组件
@@ -54,7 +56,8 @@ const components = [
   Tooltip,
   Popover,
   Popconfirm,
-  Spin
+  Spin,
+  Pagination
 ]
 
 export function setupPlugins(app) {

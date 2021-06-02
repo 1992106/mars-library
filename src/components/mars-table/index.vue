@@ -30,14 +30,9 @@
 </template>
 <script>
 import { defineComponent, computed, mergeProps, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRefs } from 'vue'
-import { Table, Pagination } from 'ant-design-vue'
 import { debounce } from 'lodash'
 export default defineComponent({
   name: 'MarsTable',
-  components: {
-    [Table.name]: Table,
-    [Pagination.name]: Pagination
-  },
   props: {
     // 表格行 key 的取值
     rowKey: { type: [String, Function], default: 'key' },

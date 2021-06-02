@@ -67,7 +67,6 @@ import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'MarsGrid',
-  displayName: 'MarsGrid',
   props: {
     // 自定义列
     columns: { type: Array, default: () => [] },
@@ -138,38 +137,7 @@ export default defineComponent({
       defaultFilterConfig: { remote: true, showIcon: true, filterMethod: () => true },
       defaultRadioConfig: { highlight: true, radioMethod: () => true },
       defaultCheckboxConfig: { highlight: true, checkMethod: () => true },
-      defaultTooltipConfig: { showAll: true },
-      defaultPickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }
-        ]
-      }
+      defaultTooltipConfig: { showAll: true }
     }
     /**
      * data
