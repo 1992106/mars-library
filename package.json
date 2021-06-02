@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
@@ -31,9 +31,7 @@
     "vue": "3.0.10",
     "vue-router": "^4.0.0-rc.6",
     "vuex": "^4.0.0-rc.2",
-    "vxe-table": "^4.0.18",
-    "xe-ajax": "^4.0.5",
-    "xe-utils": "^3.2.1"
+    "vxe-table": "^4.0.18"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.23.0",
