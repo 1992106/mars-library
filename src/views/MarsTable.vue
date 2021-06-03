@@ -9,7 +9,7 @@
   </mars-table>
 </template>
 <script>
-import { defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, reactive, ref, unref } from 'vue'
 import { Table, Button } from 'ant-design-vue'
 import { DownOutlined, FormOutlined } from '@ant-design/icons-vue'
 export default defineComponent({
@@ -20,10 +20,24 @@ export default defineComponent({
     FormOutlined
   },
   setup() {
+    const selectedRowKeys = ref([]) // Check here to configure the default column
+
+    const onSelectChange = (changableRowKeys) => {
+      console.log('selectedRowKeys changed: ', changableRowKeys)
+      selectedRowKeys.value = changableRowKeys
+    }
+
+    const rowSelection = computed(() => {
+      return {
+        selectedRowKeys: unref(selectedRowKeys),
+        onChange: onSelectChange
+      }
+    })
+
     const xTable = ref({})
 
     const data = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10; i++) {
       data.push({
         key: i,
         name: `Edrward ${i}`,
@@ -53,7 +67,8 @@ export default defineComponent({
       pagination: {
         page: 1,
         limit: 5
-      }
+      },
+      rowSelection
     })
 
     return {

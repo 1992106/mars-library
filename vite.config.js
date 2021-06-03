@@ -67,12 +67,9 @@ export default ({ mode }) => {
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, 'src'),
-        '@components': path.resolve(__dirname, 'src/components'),
-        '@directives': path.resolve(__dirname, 'src/directives'),
-        '@hooks': path.resolve(__dirname, 'src/hooks'),
         '@views': path.resolve(__dirname, 'src/views'),
-        '@layout': path.resolve(__dirname, 'src/layout'),
-        '@config': path.resolve(__dirname, 'src/config'),
+        '@components': path.resolve(__dirname, 'src/components'),
+        '@hooks': path.resolve(__dirname, 'src/hooks'),
         '@utils': path.resolve(__dirname, 'src/utils'),
         '@store': path.resolve(__dirname, 'src/store')
       }

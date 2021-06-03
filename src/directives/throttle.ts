@@ -1,5 +1,4 @@
-import { isFunction } from '@utils/is'
-import { throttle } from 'lodash'
+import { throttle, isFunction } from 'lodash'
 import type { App } from 'vue'
 
 /**

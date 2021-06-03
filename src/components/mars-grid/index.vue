@@ -1,5 +1,6 @@
 <template>
   <vxe-grid
+    class="mars-grid"
     ref="xGrid"
     border
     auto-resize
@@ -16,7 +17,7 @@
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
     :row-style="rowStyle"
-    :cellStyle="cellStyle"
+    :cell-style="cellStyle"
     :seq-config="seqConfig"
     :radio-config="getRadioConfig"
     :checkbox-config="getCheckboxConfig"
@@ -135,8 +136,8 @@ export default defineComponent({
       defaultPagerConfig: { enabled: true, pageSizes: [20, 30, 60, 100] },
       defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
       defaultFilterConfig: { remote: true, showIcon: true, filterMethod: () => true },
-      defaultRadioConfig: { highlight: true, radioMethod: () => true },
-      defaultCheckboxConfig: { highlight: true, checkMethod: () => true },
+      defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
+      defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultTooltipConfig: { showAll: true }
     }
     /**
@@ -196,6 +197,7 @@ export default defineComponent({
     }
     // 单选
     const handleRadioChange = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
+      // emit('update:selected-value', [row])
       emit('radio-change', { row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event })
     }
     // 勾选
@@ -308,3 +310,14 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss" scoped>
+.mars-grid {
+  ::v-deep(.vxe-cell) {
+    display: flex;
+    align-items: center;
+    .vxe-cell--title {
+      flex: 1;
+    }
+  }
+}
+</style>

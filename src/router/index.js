@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { BaseLayout } from '@layout'
+import { BaseLayout } from '@src/layout'
 
 export const routes = [
   {
@@ -22,7 +22,7 @@ export const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/system/login/index.vue'),
+    component: () => import('@views/system/login/index.vue'),
     meta: {
       hidden: true
     }
@@ -55,11 +55,11 @@ export const routes = [
     children: [
       {
         path: 'index',
-        name: 'Dashboard',
-        component: () => import('../views/Home.vue'),
+        name: 'dashboard',
+        component: () => import('@views/Home.vue'),
         meta: {
           title: '仪表盘',
-          icon: 'icon-Dashboard'
+          icon: 'icon-dashboard'
         }
       }
     ]
@@ -70,12 +70,12 @@ export const routes = [
     component: markRaw(BaseLayout),
     meta: {
       title: '列表',
-      icon: 'icon-pingtai'
+      icon: 'icon-table'
     },
     children: [
       {
-        path: 'vxe',
-        name: 'VxeTable',
+        path: 'vxeTable',
+        name: 'vxeTable',
         component: () => import('@views/VxeTable.vue'),
         meta: {
           title: 'VxeTable'
@@ -83,15 +83,23 @@ export const routes = [
       },
       {
         path: 'marsGrid',
-        name: 'MarsGrid',
+        name: 'marsGrid',
         component: () => import('@views/MarsGrid.vue'),
         meta: {
           title: 'MarsGrid'
         }
       },
       {
+        path: 'antTable',
+        name: 'antTable',
+        component: () => import('@views/AntTable.vue'),
+        meta: {
+          title: 'AntTable'
+        }
+      },
+      {
         path: 'marsTable',
-        name: 'MarsTable',
+        name: 'marsTable',
         component: () => import('@views/MarsTable.vue'),
         meta: {
           title: 'MarsTable'

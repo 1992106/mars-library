@@ -1,5 +1,4 @@
-import { isFunction } from '@utils/is'
-import { debounce } from 'lodash'
+import { debounce, isFunction } from 'lodash'
 import type { App } from 'vue'
 
 /**

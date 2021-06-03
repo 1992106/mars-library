@@ -35,8 +35,8 @@ export default defineComponent({
         pageSizes: [5, 10, 15, 20, 50]
       },
       columns: [
+        { type: 'checkbox', title: '全选', width: 50 },
         { title: '操作', width: 100, slots: { default: 'operate' } },
-        { type: 'checkbox', width: 50 },
         { type: 'seq', width: 60 },
         { field: 'name', title: 'Name', editRender: { name: 'input' } },
         {

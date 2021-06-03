@@ -12,12 +12,12 @@
     </Space>
     <p>
       <Space>
-        <Button @click="go({ name: 'About' })">关于我们</Button>
-        <Button @click="go({ name: 'testHome', query: { d: 1 }, params: { username: 'eduardo' } })">测试首页</Button>
-        <Button @click="go({ name: 'testHome', query: { d: 2 }, params: { username: 'eduardo2' } })">测试首页2</Button>
-        <Button @click="go({ path: '/test/list/list1', params: { c: 1 } })">列表1</Button>
-        <Button @click="go({ path: '/test/list/list2', query: { b: 1 } })">列表2</Button>
-        <Button @click="go('/test/list/level3/level4?a=1')">列表</Button>
+        <Button @click="go({ name: 'home' })">首页</Button>
+        <Button @click="go({ name: 'marsGrid' })">MarsGrid</Button>
+        <Button @click="go({ path: '/list/vxeTable' })">VxeTable</Button>
+        <Button @click="go({ name: 'marsTable' })">MarsTable</Button>
+        <Button @click="go({ path: '/list/antTable' })">AntTable</Button>
+        <Button @click="go('/list/antTable?a=1')">列表</Button>
       </Space>
     </p>
   </div>

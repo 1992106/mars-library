@@ -1,5 +1,6 @@
 import { defineComponent, unref, computed } from 'vue'
 import { createFromIconfontCN } from '@ant-design/icons-vue'
+import setting from '@src/config'
 
 const IconFont = defineComponent({
   name: 'icon-font',
@@ -7,7 +8,7 @@ const IconFont = defineComponent({
     type: { type: String, default: '' },
     color: { type: String, default: 'unset' },
     size: { type: [Number, String], default: 14 },
-    scriptUrl: { type: String, default: '//at.alicdn.com/t/font_2581533_smsjesn6qim.js' }
+    scriptUrl: { type: String, default: setting.iconfont_url }
   },
   setup(props, { attrs }) {
     const MyIconFont = createFromIconfontCN({

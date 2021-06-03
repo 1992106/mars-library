@@ -1,5 +1,5 @@
 <template>
-  <div class="mars-table">
+  <div class="mars-table" :style="{ height: `${tableHeight}px` }">
     <a-table
       ref="xTable"
       border
@@ -9,6 +9,8 @@
       :loading="loading"
       :pagination="false"
       :scroll="scroll"
+      :size="size"
+      :locale="locale"
       :row-selection="getRowSelection"
       :rowClassName="handleRowClassName"
     >
@@ -51,6 +53,19 @@ export default defineComponent({
     rowSelection: Object,
     // 行的类名
     rowClassName: Function,
+    // 指定树形结构的列名
+    childrenColumnName: { type: Array, default: () => ['children'] },
+    // 展示树形数据时，每层缩进的宽度，以 px 为单位
+    indentSize: { type: Number, default: 15 },
+    // 表格大小 default | middle | small
+    size: {
+      validator(value) {
+        return ['default', 'middle', 'small'].includes(value)
+      },
+      default: 'default'
+    },
+    // 默认文案设置，目前包括排序、过滤、空数据文案
+    locale: Object,
     // 表格除外的高度
     offsetHeight: { type: Number, default: 240 }
   },
@@ -62,13 +77,18 @@ export default defineComponent({
     const defaultState = {
       defaultColumn: { ellipsis: true },
       defaultPaginationConfig: { disabled: false, pageSizeOptions: ['20', '30', '60', '100'] },
-      defaultRowSelection: { selections: true }
+      defaultRowSelection: {
+        type: 'checkbox',
+        selectedRowKeys: [],
+        hideDefaultSelections: false,
+        selections: true
+      }
     }
     /**
      * data
      */
     const state = reactive({
-      scroll: {},
+      tableHeight: 300,
       filters: {}
     })
     /**
@@ -88,10 +108,9 @@ export default defineComponent({
     // 监听视窗大小改变
     const onResize = () => {
       const clientHeight = document.body.clientHeight - props.offsetHeight
-      state.scroll.y = clientHeight < 300 ? 300 : clientHeight
+      state.tableHeight = clientHeight < 300 ? 300 : clientHeight
     }
     onMounted(() => {
-      state.scroll = props.scroll
       nextTick(onResize)
       window.addEventListener('resize', debounce(onResize, 200))
     })
@@ -143,6 +162,9 @@ export default defineComponent({
   .ant-pagination {
     padding: 10px;
     text-align: right;
+  }
+  ::v-deep(.table-striped) {
+    background-color: #fafafa;
   }
 }
 </style>

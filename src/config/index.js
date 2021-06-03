@@ -35,7 +35,10 @@ const setting = {
   keep_alive: true,
 
   // 顶部进度条
-  header_progress: true
+  header_progress: true,
+
+  // iconfont字体URL
+  iconfont_url: '//at.alicdn.com/t/font_2581533_w2u4t9w2vmt.js'
 }
 
 export default setting
