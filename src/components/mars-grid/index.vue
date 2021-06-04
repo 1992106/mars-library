@@ -28,7 +28,7 @@
     :edit-config="editConfig"
     :edit-rules="editRules"
     :filter-config="filterConfig"
-    :tree-config="treeConfig"
+    :tree-config="getTreeConfig"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
@@ -99,7 +99,7 @@ export default defineComponent({
     radioConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
     // 复选框配置项
     checkboxConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
-    // 合并单元格
+    // 合并单元格 (不能用于展开行，不建议用于固定列、树形结构)
     mergeCells: Array,
     // 编辑配置
     editConfig: { type: Object, default: () => ({ trigger: 'click', mode: 'cell', showStatus: true }) },
@@ -178,6 +178,7 @@ export default defineComponent({
         )
     })
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
+    const getTreeConfig = computed(() => (props.stripe ? null : props.treeConfig))
     /**
      * methods
      */
@@ -306,6 +307,7 @@ export default defineComponent({
       defaultPickerOptions: defaultState.defaultPickerOptions,
       getSlots,
       getPaginationConfig,
+      getTreeConfig,
       xGrid,
       handlePageChange,
       handleShowSizeChange,

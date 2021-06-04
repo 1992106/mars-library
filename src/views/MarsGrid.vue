@@ -1,4 +1,5 @@
 <template>
+  <mars-search v-bind="searchOptions"></mars-search>
   <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="search">
     <template #operate="{ row }">
       <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>
@@ -27,7 +28,7 @@ export default defineComponent({
     }
     const gridOptions = reactive({
       columns: [
-        { type: 'checkbox', title: '全选', width: 50 },
+        { type: 'checkbox', title: '全选', width: 80 },
         { title: '操作', width: 100, slots: { default: 'operate' } },
         { type: 'seq', width: 60 },
         { field: 'name', title: 'Name', editRender: { name: 'input' } },
@@ -100,6 +101,12 @@ export default defineComponent({
       }
     })
 
+    const searchOptions = reactive({
+      columns: [
+        { type: 'input', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
+        { type: 'select', title: '下拉框', field: 'sex', rules: [], options: [], placeholder: '请选择' }
+      ]
+    })
     const search = ($event) => {
       console.log($event, 'search')
     }
@@ -107,6 +114,7 @@ export default defineComponent({
     return {
       xGrid,
       gridOptions,
+      searchOptions,
       search
     }
   }
