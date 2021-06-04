@@ -14,6 +14,7 @@
       :locale="locale"
       :row-selection="getRowSelection"
       :rowClassName="handleRowClassName"
+      @change="handleChange"
     >
       <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
         <slot :name="slot" v-bind="scope"></slot>
@@ -38,7 +39,7 @@ export default defineComponent({
   inheritAttrs: false,
   props: {
     // 表格行 key 的取值
-    rowKey: { type: [String, Function], default: 'key' },
+    rowKey: { type: [String, Function], default: 'id' },
     // 自定义列
     columns: { type: Array, default: () => [] },
     // 表格数据
@@ -69,9 +70,9 @@ export default defineComponent({
     // 默认文案设置，目前包括排序、过滤、空数据文案
     locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) },
     // 表格除外的高度
-    offsetHeight: { type: Number, default: 240 }
+    offsetHeight: { type: Number, default: 220 }
   },
-  emits: ['search', 'update:pagination', 'update:selected-value'],
+  emits: ['search', 'update:pagination', 'change'],
   setup(props, { emit }) {
     /**
      * 默认值
@@ -88,15 +89,14 @@ export default defineComponent({
       defaultRowSelection: {
         type: 'checkbox',
         hideDefaultSelections: false,
-        selections: true
+        selections: false
       }
     }
     /**
      * data
      */
     const state = reactive({
-      scroll: { y: 300 },
-      filters: {}
+      scroll: { y: 300 }
     })
     /**
      * refs
@@ -106,7 +106,15 @@ export default defineComponent({
      * computed
      */
     const getColumns = computed(() => props.columns.map((column) => mergeProps(defaultState.defaultColumn, column)))
-    const getSlots = computed(() => props.columns.filter((val) => val.slots).map((val) => val.slots.customRender))
+    const getSlots = computed(() =>
+      props.columns
+        .filter((val) => val.slots)
+        .flatMap((col) =>
+          ['customRender', 'filterDropdown', 'filterIcon']
+            .map((val) => typeof val === 'string' && col.slots[val])
+            .filter(Boolean)
+        )
+    )
     const getScroll = computed(() => mergeProps(state.scroll, props.scroll))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     const getRowSelection = computed(() => mergeProps(defaultState.defaultRowSelection, props.rowSelection))
@@ -129,6 +137,11 @@ export default defineComponent({
     const handleRowClassName = (record, index) => {
       const result = props.rowClassName ? props.rowClassName(record, index) : null
       return [index % 2 === 1 ? 'table-striped' : null, result].filter(Boolean)
+    }
+    // 排序、筛选变化时触发
+    const handleChange = (_, filters, sorter, { currentDataSource }) => {
+      // TODO:
+      emit('change', filters, sorter, { currentDataSource })
     }
     // 页码
     const handlePageChange = (current, pageSize) => {
@@ -156,6 +169,7 @@ export default defineComponent({
       getRowSelection,
       xTable,
       handleRowClassName,
+      handleChange,
       handlePageChange,
       handleShowSizeChange
     }

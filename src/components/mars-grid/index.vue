@@ -14,6 +14,8 @@
     :loading="loading"
     :scroll-x="getScrollX"
     :scroll-y="getScrollY"
+    :column-key="columnKey"
+    :row-key="rowKey"
     :height="tableHeight"
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
@@ -107,6 +109,10 @@ export default defineComponent({
     scrollX: Object,
     // 纵向虚拟滚动配置
     scrollY: Object,
+    // 是否需要为每一列的 VNode 设置 key 属性
+    columnKey: { type: Boolean, default: false },
+    // 是否需要为每一行的 VNode 设置 key 属性
+    rowKey: { type: Boolean, default: false },
     // tooltip 配置项
     tooltipConfig: Object,
     // 给行附加 className
@@ -118,7 +124,7 @@ export default defineComponent({
     // 给行附加样式
     rowStyle: [Object, Function],
     // 表格除外的高度
-    offsetHeight: { type: Number, default: 268 },
+    offsetHeight: { type: Number, default: 112 },
     // 本地Storage名称（拖拽列时需要本地储存）
     storageName: String
   },
@@ -221,7 +227,7 @@ export default defineComponent({
     }
     // 单选
     const handleRadioChange = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
-      // emit('update:selected-value', [row])
+      emit('update:selected-value', [row])
       emit('radio-change', { row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event })
     }
     // 勾选
@@ -288,7 +294,6 @@ export default defineComponent({
           filters[property] = column.filterMultiple ? values : values.join()
         }
       })
-      console.log({ column, property, values, datas, filterList, $event }, 111)
       emit('filter-change', { column, property, values, datas, filterList, $event })
       emit('search', filters)
     }
