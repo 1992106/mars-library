@@ -12,7 +12,7 @@
       :scroll="getScroll"
       :size="size"
       :locale="locale"
-      :row-selection="getRowSelection"
+      :row-selection="rowSelection"
       :rowClassName="handleRowClassName"
       @change="handleChange"
     >
@@ -53,7 +53,14 @@ export default defineComponent({
     // 横向/纵向滚动
     scroll: { type: Object, default: () => ({ scrollToFirstRowOnChange: true }) },
     // 选择功能的配置
-    rowSelection: Object,
+    rowSelection: {
+      type: Object,
+      default: () => ({
+        type: 'checkbox',
+        hideDefaultSelections: false,
+        selections: false
+      })
+    },
     // 行的类名
     rowClassName: Function,
     // 指定树形结构的列名
@@ -85,11 +92,6 @@ export default defineComponent({
         showQuickJumper: true,
         showTotal: (total) => `共 ${total} 条`,
         pageSizeOptions: ['20', '30', '60', '100']
-      },
-      defaultRowSelection: {
-        type: 'checkbox',
-        hideDefaultSelections: false,
-        selections: false
       }
     }
     /**
@@ -117,7 +119,6 @@ export default defineComponent({
     )
     const getScroll = computed(() => mergeProps(state.scroll, props.scroll))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
-    const getRowSelection = computed(() => mergeProps(defaultState.defaultRowSelection, props.rowSelection))
     /**
      * methods
      */
@@ -166,7 +167,6 @@ export default defineComponent({
       getColumns,
       getSlots,
       getPaginationConfig,
-      getRowSelection,
       xTable,
       handleRowClassName,
       handleChange,

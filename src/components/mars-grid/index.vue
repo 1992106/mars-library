@@ -8,27 +8,26 @@
     keep-source
     resizable
     v-bind="$attrs"
-    :stripe="getStripe"
+    :stripe="stripe"
     :columns="columns"
     :data="data"
     :loading="loading"
-    :scroll-x="getScrollX"
-    :scroll-y="getScrollY"
-    :column-key="columnKey"
-    :row-key="rowKey"
+    :scroll-x="scrollX"
+    :scroll-y="scrollY"
+    :row-id="rowId"
     :height="tableHeight"
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
     :row-style="rowStyle"
     :cell-style="cellStyle"
     :seq-config="seqConfig"
-    :radio-config="getRadioConfig"
-    :checkbox-config="getCheckboxConfig"
-    :tooltip-config="getTooltipConfig"
+    :radio-config="radioConfig"
+    :checkbox-config="checkboxConfig"
+    :tooltip-config="tooltipConfig"
     :merge-cells="mergeCells"
-    :edit-config="getEditConfig"
+    :edit-config="editConfig"
     :edit-rules="editRules"
-    :filter-config="getFilterConfig"
+    :filter-config="filterConfig"
     :tree-config="treeConfig"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
@@ -72,12 +71,14 @@ import {
   unref,
   mergeProps
 } from 'vue'
-import { debounce, isEmpty } from 'lodash'
+import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'MarsGrid',
   inheritAttrs: false,
   props: {
+    // 自定义行数据唯一主键的字段名
+    rowId: { type: String, default: 'id' },
     // 自定义列
     columns: { type: Array, default: () => [] },
     // 表格数据
@@ -88,33 +89,31 @@ export default defineComponent({
     showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
     paginationConfig: Object,
+    // 斑马纹
+    stripe: { type: Boolean, default: true },
     // 序号配置项
     seqConfig: Object,
     // 勾选项
     selectedValue: { type: Array, default: () => [] },
     // 单选框配置项
-    radioConfig: Object,
+    radioConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
     // 复选框配置项
-    checkboxConfig: Object,
+    checkboxConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
     // 合并单元格
-    mergeCells: { type: Array, default: () => [] },
+    mergeCells: Array,
     // 编辑配置
-    editConfig: Object,
+    editConfig: { type: Object, default: () => ({ trigger: 'click', mode: 'cell', showStatus: true }) },
     editRules: { type: Object, default: () => ({}) },
     // 筛选配置
-    filterConfig: Object,
-    // 树形结构配置项（不支持虚拟滚动）
-    treeConfig: Object,
-    // 横向虚拟滚动配置
-    scrollX: Object,
-    // 纵向虚拟滚动配置
-    scrollY: Object,
-    // 是否需要为每一列的 VNode 设置 key 属性
-    columnKey: { type: Boolean, default: false },
-    // 是否需要为每一行的 VNode 设置 key 属性
-    rowKey: { type: Boolean, default: false },
+    filterConfig: { type: Object, default: () => ({ remote: true, filterMethod: () => true }) },
     // tooltip 配置项
-    tooltipConfig: Object,
+    tooltipConfig: { type: Object, default: () => ({ showAll: true }) },
+    // 树形结构配置项（不支持虚拟滚动）
+    treeConfig: { type: Object, default: () => ({ children: 'children' }) },
+    // 横向虚拟滚动配置
+    scrollX: { type: Object, default: () => ({ enabled: false }) },
+    // 纵向虚拟滚动配置
+    scrollY: { type: Object, default: () => ({ enabled: false }) },
     // 给行附加 className
     rowClassName: [String, Function],
     // 给单元格附加 className
@@ -140,27 +139,21 @@ export default defineComponent({
     'edit-closed',
     'valid-error',
     'filter-change',
-    'clear-filter'
+    'clear-filter',
+    'toggle-tree-expand'
   ],
   setup(props, { emit }) {
     /**
      * 默认值
      */
     const defaultState = {
-      defaultScrollX: { enabled: false },
-      defaultScrollY: { enabled: false },
       defaultPaginationConfig: {
         defaultPageSize: 20,
         showSizeChanger: true,
         showQuickJumper: true,
         showTotal: (total) => `共 ${total} 条`,
         pageSizeOptions: ['20', '30', '60', '100']
-      },
-      defaultEditConfig: { trigger: 'click', mode: 'cell', showIcon: true, showStatus: true },
-      defaultFilterConfig: { remote: true, showIcon: true, filterMethod: () => true },
-      defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
-      defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
-      defaultTooltipConfig: { showAll: true }
+      }
     }
     /**
      * data
@@ -184,15 +177,7 @@ export default defineComponent({
             .filter(Boolean)
         )
     })
-    const getStripe = computed(() => isEmpty(props.treeConfig))
-    const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
-    const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
-    const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
-    const getFilterConfig = computed(() => mergeProps(defaultState.defaultFilterConfig, props.filterConfig))
-    const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
-    const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
-    const getTooltipConfig = computed(() => mergeProps(defaultState.defaultTooltipConfig, props.tooltipConfig))
     /**
      * methods
      */
@@ -320,15 +305,7 @@ export default defineComponent({
       ...toRefs(state),
       defaultPickerOptions: defaultState.defaultPickerOptions,
       getSlots,
-      getStripe,
-      getScrollX,
-      getScrollY,
       getPaginationConfig,
-      getEditConfig,
-      getFilterConfig,
-      getRadioConfig,
-      getCheckboxConfig,
-      getTooltipConfig,
       xGrid,
       handlePageChange,
       handleShowSizeChange,
