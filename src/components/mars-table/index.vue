@@ -1,14 +1,15 @@
 <template>
-  <div class="mars-table" :style="{ height: `${tableHeight}px` }">
+  <div class="mars-table">
     <a-table
       ref="xTable"
       border
+      v-bind="$attrs"
       :rowKey="rowKey"
       :columns="getColumns"
       :data-source="dataSource"
       :loading="loading"
       :pagination="false"
-      :scroll="scroll"
+      :scroll="getScroll"
       :size="size"
       :locale="locale"
       :row-selection="getRowSelection"
@@ -20,7 +21,6 @@
     </a-table>
     <a-pagination
       v-if="showPagination"
-      show-size-changer
       v-bind="getPaginationConfig"
       :current="pagination.page"
       :pageSize="pagination.limit"
@@ -35,6 +35,7 @@ import { defineComponent, computed, mergeProps, nextTick, onBeforeUnmount, onMou
 import { debounce } from 'lodash'
 export default defineComponent({
   name: 'MarsTable',
+  inheritAttrs: false,
   props: {
     // 表格行 key 的取值
     rowKey: { type: [String, Function], default: 'key' },
@@ -45,10 +46,11 @@ export default defineComponent({
     loading: { type: [Boolean, Object], default: false },
     total: { type: Number, default: 0 },
     // 页码
+    showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
     paginationConfig: Object,
     // 横向/纵向滚动
-    scroll: { type: Object, default: () => ({ x: null, y: null, scrollToFirstRowOnChange: false }) },
+    scroll: { type: Object, default: () => ({ scrollToFirstRowOnChange: true }) },
     // 选择功能的配置
     rowSelection: Object,
     // 行的类名
@@ -65,7 +67,7 @@ export default defineComponent({
       default: 'default'
     },
     // 默认文案设置，目前包括排序、过滤、空数据文案
-    locale: Object,
+    locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) },
     // 表格除外的高度
     offsetHeight: { type: Number, default: 240 }
   },
@@ -76,10 +78,15 @@ export default defineComponent({
      */
     const defaultState = {
       defaultColumn: { ellipsis: true },
-      defaultPaginationConfig: { disabled: false, pageSizeOptions: ['20', '30', '60', '100'] },
+      defaultPaginationConfig: {
+        defaultPageSize: 20,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showTotal: (total) => `共 ${total} 条`,
+        pageSizeOptions: ['20', '30', '60', '100']
+      },
       defaultRowSelection: {
         type: 'checkbox',
-        selectedRowKeys: [],
         hideDefaultSelections: false,
         selections: true
       }
@@ -88,7 +95,7 @@ export default defineComponent({
      * data
      */
     const state = reactive({
-      tableHeight: 300,
+      scroll: { y: 300 },
       filters: {}
     })
     /**
@@ -100,6 +107,7 @@ export default defineComponent({
      */
     const getColumns = computed(() => props.columns.map((column) => mergeProps(defaultState.defaultColumn, column)))
     const getSlots = computed(() => props.columns.filter((val) => val.slots).map((val) => val.slots.customRender))
+    const getScroll = computed(() => mergeProps(state.scroll, props.scroll))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     const getRowSelection = computed(() => mergeProps(defaultState.defaultRowSelection, props.rowSelection))
     /**
@@ -108,7 +116,7 @@ export default defineComponent({
     // 监听视窗大小改变
     const onResize = () => {
       const clientHeight = document.body.clientHeight - props.offsetHeight
-      state.tableHeight = clientHeight < 300 ? 300 : clientHeight
+      state.scroll.y = clientHeight < 300 ? 300 : clientHeight
     }
     onMounted(() => {
       nextTick(onResize)
@@ -141,9 +149,9 @@ export default defineComponent({
     }
     return {
       ...toRefs(state),
+      getScroll,
       getColumns,
       getSlots,
-      showPagination: !getPaginationConfig.value.disabled,
       getPaginationConfig,
       getRowSelection,
       xTable,

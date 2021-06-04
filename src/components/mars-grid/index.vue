@@ -7,7 +7,8 @@
     show-overflow
     keep-source
     resizable
-    stripe
+    v-bind="$attrs"
+    :stripe="getStripe"
     :columns="columns"
     :data="data"
     :loading="loading"
@@ -26,27 +27,32 @@
     :edit-config="getEditConfig"
     :edit-rules="editRules"
     :filter-config="getFilterConfig"
+    :tree-config="treeConfig"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
     @clear-filter="handleClearFilter"
+    @toggle-tree-expand="handleToggleTreeExpand"
     @radio-change="handleRadioChange"
     @checkbox-change="handleCheckboxChange"
     @checkbox-all="handleCheckboxAll"
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange"
   >
+    <!--slot-->
     <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
       <slot :name="slot" v-bind="scope"></slot>
     </template>
     <!--分页-->
     <template #pager>
-      <vxe-pager
-        v-bind="getPagerConfig"
-        :current-page="pagination.page"
-        :page-size="pagination.limit"
+      <a-pagination
+        v-if="showPagination"
+        v-bind="getPaginationConfig"
+        :current="pagination.page"
+        :pageSize="pagination.limit"
         :total="total"
-        @page-change="handlePageChange"
+        @change="handlePageChange"
+        @showSizeChange="handleShowSizeChange"
       />
     </template>
   </vxe-grid>
@@ -64,10 +70,11 @@ import {
   unref,
   mergeProps
 } from 'vue'
-import { debounce } from 'lodash'
+import { debounce, isEmpty } from 'lodash'
 
 export default defineComponent({
   name: 'MarsGrid',
+  inheritAttrs: false,
   props: {
     // 自定义列
     columns: { type: Array, default: () => [] },
@@ -76,8 +83,9 @@ export default defineComponent({
     loading: { type: Boolean, default: false },
     total: { type: Number, default: 0 },
     // 页码
+    showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
-    pagerConfig: Object,
+    paginationConfig: Object,
     // 序号配置项
     seqConfig: Object,
     // 勾选项
@@ -93,6 +101,8 @@ export default defineComponent({
     editRules: { type: Object, default: () => ({}) },
     // 筛选配置
     filterConfig: Object,
+    // 树形结构配置项（不支持虚拟滚动）
+    treeConfig: Object,
     // 横向虚拟滚动配置
     scrollX: Object,
     // 纵向虚拟滚动配置
@@ -133,8 +143,14 @@ export default defineComponent({
     const defaultState = {
       defaultScrollX: { enabled: false },
       defaultScrollY: { enabled: false },
-      defaultPagerConfig: { enabled: true, pageSizes: [20, 30, 60, 100] },
-      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
+      defaultPaginationConfig: {
+        defaultPageSize: 20,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showTotal: (total) => `共 ${total} 条`,
+        pageSizeOptions: ['20', '30', '60', '100']
+      },
+      defaultEditConfig: { trigger: 'click', mode: 'cell', showIcon: true, showStatus: true },
       defaultFilterConfig: { remote: true, showIcon: true, filterMethod: () => true },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
@@ -162,9 +178,10 @@ export default defineComponent({
             .filter(Boolean)
         )
     })
+    const getStripe = computed(() => isEmpty(props.treeConfig))
     const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
     const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
-    const getPagerConfig = computed(() => mergeProps(defaultState.defaultPagerConfig, props.pagerConfig))
+    const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
     const getFilterConfig = computed(() => mergeProps(defaultState.defaultFilterConfig, props.filterConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
@@ -186,13 +203,20 @@ export default defineComponent({
       window.removeEventListener('resize', onResize)
     })
     // 页码
-    const handlePageChange = ({ type, currentPage, pageSize, $event }) => {
+    const handlePageChange = (current, pageSize) => {
       const pagination = {
-        page: type === 'size' ? 1 : currentPage,
+        page: current,
         limit: pageSize
       }
       emit('update:pagination', pagination)
-      emit('page-change', { type, currentPage, pageSize, $event })
+      emit('search')
+    }
+    const handleShowSizeChange = (_, pageSize) => {
+      const pagination = {
+        page: 1,
+        limit: pageSize
+      }
+      emit('update:pagination', pagination)
       emit('search')
     }
     // 单选
@@ -273,6 +297,10 @@ export default defineComponent({
       emit('clear-filter', { filterList, $event })
       emit('search', {})
     }
+    // 当树节点展开或收起时会触发该事件
+    const handleToggleTreeExpand = ({ expanded, row, column, columnIndex, $columnIndex, $event }) => {
+      emit('toggle-tree-expand', { expanded, row, column, columnIndex, $columnIndex, $event })
+    }
     // 拖拽列
     const handleResizableChange = ({ column }) => {
       if (props.storageName && xGrid) {
@@ -287,9 +315,10 @@ export default defineComponent({
       ...toRefs(state),
       defaultPickerOptions: defaultState.defaultPickerOptions,
       getSlots,
+      getStripe,
       getScrollX,
       getScrollY,
-      getPagerConfig,
+      getPaginationConfig,
       getEditConfig,
       getFilterConfig,
       getRadioConfig,
@@ -297,6 +326,7 @@ export default defineComponent({
       getTooltipConfig,
       xGrid,
       handlePageChange,
+      handleShowSizeChange,
       handleRadioChange,
       handleCheckboxChange,
       handleCheckboxAll,
@@ -305,6 +335,7 @@ export default defineComponent({
       handleValidError,
       handleFilterChange,
       handleClearFilter,
+      handleToggleTreeExpand,
       handleResizableChange
     }
   }
@@ -318,6 +349,11 @@ export default defineComponent({
     .vxe-cell--title {
       flex: 1;
     }
+  }
+  .ant-pagination {
+    padding: 10px;
+    text-align: right;
+    background-color: #fff;
   }
 }
 </style>

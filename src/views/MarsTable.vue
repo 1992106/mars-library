@@ -37,7 +37,7 @@ export default defineComponent({
     const xTable = ref({})
 
     const data = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 40; i++) {
       data.push({
         key: i,
         name: `Edrward ${i}`,
@@ -66,7 +66,7 @@ export default defineComponent({
       total: data.length,
       pagination: {
         page: 1,
-        limit: 5
+        limit: 20
       },
       rowSelection
     })

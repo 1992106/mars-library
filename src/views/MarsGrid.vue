@@ -26,14 +26,6 @@ export default defineComponent({
       })
     }
     const gridOptions = reactive({
-      editConfig: {
-        trigger: 'click',
-        mode: 'row',
-        showStatus: true
-      },
-      pagerConfig: {
-        pageSizes: [5, 10, 15, 20, 50]
-      },
       columns: [
         { type: 'checkbox', title: '全选', width: 50 },
         { title: '操作', width: 100, slots: { default: 'operate' } },
@@ -104,7 +96,7 @@ export default defineComponent({
       total: data.length,
       pagination: {
         page: 1,
-        limit: 5
+        limit: 20
       }
     })
 
