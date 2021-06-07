@@ -1,5 +1,9 @@
 <template>
-  <mars-search v-bind="searchOptions"></mars-search>
+  <mars-search v-bind="searchOptions">
+    <template #extra>
+      <mars-export></mars-export>
+    </template>
+  </mars-search>
   <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="search">
     <template #operate="{ row }">
       <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>

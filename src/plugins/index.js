@@ -23,7 +23,8 @@ import {
   Popover,
   Popconfirm,
   Spin,
-  Pagination
+  Pagination,
+  Drawer
 } from 'ant-design-vue'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
@@ -57,7 +58,8 @@ const components = [
   Popover,
   Popconfirm,
   Spin,
-  Pagination
+  Pagination,
+  Drawer
 ]
 
 export function setupPlugins(app) {
