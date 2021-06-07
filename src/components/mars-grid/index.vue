@@ -268,16 +268,21 @@ export default defineComponent({
     const handleValidError = ({ rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex }) => {
       emit('valid-error', { rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
     }
+    // const hasMultiple = (column) => {
+    //   return (
+    //     (column?.filterRender?.name === 'ASelect' && ['multiple'].includes(column.filterRender?.props?.mode)) ||
+    //     (column?.filterRender?.name === '$select' && column.filterRender?.props?.multiple)
+    //   )
+    // }
     // 筛选
     const handleFilterChange = ({ column, property, values, datas, filterList, $event }) => {
       const filters = {}
       filterList.forEach(({ column, property, values, datas }) => {
         // TODO:
-        if (column.filterRender) {
-          const isMultiple = column.filterRender.props.multiple || column.filterRender.props.mode === 'multiple'
-          filters[property] = isMultiple ? datas[0] : datas[0].join()
+        if (column?.filterRender) {
+          filters[property] = datas[0]
         } else {
-          filters[property] = column.filterMultiple ? values : values.join()
+          filters[property] = column?.filterMultiple ? values : values.join()
         }
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })

@@ -9,6 +9,7 @@ import {
   Input,
   InputNumber,
   Select,
+  TreeSelect,
   Cascader,
   Checkbox,
   Radio,
@@ -34,6 +35,7 @@ import MarsLibrary from '../entry'
 VXETable.use(VXETablePluginAntd)
 
 const components = [
+  Modal,
   Table,
   Tabs,
   Button,
@@ -41,6 +43,7 @@ const components = [
   Input,
   InputNumber,
   Select,
+  TreeSelect,
   Cascader,
   Checkbox,
   Radio,

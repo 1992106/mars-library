@@ -104,7 +104,20 @@ export default defineComponent({
     const searchOptions = reactive({
       columns: [
         { type: 'input', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
-        { type: 'select', title: '下拉框', field: 'sex', rules: [], options: [], placeholder: '请选择' }
+        {
+          type: 'select',
+          title: '下拉框',
+          field: 'sex',
+          rules: [],
+          options: [
+            { value: '1', label: '男' },
+            { value: '2', label: '女' }
+          ],
+          placeholder: '请选择',
+          props: {
+            mode: 'multiple'
+          }
+        }
       ]
     })
     const search = ($event) => {
