@@ -97,6 +97,7 @@ export default defineComponent({
   padding-top: 6px;
   ::v-deep(.ant-tabs-bar) {
     padding-left: 16px;
+    margin-bottom: 0;
     .anticon {
       margin: 0 0 0 8px;
       color: rgba(0, 0, 0, 0.45);

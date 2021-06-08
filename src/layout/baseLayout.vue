@@ -55,6 +55,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/global';
 .layout {
   display: flex;
   overflow: hidden;
@@ -72,6 +73,7 @@ export default defineComponent({
 
   .layout-content {
     height: 100%;
+    background-color: $bg-color;
   }
 }
 </style>

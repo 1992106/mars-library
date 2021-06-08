@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
@@ -27,6 +27,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.1.6",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "vue": "3.0.10",
     "vue-router": "^4.0.0-rc.6",

@@ -1,12 +1,21 @@
 <template>
-  <mars-table ref="xTable" v-bind="tableOptions" v-model:pagination="tableOptions.pagination">
-    <template #operate="{ record }">
-      <a-button type="primary" shape="circle">
-        <template #icon><FormOutlined /></template>
-      </a-button>
-    </template>
-    <template #name="{ text, record }">{{ text }}-{{ record }}</template>
-  </mars-table>
+  <div class="page-content">
+    <mars-table ref="xTable" v-bind="tableOptions" v-model:pagination="tableOptions.pagination" @search="handleSearch">
+      <template #searchBar>
+        <mars-search v-bind="searchOptions" @search="handleSearch">
+          <template #extra>
+            <mars-export v-bind="searchOptions" @export="handleExport"></mars-export>
+          </template>
+        </mars-search>
+      </template>
+      <template #operate="{ record }">
+        <a-button type="primary" shape="circle">
+          <template #icon><FormOutlined /></template>
+        </a-button>
+      </template>
+      <template #name="{ text, record }">{{ text }}-{{ record }}</template>
+    </mars-table>
+  </div>
 </template>
 <script>
 import { computed, defineComponent, reactive, ref, unref } from 'vue'
@@ -71,9 +80,127 @@ export default defineComponent({
       rowSelection
     })
 
+    const searchOptions = reactive({
+      columns: [
+        { type: 'input', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
+        {
+          type: 'select',
+          title: '下拉框',
+          field: 'sex',
+          rules: [],
+          options: [
+            { value: '1', label: '男' },
+            { value: '2', label: '女' }
+          ],
+          placeholder: '请选择',
+          props: {
+            mode: 'multiple'
+          }
+        },
+        { type: 'datePicker', title: '日期框', field: 'time', rules: [], placeholder: ['开始日期', '结束日期'] },
+        { type: 'checkbox', title: '多选勾选框', field: 'check', rules: [], options: ['Apple', 'Orange'] },
+        {
+          type: 'cascader',
+          title: '级联框',
+          field: 'city',
+          rules: [],
+          options: [
+            {
+              value: 'zhejiang',
+              label: 'Zhejiang',
+              children: [
+                {
+                  value: 'hangzhou',
+                  label: 'Hangzhou',
+                  children: [
+                    {
+                      value: 'xihu',
+                      label: 'West Lake'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              value: 'jiangsu',
+              label: 'Jiangsu',
+              children: [
+                {
+                  value: 'nanjing',
+                  label: 'Nanjing',
+                  children: [
+                    {
+                      value: 'zhonghuamen',
+                      label: 'Zhong Hua Men'
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          placeholder: '请选择'
+        },
+        {
+          type: 'treeSelect',
+          title: '树选择框',
+          field: 'node',
+          rules: [],
+          options: [
+            {
+              title: 'Node1',
+              value: '0-0',
+              key: '0-0',
+              children: [
+                {
+                  title: 'Child Node1',
+                  value: '0-0-0',
+                  key: '0-0-0'
+                }
+              ]
+            },
+            {
+              title: 'Node2',
+              value: '0-1',
+              key: '0-1',
+              children: [
+                {
+                  title: 'Child Node3',
+                  value: '0-1-0',
+                  key: '0-1-0',
+                  disabled: true
+                },
+                {
+                  title: 'Child Node4',
+                  value: '0-1-1',
+                  key: '0-1-1'
+                },
+                {
+                  title: 'Child Node5',
+                  value: '0-1-2',
+                  key: '0-1-2'
+                }
+              ]
+            }
+          ],
+          placeholder: '请选择'
+        }
+      ]
+    })
+
+    const handleSearch = ($event) => {
+      console.log($event, 'search')
+    }
+
+    const handleExport = ($event) => {
+      console.log($event, 'export')
+    }
+
     return {
       xTable,
-      tableOptions
+      tableOptions,
+      searchOptions,
+      handleSearch,
+      handleExport
     }
   }
 })

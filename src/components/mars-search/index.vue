@@ -36,13 +36,20 @@ export default defineComponent({
     .ant-select {
       width: 130px;
     }
+    .ant-cascader-picker,
+    .tree-select {
+      width: 100%;
+      min-width: 130px;
+    }
+    .ant-calendar-picker {
+      width: 220px;
+    }
   }
   .extra-btn {
     flex: 1;
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 10px;
   }
 }
 </style>

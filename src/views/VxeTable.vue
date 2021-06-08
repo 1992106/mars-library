@@ -1,5 +1,7 @@
 <template>
-  <vxe-grid ref="xGrid" v-bind="gridOptions"></vxe-grid>
+  <div class="page-content">
+    <vxe-grid ref="xGrid" v-bind="gridOptions"></vxe-grid>
+  </div>
 </template>
 
 <script>
@@ -25,10 +27,7 @@ export default defineComponent({
       customConfig: {
         storage: true,
         checkMethod({ column }) {
-          if (['nickname', 'role'].includes(column.property)) {
-            return false
-          }
-          return true
+          return !['nickname', 'role'].includes(column.property)
         }
       },
       printConfig: {

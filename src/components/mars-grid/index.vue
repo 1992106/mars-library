@@ -15,7 +15,7 @@
     :scroll-x="scrollX"
     :scroll-y="scrollY"
     :row-id="rowId"
-    :height="tableHeight"
+    :height="height"
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
     :row-style="rowStyle"
@@ -29,6 +29,7 @@
     :edit-rules="editRules"
     :filter-config="filterConfig"
     :tree-config="getTreeConfig"
+    :toolbar-config="{ slots: { buttons: 'toolbar_buttons' } }"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
@@ -40,38 +41,31 @@
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange"
   >
+    <template #toolbar_buttons>
+      <slot name="searchBar"></slot>
+    </template>
     <!--slot-->
     <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
       <slot :name="slot" v-bind="scope"></slot>
     </template>
     <!--分页-->
     <template #pager>
-      <a-pagination
-        v-if="showPagination"
-        v-bind="getPaginationConfig"
-        :current="pagination.page"
-        :pageSize="pagination.limit"
-        :total="total"
-        @change="handlePageChange"
-        @showSizeChange="handleShowSizeChange"
-      />
+      <slot name="pagination">
+        <a-pagination
+          v-if="showPagination"
+          v-bind="getPaginationConfig"
+          :current="pagination.page"
+          :pageSize="pagination.limit"
+          :total="total"
+          @change="handlePageChange"
+          @showSizeChange="handleShowSizeChange"
+        />
+      </slot>
     </template>
   </vxe-grid>
 </template>
 <script>
-import {
-  defineComponent,
-  reactive,
-  ref,
-  computed,
-  toRefs,
-  nextTick,
-  onMounted,
-  onBeforeUnmount,
-  unref,
-  mergeProps
-} from 'vue'
-import { debounce } from 'lodash'
+import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps } from 'vue'
 
 export default defineComponent({
   name: 'MarsGrid',
@@ -89,6 +83,8 @@ export default defineComponent({
     showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
     paginationConfig: Object,
+    // 高度
+    height: { type: [Number, String], default: 'auto' },
     // 斑马纹
     stripe: { type: Boolean, default: true },
     // 序号配置项
@@ -107,7 +103,7 @@ export default defineComponent({
     // 筛选配置
     filterConfig: { type: Object, default: () => ({ remote: true, filterMethod: () => true }) },
     // tooltip 配置项
-    tooltipConfig: { type: Object, default: () => ({ showAll: true }) },
+    tooltipConfig: { type: Object, default: () => ({ showAll: false }) },
     // 树形结构配置项（不支持虚拟滚动）
     treeConfig: { type: Object, default: () => ({ children: 'children' }) },
     // 横向虚拟滚动配置
@@ -122,8 +118,6 @@ export default defineComponent({
     cellStyle: [Object, Function],
     // 给行附加样式
     rowStyle: [Object, Function],
-    // 表格除外的高度
-    offsetHeight: { type: Number, default: 112 },
     // 本地Storage名称（拖拽列时需要本地储存）
     storageName: String
   },
@@ -158,9 +152,7 @@ export default defineComponent({
     /**
      * data
      */
-    const state = reactive({
-      tableHeight: 300
-    })
+    const state = reactive({})
     /**
      * refs
      */
@@ -182,18 +174,6 @@ export default defineComponent({
     /**
      * methods
      */
-    // 监听视窗大小改变
-    const onResize = () => {
-      const clientHeight = document.body.clientHeight - props.offsetHeight
-      state.tableHeight = clientHeight < 300 ? 300 : clientHeight
-    }
-    onMounted(() => {
-      nextTick(onResize)
-      window.addEventListener('resize', debounce(onResize, 200))
-    })
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
     // 页码
     const handlePageChange = (current, pageSize) => {
       const pagination = {
@@ -332,6 +312,9 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-grid {
+  ::v-deep(.vxe-toolbar) {
+    height: auto;
+  }
   ::v-deep(.vxe-cell) {
     display: flex;
     align-items: center;

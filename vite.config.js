@@ -21,7 +21,9 @@ export default ({ mode }) => {
           exports: 'named',
           globals: {
             vue: 'vue',
-            lodash: 'lodash'
+            lodash: 'lodash',
+            moment: 'moment',
+            '@ant-design/icons-vue': '@ant-design/icons-vue'
           }
         },
         external: [
@@ -33,6 +35,7 @@ export default ({ mode }) => {
           'vxe-table',
           'xe-utils',
           'lodash',
+          'moment',
           'nprogress'
         ]
       }

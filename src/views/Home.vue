@@ -63,7 +63,7 @@ export default defineComponent({
         name: 'mars'
       })
       loading.value = false
-      console.log(res, 'request', 111111)
+      console.log(res, 'request')
     }
 
     // Object.prototype.toString.call(fetchData) === "[object Function]"

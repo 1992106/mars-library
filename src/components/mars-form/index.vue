@@ -1,8 +1,8 @@
 <template>
   <a-form class="mars-form" :layout="layout" :label-col="labelCol" :wrapper-col="wrapperCol">
     <template v-for="column in columns" :key="column.field">
-      <template v-if="column?.type === 'select'">
-        <a-form-item :label="column?.title" v-bind="validateInfos.region">
+      <a-form-item :label="column?.title" v-bind="validateInfos.region">
+        <template v-if="column?.type === 'select'">
           <a-select
             showSearch
             v-bind="column?.props || {}"
@@ -11,21 +11,21 @@
             :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
             allowClear
           />
-        </a-form-item>
-      </template>
-      <template v-else-if="column?.type === 'treeSelect'">
-        <a-tree-select
-          showSearch
-          treeCheckable
-          v-bind="column?.props || {}"
-          v-model:value="modelRef[column.field]"
-          :tree-data="column.options"
-          :search-placeholder="column?.placeholder || `请选择${column?.title || ''}`"
-          allowClear
-        />
-      </template>
-      <template v-else-if="column?.type === 'cascader'">
-        <a-form-item :label="column?.title" v-bind="validateInfos.region">
+        </template>
+        <template v-else-if="column?.type === 'treeSelect'">
+          <a-tree-select
+            class="tree-select"
+            showSearch
+            treeCheckable
+            :max-tag-count="1"
+            v-bind="column?.props || {}"
+            v-model:value="modelRef[column.field]"
+            :tree-data="column.options"
+            :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
+            allowClear
+          />
+        </template>
+        <template v-else-if="column?.type === 'cascader'">
           <a-cascader
             :show-search="true"
             v-bind="column?.props || {}"
@@ -34,18 +34,35 @@
             :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
             allowClear
           />
-        </a-form-item>
-      </template>
-      <template v-else>
-        <a-form-item :label="column?.title" v-bind="validateInfos.region">
+        </template>
+        <template v-else-if="column?.type === 'datePicker'">
+          <a-range-picker
+            format="YYYY-MM-DD"
+            v-bind="column?.props || {}"
+            v-model:value="modelRef[column.field]"
+            :placeholder="column?.placeholder || ['开始日期', '结束日期']"
+            allowClear
+          />
+        </template>
+        <template v-else-if="column?.type === 'checkbox'">
+          <a-checkbox-group
+            v-bind="column?.props || {}"
+            v-model:value="modelRef[column.field]"
+            :options="column.options"
+          />
+        </template>
+        <template v-else-if="column?.type === 'inputNumber'">
+          <a-input-number v-bind="column?.props || {}" v-model:value="modelRef[column.field]" />
+        </template>
+        <template v-else>
           <a-input
+            v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
             :placeholder="column?.placeholder || `请输入${column?.title || ''}`"
             allowClear
-            v-bind="column?.props || {}"
           />
-        </a-form-item>
-      </template>
+        </template>
+      </a-form-item>
     </template>
     <a-form-item class="mars-form-footer">
       <template v-for="btn in reverses" :key="btn">
@@ -70,6 +87,7 @@
 <script>
 import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
+import { momentToString } from '@utils/fn'
 export default defineComponent({
   name: 'MarsForm',
   inheritAttrs: false,
@@ -96,7 +114,8 @@ export default defineComponent({
     const hasMultiple = (column) => {
       return (
         (column?.type === 'select' && ['multiple'].includes(column?.props?.mode)) ||
-        (column?.type === 'treeSelect' && column?.props?.multiple)
+        (column?.type === 'treeSelect' && column?.props?.multiple) ||
+        ['checkbox', 'datePicker'].includes(column?.type)
       )
     }
     const getModel = (columns) => {
@@ -121,12 +140,17 @@ export default defineComponent({
       },
       { deep: true, immediate: true }
     )
+
     const { validate, resetFields, validateInfos } = useForm(modelRef, rulesRef)
     const handleOk = () => {
       validate()
         .then(() => {
-          console.log(toRaw(modelRef))
-          emit('ok', toRaw(modelRef))
+          const modelRaw = toRaw(modelRef)
+          Object.keys(modelRaw).forEach((item) => {
+            let value = modelRaw[item]
+            modelRaw[item] = momentToString(value)
+          })
+          emit('ok', modelRaw)
         })
         .catch((err) => {
           console.log('error', err)

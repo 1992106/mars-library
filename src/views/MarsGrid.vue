@@ -1,14 +1,18 @@
 <template>
-  <mars-search v-bind="searchOptions">
-    <template #extra>
-      <mars-export></mars-export>
-    </template>
-  </mars-search>
-  <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="search">
-    <template #operate="{ row }">
-      <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>
-    </template>
-  </mars-grid>
+  <div class="page-content">
+    <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="handleSearch">
+      <template #searchBar>
+        <mars-search v-bind="searchOptions" @search="handleSearch">
+          <template #extra>
+            <mars-export v-bind="searchOptions" @export="handleExport"></mars-export>
+          </template>
+        </mars-search>
+      </template>
+      <template #operate="{ row }">
+        <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>
+      </template>
+    </mars-grid>
+  </div>
 </template>
 
 <script>
@@ -121,18 +125,111 @@ export default defineComponent({
           props: {
             mode: 'multiple'
           }
+        },
+        { type: 'datePicker', title: '日期框', field: 'time', rules: [], placeholder: ['开始日期', '结束日期'] },
+        { type: 'checkbox', title: '多选勾选框', field: 'check', rules: [], options: ['Apple', 'Orange'] },
+        {
+          type: 'cascader',
+          title: '级联框',
+          field: 'city',
+          rules: [],
+          options: [
+            {
+              value: 'zhejiang',
+              label: 'Zhejiang',
+              children: [
+                {
+                  value: 'hangzhou',
+                  label: 'Hangzhou',
+                  children: [
+                    {
+                      value: 'xihu',
+                      label: 'West Lake'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              value: 'jiangsu',
+              label: 'Jiangsu',
+              children: [
+                {
+                  value: 'nanjing',
+                  label: 'Nanjing',
+                  children: [
+                    {
+                      value: 'zhonghuamen',
+                      label: 'Zhong Hua Men'
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          placeholder: '请选择'
+        },
+        {
+          type: 'treeSelect',
+          title: '树选择框',
+          field: 'node',
+          rules: [],
+          options: [
+            {
+              title: 'Node1',
+              value: '0-0',
+              key: '0-0',
+              children: [
+                {
+                  title: 'Child Node1',
+                  value: '0-0-0',
+                  key: '0-0-0'
+                }
+              ]
+            },
+            {
+              title: 'Node2',
+              value: '0-1',
+              key: '0-1',
+              children: [
+                {
+                  title: 'Child Node3',
+                  value: '0-1-0',
+                  key: '0-1-0',
+                  disabled: true
+                },
+                {
+                  title: 'Child Node4',
+                  value: '0-1-1',
+                  key: '0-1-1'
+                },
+                {
+                  title: 'Child Node5',
+                  value: '0-1-2',
+                  key: '0-1-2'
+                }
+              ]
+            }
+          ],
+          placeholder: '请选择'
         }
       ]
     })
-    const search = ($event) => {
+
+    const handleSearch = ($event) => {
       console.log($event, 'search')
+    }
+
+    const handleExport = ($event) => {
+      console.log($event, 'export')
     }
 
     return {
       xGrid,
       gridOptions,
       searchOptions,
-      search
+      handleSearch,
+      handleExport
     }
   }
 })

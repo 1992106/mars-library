@@ -14,30 +14,39 @@
       wrap-class-name="mars-export-wrap"
       @close="handleClose"
     >
-      <slot>
+      <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-item label="创建日期">
+          <a-range-picker v-model:value="formState.date" format="YYYY-MM-DD" :ranges="ranges" />
+        </a-form-item>
+      </a-form>
+      <div>
         <mars-form
-          layout="vertical"
+          layout="horizontal"
           :columns="columns"
           :reverse="true"
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
           okText="导出"
           @ok="handleExport"
           cancelText="取消"
           @cancel="handleClose"
         ></mars-form>
-      </slot>
+      </div>
     </a-drawer>
   </div>
 </template>
 <script>
 import { ExportOutlined } from '@ant-design/icons-vue'
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, toRaw } from 'vue'
+import moment from 'moment'
+import { momentToString } from '@utils/fn'
 export default defineComponent({
   name: 'MarsExport',
   props: {
     // 自定义列
     columns: { type: Array, default: () => [] },
-    labelCol: { type: Object, default: () => ({}) },
-    wrapperCol: { type: Object, default: () => ({}) },
+    labelCol: { type: Object, default: () => ({ span: 6 }) },
+    wrapperCol: { type: Object, default: () => ({ span: 12 }) },
     scrollToFirstError: { type: Boolean, default: true },
     // drawer配置
     title: { type: String, default: '导出数据' },
@@ -49,61 +58,7 @@ export default defineComponent({
     ExportOutlined
   },
 
-  setup() {
-    const form = reactive({
-      name: '',
-      url: '',
-      owner: '',
-      type: '',
-      approver: '',
-      dateTime: '',
-      description: ''
-    })
-    const rules = {
-      name: [
-        {
-          required: true,
-          message: 'Please enter user name'
-        }
-      ],
-      url: [
-        {
-          required: true,
-          message: 'please enter url'
-        }
-      ],
-      owner: [
-        {
-          required: true,
-          message: 'Please select an owner'
-        }
-      ],
-      type: [
-        {
-          required: true,
-          message: 'Please choose the type'
-        }
-      ],
-      approver: [
-        {
-          required: true,
-          message: 'Please choose the approver'
-        }
-      ],
-      dateTime: [
-        {
-          required: true,
-          message: 'Please choose the dateTime',
-          type: 'object'
-        }
-      ],
-      description: [
-        {
-          required: true,
-          message: 'Please enter url description'
-        }
-      ]
-    }
+  setup(_, { emit }) {
     const visible = ref(false)
 
     const handleShow = () => {
@@ -114,11 +69,28 @@ export default defineComponent({
       visible.value = false
     }
 
-    const handleExport = () => {}
+    const formState = reactive({
+      date: [] // 创建日期
+    })
+
+    const handleExport = ($event = {}) => {
+      let dateRaw = toRaw(formState).date
+      const exportData = { ...$event, date: momentToString(dateRaw) }
+      emit('export', exportData)
+    }
 
     return {
-      form,
-      rules,
+      formState,
+      ranges: {
+        // eslint-disable-next-line prettier/prettier
+        '今天': [moment(), moment()],
+        // eslint-disable-next-line prettier/prettier
+        '本周': [moment().startOf('week'), moment().endOf('week')],
+        // eslint-disable-next-line prettier/prettier
+        '本月': [moment().startOf('month'), moment().endOf('month')],
+        // eslint-disable-next-line prettier/prettier
+        '三个月': [moment(new Date()).subtract(2, 'months').startOf('month'), moment().endOf('month')]
+      },
       visible,
       handleShow,
       handleClose,
@@ -131,6 +103,7 @@ export default defineComponent({
 .mars-export-wrap {
   .mars-form {
     &-footer {
+      display: block;
       position: absolute;
       right: 0;
       bottom: 0;
@@ -141,6 +114,10 @@ export default defineComponent({
       text-align: right;
       z-index: 1;
       margin-bottom: 0;
+      .ant-form-item-control-wrapper {
+        flex: none;
+        max-width: initial;
+      }
     }
   }
 }

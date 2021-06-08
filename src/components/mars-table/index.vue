@@ -1,5 +1,6 @@
 <template>
   <div class="mars-table">
+    <slot name="searchBar"></slot>
     <a-table
       ref="xTable"
       border
@@ -32,8 +33,20 @@
   </div>
 </template>
 <script>
-import { defineComponent, computed, mergeProps, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRefs } from 'vue'
+import {
+  defineComponent,
+  computed,
+  mergeProps,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  unref
+} from 'vue'
 import { debounce } from 'lodash'
+import { isEmpty } from 'lodash/lang'
 export default defineComponent({
   name: 'MarsTable',
   inheritAttrs: false,
@@ -53,14 +66,7 @@ export default defineComponent({
     // 横向/纵向滚动
     scroll: { type: Object, default: () => ({ scrollToFirstRowOnChange: true }) },
     // 选择功能的配置
-    rowSelection: {
-      type: Object,
-      default: () => ({
-        type: 'checkbox',
-        hideDefaultSelections: false,
-        selections: false
-      })
-    },
+    rowSelection: Object,
     // 行的类名
     rowClassName: Function,
     // 指定树形结构的列名
@@ -75,9 +81,7 @@ export default defineComponent({
       default: 'default'
     },
     // 默认文案设置，目前包括排序、过滤、空数据文案
-    locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) },
-    // 表格除外的高度
-    offsetHeight: { type: Number, default: 220 }
+    locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) }
   },
   emits: ['search', 'update:pagination', 'change'],
   setup(props, { emit }) {
@@ -124,12 +128,21 @@ export default defineComponent({
      */
     // 监听视窗大小改变
     const onResize = () => {
-      const clientHeight = document.body.clientHeight - props.offsetHeight
-      state.scroll.y = clientHeight < 300 ? 300 : clientHeight
+      nextTick(() => {
+        let $xTable = unref(xTable)
+        let $xTableHeader = $xTable?.$el?.querySelector('.ant-table-header> table')
+        let parent = $xTable?.$el?.parentNode?.offsetHeight || 300
+        let tableHeaderHeight = $xTableHeader?.offsetHeight || 0
+        let searchBarHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
+        let paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
+        state.scroll.y = parent - searchBarHeight - paginationHeight - tableHeaderHeight
+      })
     }
     onMounted(() => {
-      nextTick(onResize)
-      window.addEventListener('resize', debounce(onResize, 200))
+      if (isEmpty(props.scroll.y)) {
+        setTimeout(onResize, 500)
+        window.addEventListener('resize', debounce(onResize, 200))
+      }
     })
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize)
@@ -181,6 +194,10 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  height: 100%;
+  .ant-table-wrapper {
+    flex: 1;
+  }
   .ant-pagination {
     padding: 10px;
     text-align: right;

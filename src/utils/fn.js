@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 /**
  * 获取对象tag
  * @param value
@@ -58,4 +60,12 @@ export function polyfill(target = {}, source = {}) {
     }
   })
   return newObj
+}
+
+export const momentToString = (value, valueFormat = 'YYYY-MM-DD') => {
+  if (Array.isArray(value)) {
+    return value.map((val) => (moment.isMoment(val) ? val.format(valueFormat) : val))
+  } else {
+    return moment.isMoment(value) ? value.format(valueFormat) : value
+  }
 }
