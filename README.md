@@ -136,7 +136,7 @@ emits: ['search', 'update:pagination', 'change']
 <slot name="toolBar"></slot>
 ```
 
-### mars-from组件
+### mars-form组件
 
 [Form](https://2x.antdv.com/components/form-cn#API)
 
@@ -177,7 +177,7 @@ emits: ['ok', 'cancel']
 
 #### props
 
-> 同mars-from组件一样
+> 同mars-form组件一样
 
 #### emits
 
@@ -193,7 +193,7 @@ emits: ['search']
 
 #### props
 
-> 同mars-from组件一样，额外扩展了一些
+> 同mars-form组件一样，额外扩展了一些
 
 属性|默认值|描述
 :---:|:---:|:---:

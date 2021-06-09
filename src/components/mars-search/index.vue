@@ -1,9 +1,10 @@
 <template>
   <div class="mars-search">
-    <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch"></mars-form>
-    <div class="extra-btn">
-      <slot name="extra"></slot>
-    </div>
+    <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch">
+      <div class="extra-btn">
+        <slot name="extra"></slot>
+      </div>
+    </mars-form>
   </div>
 </template>
 <script>

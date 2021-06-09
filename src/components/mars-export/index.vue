@@ -126,8 +126,7 @@ export default defineComponent({
     }
   }
   .mars-form {
-    &-footer {
-      display: block;
+    &-buttons {
       position: absolute;
       right: 0;
       bottom: 0;
@@ -135,13 +134,8 @@ export default defineComponent({
       border-top: 1px solid #e9e9e9;
       padding: 10px 16px;
       background: #fff;
-      text-align: right;
       z-index: 1;
-      margin-bottom: 0;
-      .ant-form-item-control-wrapper {
-        flex: none;
-        max-width: initial;
-      }
+      justify-content: flex-end;
     }
   }
 }

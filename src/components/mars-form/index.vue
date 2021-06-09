@@ -71,7 +71,7 @@
         </template>
       </a-form-item>
     </template>
-    <a-form-item class="mars-form-footer">
+    <a-space class="mars-form-buttons">
       <template v-for="btn in reverses" :key="btn">
         <template v-if="btn === 'ok'">
           <a-button type="primary" @click.prevent="handleOk">{{ okText }}</a-button>
@@ -80,7 +80,8 @@
           <a-button @click="handleCancel">{{ cancelText }}</a-button>
         </template>
       </template>
-    </a-form-item>
+    </a-space>
+    <slot></slot>
   </a-form>
 </template>
 <script>
@@ -191,12 +192,3 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
-.mars-form {
-  &-footer {
-    .ant-btn {
-      margin-right: 10px;
-    }
-  }
-}
-</style>
