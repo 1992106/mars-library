@@ -8,6 +8,7 @@
           </template>
         </mars-search>
       </template>
+      <template #toolBar><div>toolBar</div></template>
       <template #operate="{ record }">
         <a-button type="primary" shape="circle">
           <template #icon><FormOutlined /></template>
@@ -75,16 +76,20 @@ export default defineComponent({
       total: data.length,
       pagination: {
         page: 1,
-        limit: 20
+        pageSize: 15
+      },
+      paginationConfig: {
+        pageSizeOptions: ['15', '20', '30', '40']
       },
       rowSelection
     })
 
     const searchOptions = reactive({
       columns: [
-        { type: 'input', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
+        { type: 'AInput', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
+        { type: 'AInputNumber', title: '数字输入框', field: 'number', rules: [] },
         {
-          type: 'select',
+          type: 'ASelect',
           title: '下拉框',
           field: 'sex',
           rules: [],
@@ -97,10 +102,11 @@ export default defineComponent({
             mode: 'multiple'
           }
         },
-        { type: 'datePicker', title: '日期框', field: 'time', rules: [], placeholder: ['开始日期', '结束日期'] },
-        { type: 'checkbox', title: '多选勾选框', field: 'check', rules: [], options: ['Apple', 'Orange'] },
+        { type: 'ADatePicker', title: '日期框', field: 'time', rules: [], placeholder: ['开始日期', '结束日期'] },
+        { type: 'ACheckboxGroup', title: '多选勾选框', field: 'check', rules: [], options: ['Apple', 'Orange'] },
+        { type: 'ARadioGroup', title: '单选勾选框', field: 'radio', rules: [], options: ['Apple', 'Orange'] },
         {
-          type: 'cascader',
+          type: 'ACascader',
           title: '级联框',
           field: 'city',
           rules: [],
@@ -141,7 +147,7 @@ export default defineComponent({
           placeholder: '请选择'
         },
         {
-          type: 'treeSelect',
+          type: 'ATreeSelect',
           title: '树选择框',
           field: 'node',
           rules: [],

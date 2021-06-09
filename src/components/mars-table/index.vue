@@ -1,8 +1,11 @@
 <template>
   <div class="mars-table">
-    <slot name="searchBar"></slot>
+    <div class="mars-table-header">
+      <slot name="searchBar"></slot>
+      <slot name="toolBar"></slot>
+    </div>
     <a-table
-      ref="xTable"
+      ref="tableRef"
       border
       v-bind="$attrs"
       :rowKey="rowKey"
@@ -25,7 +28,7 @@
       v-if="showPagination"
       v-bind="getPaginationConfig"
       :current="pagination.page"
-      :pageSize="pagination.limit"
+      :pageSize="pagination.pageSize"
       :total="total"
       @change="handlePageChange"
       @showSizeChange="handleShowSizeChange"
@@ -61,7 +64,7 @@ export default defineComponent({
     total: { type: Number, default: 0 },
     // 页码
     showPagination: { type: Boolean, default: true },
-    pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
+    pagination: { type: Object, default: () => ({ page: 1, pageSize: 20 }) },
     paginationConfig: Object,
     // 横向/纵向滚动
     scroll: { type: Object, default: () => ({ scrollToFirstRowOnChange: true }) },
@@ -95,7 +98,7 @@ export default defineComponent({
         showSizeChanger: true,
         showQuickJumper: true,
         showTotal: (total) => `共 ${total} 条`,
-        pageSizeOptions: ['20', '30', '60', '100']
+        pageSizeOptions: ['20', '40', '60', '80', '100']
       }
     }
     /**
@@ -107,7 +110,7 @@ export default defineComponent({
     /**
      * refs
      */
-    const xTable = ref(null)
+    const tableRef = ref(null)
     /**
      * computed
      */
@@ -129,18 +132,19 @@ export default defineComponent({
     // 监听视窗大小改变
     const onResize = () => {
       nextTick(() => {
-        let $xTable = unref(xTable)
+        // TODO: 待优化
+        let $xTable = unref(tableRef)
         let $xTableHeader = $xTable?.$el?.querySelector('.ant-table-header> table')
-        let parent = $xTable?.$el?.parentNode?.offsetHeight || 300
         let tableHeaderHeight = $xTableHeader?.offsetHeight || 0
-        let searchBarHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
+        let pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 300
+        let HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
         let paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
-        state.scroll.y = parent - searchBarHeight - paginationHeight - tableHeaderHeight
+        state.scroll.y = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
       })
     }
     onMounted(() => {
       if (isEmpty(props.scroll.y)) {
-        setTimeout(onResize, 500)
+        setTimeout(onResize, 100)
         window.addEventListener('resize', debounce(onResize, 200))
       }
     })
@@ -161,7 +165,7 @@ export default defineComponent({
     const handlePageChange = (current, pageSize) => {
       const pagination = {
         page: current,
-        limit: pageSize
+        pageSize
       }
       emit('update:pagination', pagination)
       emit('search')
@@ -169,7 +173,7 @@ export default defineComponent({
     const handleShowSizeChange = (_, pageSize) => {
       const pagination = {
         page: 1,
-        limit: pageSize
+        pageSize
       }
       emit('update:pagination', pagination)
       emit('search')
@@ -180,7 +184,7 @@ export default defineComponent({
       getColumns,
       getSlots,
       getPaginationConfig,
-      xTable,
+      tableRef,
       handleRowClassName,
       handleChange,
       handlePageChange,

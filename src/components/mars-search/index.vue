@@ -1,6 +1,6 @@
 <template>
   <div class="mars-search">
-    <mars-form v-bind="$attrs" :columns="columns" @ok="handleSearch"></mars-form>
+    <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch"></mars-form>
     <div class="extra-btn">
       <slot name="extra"></slot>
     </div>
@@ -12,8 +12,6 @@ export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
   props: {
-    // model: { type: Object, default: () => ({}) },
-    // rules: { type: Object, default: () => ({}) },
     // 自定义列
     columns: { type: Array, default: () => [] }
   },
@@ -31,6 +29,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mars-search {
   display: flex;
+  margin-bottom: 10px;
   ::v-deep(.mars-form) {
     .ant-input-affix-wrapper,
     .ant-select {

@@ -1,7 +1,7 @@
 <template>
   <vxe-grid
     class="mars-grid"
-    ref="xGrid"
+    ref="gridRef"
     border
     auto-resize
     show-overflow
@@ -41,8 +41,11 @@
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange"
   >
-    <template #toolbar_buttons>
+    <template #form>
       <slot name="searchBar"></slot>
+    </template>
+    <template #toolbar>
+      <slot name="toolBar"></slot>
     </template>
     <!--slot-->
     <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
@@ -55,7 +58,7 @@
           v-if="showPagination"
           v-bind="getPaginationConfig"
           :current="pagination.page"
-          :pageSize="pagination.limit"
+          :pageSize="pagination.pageSize"
           :total="total"
           @change="handlePageChange"
           @showSizeChange="handleShowSizeChange"
@@ -81,19 +84,19 @@ export default defineComponent({
     total: { type: Number, default: 0 },
     // 页码
     showPagination: { type: Boolean, default: true },
-    pagination: { type: Object, default: () => ({ page: 1, limit: 20 }) },
+    pagination: { type: Object, default: () => ({ page: 1, pageSize: 20 }) },
     paginationConfig: Object,
     // 高度
     height: { type: [Number, String], default: 'auto' },
     // 斑马纹
     stripe: { type: Boolean, default: true },
-    // 序号配置项
+    // 序号配置
     seqConfig: Object,
     // 勾选项
     selectedValue: { type: Array, default: () => [] },
-    // 单选框配置项
+    // 单选框配置
     radioConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
-    // 复选框配置项
+    // 复选框配置
     checkboxConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
     // 合并单元格 (不能用于展开行，不建议用于固定列、树形结构)
     mergeCells: Array,
@@ -146,7 +149,7 @@ export default defineComponent({
         showSizeChanger: true,
         showQuickJumper: true,
         showTotal: (total) => `共 ${total} 条`,
-        pageSizeOptions: ['20', '30', '60', '100']
+        pageSizeOptions: ['20', '40', '60', '80', '100']
       }
     }
     /**
@@ -156,7 +159,7 @@ export default defineComponent({
     /**
      * refs
      */
-    const xGrid = ref(null)
+    const gridRef = ref(null)
     /**
      * 计算属性
      */
@@ -178,7 +181,7 @@ export default defineComponent({
     const handlePageChange = (current, pageSize) => {
       const pagination = {
         page: current,
-        limit: pageSize
+        pageSize
       }
       emit('update:pagination', pagination)
       emit('search')
@@ -186,7 +189,7 @@ export default defineComponent({
     const handleShowSizeChange = (_, pageSize) => {
       const pagination = {
         page: 1,
-        limit: pageSize
+        pageSize
       }
       emit('update:pagination', pagination)
       emit('search')
@@ -227,7 +230,7 @@ export default defineComponent({
     }
     // 全选
     const handleCheckboxAll = ({ records, reserves, indeterminates, checked, $event }) => {
-      const $xGrid = unref(xGrid)
+      const $xGrid = unref(gridRef)
       emit('update:selected-value', $xGrid.getCheckboxRecords())
       emit('checkbox-all', { records, reserves, indeterminates, checked, $event })
     }
@@ -239,7 +242,7 @@ export default defineComponent({
     const handleEditClosed = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex }) => {
       const field = column.property
       // 判断单元格值是否被修改
-      const $xGrid = unref(xGrid)
+      const $xGrid = unref(gridRef)
       if ($xGrid.isUpdateByRow(row, field)) {
         emit('edit-closed', { row, field, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
       }
@@ -279,8 +282,8 @@ export default defineComponent({
     }
     // 拖拽列
     const handleResizableChange = ({ column }) => {
-      if (props.storageName && xGrid) {
-        const $xGrid = unref(xGrid)
+      if (props.storageName && gridRef) {
+        const $xGrid = unref(gridRef)
         column.width = column.renderWidth
         column.resizeWidth = 0 // 拖拽后要清理  这个字段优先级高于renderWidth
         $xGrid.refreshColumn()
@@ -293,7 +296,7 @@ export default defineComponent({
       getSlots,
       getPaginationConfig,
       getTreeConfig,
-      xGrid,
+      gridRef,
       handlePageChange,
       handleShowSizeChange,
       handleRadioChange,
@@ -312,9 +315,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-grid {
-  ::v-deep(.vxe-toolbar) {
-    height: auto;
-  }
   ::v-deep(.vxe-cell) {
     display: flex;
     align-items: center;

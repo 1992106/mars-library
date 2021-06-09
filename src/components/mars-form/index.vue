@@ -2,17 +2,17 @@
   <a-form class="mars-form" :layout="layout" :label-col="labelCol" :wrapper-col="wrapperCol">
     <template v-for="column in columns" :key="column.field">
       <a-form-item :label="column?.title" v-bind="validateInfos.region">
-        <template v-if="column?.type === 'select'">
+        <template v-if="column?.type === 'ASelect'">
           <a-select
             showSearch
             v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
             :options="column.options"
-            :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
+            :placeholder="column?.placeholder"
             allowClear
           />
         </template>
-        <template v-else-if="column?.type === 'treeSelect'">
+        <template v-else-if="column?.type === 'ATreeSelect'">
           <a-tree-select
             class="tree-select"
             showSearch
@@ -21,21 +21,21 @@
             v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
             :tree-data="column.options"
-            :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
+            :placeholder="column?.placeholder"
             allowClear
           />
         </template>
-        <template v-else-if="column?.type === 'cascader'">
+        <template v-else-if="column?.type === 'ACascader'">
           <a-cascader
             :show-search="true"
             v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
             :options="column.options"
-            :placeholder="column?.placeholder || `请选择${column?.title || ''}`"
+            :placeholder="column?.placeholder"
             allowClear
           />
         </template>
-        <template v-else-if="column?.type === 'datePicker'">
+        <template v-else-if="column?.type === 'ADatePicker'">
           <a-range-picker
             format="YYYY-MM-DD"
             v-bind="column?.props || {}"
@@ -44,21 +44,28 @@
             allowClear
           />
         </template>
-        <template v-else-if="column?.type === 'checkbox'">
+        <template v-else-if="column?.type === 'ACheckboxGroup'">
           <a-checkbox-group
             v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
             :options="column.options"
           />
         </template>
-        <template v-else-if="column?.type === 'inputNumber'">
+        <template v-else-if="column?.type === 'ARadioGroup'">
+          <a-radio-group
+            v-bind="column?.props || {}"
+            v-model:value="modelRef[column.field]"
+            :options="column.options"
+          />
+        </template>
+        <template v-else-if="column?.type === 'AInputNumber'">
           <a-input-number v-bind="column?.props || {}" v-model:value="modelRef[column.field]" />
         </template>
         <template v-else>
           <a-input
             v-bind="column?.props || {}"
             v-model:value="modelRef[column.field]"
-            :placeholder="column?.placeholder || `请输入${column?.title || ''}`"
+            :placeholder="column?.placeholder"
             allowClear
           />
         </template>
@@ -67,18 +74,10 @@
     <a-form-item class="mars-form-footer">
       <template v-for="btn in reverses" :key="btn">
         <template v-if="btn === 'ok'">
-          <span>
-            <slot name="ok">
-              <a-button type="primary" @click.prevent="handleOk">{{ okText }}</a-button>
-            </slot>
-          </span>
+          <a-button type="primary" @click.prevent="handleOk">{{ okText }}</a-button>
         </template>
         <template v-else>
-          <span>
-            <slot name="cancel">
-              <a-button @click="handleCancel">{{ cancelText }}</a-button>
-            </slot>
-          </span>
+          <a-button @click="handleCancel">{{ cancelText }}</a-button>
         </template>
       </template>
     </a-form-item>
@@ -90,32 +89,37 @@ import { useForm } from '@ant-design-vue/use'
 import { momentToString } from '@utils/fn'
 export default defineComponent({
   name: 'MarsForm',
-  inheritAttrs: false,
   props: {
     // model: { type: Object, default: () => ({}) },
     // rules: { type: Object, default: () => ({}) },
-    // 自定义列
+    // 自定义字段
     columns: { type: Array, default: () => [] },
+    // 表单布局
     layout: {
       validator(value) {
         return ['horizontal', 'vertical', 'inline'].includes(value)
       },
       default: 'inline'
     },
+    // 标签布局
     labelCol: { type: Object, default: () => ({}) },
+    // 控件布局
     wrapperCol: { type: Object, default: () => ({}) },
     scrollToFirstError: { type: Boolean, default: true },
+    // 按钮
     reverse: { type: Boolean, default: false },
-    okText: { type: String, default: '搜索' },
-    cancelText: { type: String, default: '重置' }
+    showOk: { type: Boolean, default: true },
+    okText: { type: String, default: '确认' },
+    showCancel: { type: Boolean, default: true },
+    cancelText: { type: String, default: '取消' }
   },
   emits: ['ok', 'cancel'],
   setup(props, { emit }) {
     const hasMultiple = (column) => {
       return (
-        (column?.type === 'select' && ['multiple'].includes(column?.props?.mode)) ||
-        (column?.type === 'treeSelect' && column?.props?.multiple) ||
-        ['checkbox', 'datePicker'].includes(column?.type)
+        (column?.type === 'ASelect' && ['multiple'].includes(column?.props?.mode)) ||
+        (column?.type === 'ATreeSelect' && column?.props?.multiple) ||
+        ['ACheckboxGroup', 'ADatePicker'].includes(column?.type)
       )
     }
     const getModel = (columns) => {
@@ -163,8 +167,14 @@ export default defineComponent({
 
     const reverses = ref(['ok', 'cancel'])
     watch(
-      () => props.reverse,
-      (value) => {
+      () => [props.reverse, props.showOk, props.showCancel],
+      ([value, showOK, showCancel]) => {
+        if (showOK === false) {
+          reverses.value.shift()
+        }
+        if (showCancel === false) {
+          reverses.value.pop()
+        }
         if (value === true) {
           reverses.value.reverse()
         }

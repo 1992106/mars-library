@@ -22,13 +22,12 @@
         <div><strong>导出字段选择</strong></div>
         <mars-form
           layout="horizontal"
-          :columns="columns"
           :reverse="true"
+          v-bind="$attrs"
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
-          okText="导出"
+          :columns="columns"
           @ok="handleExport"
-          cancelText="取消"
           @cancel="handleClose"
         ></mars-form>
       </div>
@@ -48,7 +47,6 @@ export default defineComponent({
     columns: { type: Array, default: () => [] },
     labelCol: { type: Object, default: () => ({ span: 6 }) },
     wrapperCol: { type: Object, default: () => ({ span: 12 }) },
-    scrollToFirstError: { type: Boolean, default: true },
     // drawer配置
     title: { type: String, default: '导出数据' },
     width: { type: [String, Number], default: 720 },
@@ -61,6 +59,13 @@ export default defineComponent({
 
   setup(_, { emit }) {
     const visible = ref(false)
+    const handleShow = () => {
+      visible.value = true
+    }
+    const handleClose = () => {
+      resetFields()
+      visible.value = false
+    }
 
     const modelRef = reactive({
       date: [] // 创建日期
@@ -76,6 +81,7 @@ export default defineComponent({
     })
     const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef)
 
+    // 导出
     const handleExport = ($event = {}) => {
       validate()
         .then(() => {
@@ -86,15 +92,6 @@ export default defineComponent({
         .catch((err) => {
           console.log('export error', err)
         })
-    }
-
-    const handleShow = () => {
-      visible.value = true
-    }
-
-    const handleClose = () => {
-      resetFields()
-      visible.value = false
     }
 
     return {
