@@ -10,16 +10,16 @@
       :visible="visible"
       :zIndex="zIndex"
       :destroyOnClose="true"
-      :body-style="{ paddingBottom: '80px' }"
       wrap-class-name="mars-export-wrap"
       @close="handleClose"
     >
-      <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-form-item label="创建日期">
-          <a-range-picker v-model:value="formState.date" format="YYYY-MM-DD" :ranges="ranges" />
+      <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-item label="创建日期" v-bind="validateInfos.date">
+          <a-range-picker v-model:value="modelRef.date" format="YYYY-MM-DD" :ranges="ranges" />
         </a-form-item>
       </a-form>
       <div>
+        <div><strong>导出字段选择</strong></div>
         <mars-form
           layout="horizontal"
           :columns="columns"
@@ -38,6 +38,7 @@
 <script>
 import { ExportOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw } from 'vue'
+import { useForm } from '@ant-design-vue/use'
 import moment from 'moment'
 import { momentToString } from '@utils/fn'
 export default defineComponent({
@@ -61,26 +62,44 @@ export default defineComponent({
   setup(_, { emit }) {
     const visible = ref(false)
 
+    const modelRef = reactive({
+      date: [] // 创建日期
+    })
+    const rulesRef = reactive({
+      date: [
+        {
+          required: true,
+          message: '请选择创建日期',
+          type: 'array'
+        }
+      ]
+    })
+    const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef)
+
+    const handleExport = ($event = {}) => {
+      validate()
+        .then(() => {
+          let dateRaw = toRaw(modelRef).date
+          const exportData = { ...$event, date: momentToString(dateRaw) }
+          emit('export', exportData)
+        })
+        .catch((err) => {
+          console.log('export error', err)
+        })
+    }
+
     const handleShow = () => {
       visible.value = true
     }
 
     const handleClose = () => {
+      resetFields()
       visible.value = false
     }
 
-    const formState = reactive({
-      date: [] // 创建日期
-    })
-
-    const handleExport = ($event = {}) => {
-      let dateRaw = toRaw(formState).date
-      const exportData = { ...$event, date: momentToString(dateRaw) }
-      emit('export', exportData)
-    }
-
     return {
-      formState,
+      validateInfos,
+      modelRef,
       ranges: {
         // eslint-disable-next-line prettier/prettier
         '今天': [moment(), moment()],
@@ -101,6 +120,14 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .mars-export-wrap {
+  .ant-drawer-wrapper-body {
+    overflow: hidden;
+    .ant-drawer-body {
+      height: calc(100% - 62px);
+      padding-bottom: 62px;
+      overflow: auto;
+    }
+  }
   .mars-form {
     &-footer {
       display: block;

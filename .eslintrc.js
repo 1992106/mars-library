@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'prettier/prettier': [2, { endOfLine: 'lf' }],
     'vue/no-unused-components': 0,
     'vue/no-unused-vars': 0,
     'vue/no-v-for-template-key-on-child': 0,

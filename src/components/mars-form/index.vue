@@ -153,7 +153,7 @@ export default defineComponent({
           emit('ok', modelRaw)
         })
         .catch((err) => {
-          console.log('error', err)
+          console.log('from error', err)
         })
     }
     const handleCancel = () => {

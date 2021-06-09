@@ -47,6 +47,8 @@ export default defineComponent({
             {
               field: 'sex',
               title: 'Sex',
+              headerAlign: 'center',
+              align: 'center',
               editRender: {
                 name: 'ASelect',
                 options: [
