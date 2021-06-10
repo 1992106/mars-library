@@ -109,114 +109,192 @@ export default defineComponent({
       pagination: {
         page: 1,
         pageSize: 20
+      },
+      checkboxConfig: {
+        checkMethod: () => false
       }
     })
 
+    const inputChange = ($event) => {
+      console.log($event, 'inputChange')
+    }
+
     const searchOptions = reactive({
       columns: [
-        { type: 'AInput', title: '输入框', field: 'name', rules: [], defaultValue: '123', placeholder: '请输入' },
-        { type: 'AInputNumber', title: '数字输入框', field: 'number', rules: [] },
+        {
+          type: 'AInput',
+          title: '输入框',
+          field: 'input',
+          rules: [],
+          props: { defaultValue: '123', placeholder: '请输入' },
+          events: { change: inputChange }
+        },
+        { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
+        { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
         {
           type: 'ASelect',
           title: '下拉框',
-          field: 'sex',
+          field: 'select',
           rules: [],
-          options: [
-            { value: '1', label: '男' },
-            { value: '2', label: '女' }
-          ],
-          placeholder: '请选择',
           props: {
-            mode: 'multiple'
+            mode: 'multiple',
+            options: [
+              { value: '1', label: '男' },
+              { value: '2', label: '女' }
+            ],
+            placeholder: '请选择'
           }
         },
-        { type: 'ADatePicker', title: '日期框', field: 'time', rules: [], placeholder: ['开始日期', '结束日期'] },
-        { type: 'ACheckboxGroup', title: '多选勾选框', field: 'check', rules: [], options: ['Apple', 'Orange'] },
-        { type: 'ARadioGroup', title: '单选勾选框', field: 'radio', rules: [], options: ['Apple', 'Orange'] },
+        {
+          type: 'ACheckboxGroup',
+          title: '多选勾选框',
+          field: 'checkGroup',
+          rules: [],
+          props: { options: ['Apple', 'Orange'] }
+        },
+        {
+          type: 'ARadioGroup',
+          title: '单选勾选框',
+          field: 'radioGroup',
+          rules: [],
+          props: { options: ['Apple', 'Orange'] }
+        },
+        { type: 'ASwitch', title: '开关', field: 'switch', rules: [] },
         {
           type: 'ACascader',
           title: '级联框',
           field: 'city',
           rules: [],
-          options: [
-            {
-              value: 'zhejiang',
-              label: 'Zhejiang',
-              children: [
-                {
-                  value: 'hangzhou',
-                  label: 'Hangzhou',
-                  children: [
-                    {
-                      value: 'xihu',
-                      label: 'West Lake'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              value: 'jiangsu',
-              label: 'Jiangsu',
-              children: [
-                {
-                  value: 'nanjing',
-                  label: 'Nanjing',
-                  children: [
-                    {
-                      value: 'zhonghuamen',
-                      label: 'Zhong Hua Men'
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          placeholder: '请选择'
+          props: {
+            options: [
+              {
+                value: 'zhejiang',
+                label: 'Zhejiang',
+                children: [
+                  {
+                    value: 'hangzhou',
+                    label: 'Hangzhou',
+                    children: [
+                      {
+                        value: 'xihu',
+                        label: 'West Lake'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                value: 'jiangsu',
+                label: 'Jiangsu',
+                children: [
+                  {
+                    value: 'nanjing',
+                    label: 'Nanjing',
+                    children: [
+                      {
+                        value: 'zhonghuamen',
+                        label: 'Zhong Hua Men'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            placeholder: '请选择'
+          }
         },
         {
           type: 'ATreeSelect',
           title: '树选择框',
           field: 'node',
           rules: [],
-          options: [
-            {
-              title: 'Node1',
-              value: '0-0',
-              key: '0-0',
-              children: [
-                {
-                  title: 'Child Node1',
-                  value: '0-0-0',
-                  key: '0-0-0'
-                }
-              ]
-            },
-            {
-              title: 'Node2',
-              value: '0-1',
-              key: '0-1',
-              children: [
-                {
-                  title: 'Child Node3',
-                  value: '0-1-0',
-                  key: '0-1-0',
-                  disabled: true
-                },
-                {
-                  title: 'Child Node4',
-                  value: '0-1-1',
-                  key: '0-1-1'
-                },
-                {
-                  title: 'Child Node5',
-                  value: '0-1-2',
-                  key: '0-1-2'
-                }
-              ]
-            }
-          ],
-          placeholder: '请选择'
+          props: {
+            treeData: [
+              {
+                title: 'Node1',
+                value: '0-0',
+                key: '0-0',
+                children: [
+                  {
+                    title: 'Child Node1',
+                    value: '0-0-0',
+                    key: '0-0-0'
+                  }
+                ]
+              },
+              {
+                title: 'Node2',
+                value: '0-1',
+                key: '0-1',
+                children: [
+                  {
+                    title: 'Child Node3',
+                    value: '0-1-0',
+                    key: '0-1-0',
+                    disabled: true
+                  },
+                  {
+                    title: 'Child Node4',
+                    value: '0-1-1',
+                    key: '0-1-1'
+                  },
+                  {
+                    title: 'Child Node5',
+                    value: '0-1-2',
+                    key: '0-1-2'
+                  }
+                ]
+              }
+            ],
+            placeholder: '请选择'
+          }
+        },
+        { type: 'ASlider', title: '滑动输入条', field: 'slider', rules: [] },
+        {
+          type: 'ADatePicker',
+          title: '日期选择框',
+          field: 'date',
+          rules: [],
+          props: {
+            defaultPickerValue: new Date()
+          }
+        },
+        {
+          type: 'AWeekPicker',
+          title: '日期选择框(周)',
+          field: 'week',
+          rules: [],
+          props: {
+            defaultPickerValue: new Date()
+          }
+        },
+        {
+          type: 'AMonthPicker',
+          title: '日期选择框(月)',
+          field: 'month',
+          rules: [],
+          props: {
+            defaultPickerValue: new Date()
+          }
+        },
+        {
+          type: 'ARangePicker',
+          title: '日期选择框(范围)',
+          field: 'range',
+          rules: [],
+          props: {
+            placeholder: ['开始日期', '结束日期'],
+            defaultPickerValue: [new Date(), new Date()]
+          }
+        },
+        {
+          type: 'ATimePicker',
+          title: '时间选择框',
+          field: 'time',
+          rules: [],
+          props: {
+            defaultPickerValue: new Date()
+          }
         }
       ]
     })

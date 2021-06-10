@@ -69,3 +69,11 @@ export const momentToString = (value, valueFormat = 'YYYY-MM-DD') => {
     return moment.isMoment(value) ? value.format(valueFormat) : value
   }
 }
+
+export const dateToMoment = (value, valueFormat = 'YYYY-MM-DD') => {
+  if (Array.isArray(value)) {
+    return value.map((val) => (moment.isMoment(val) ? val : moment(val, valueFormat)))
+  } else {
+    return moment.isMoment(value) ? value : moment(value, valueFormat)
+  }
+}

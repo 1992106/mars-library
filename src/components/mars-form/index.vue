@@ -1,74 +1,13 @@
 <template>
   <a-form class="mars-form" :layout="layout" :label-col="labelCol" :wrapper-col="wrapperCol">
-    <template v-for="column in columns" :key="column.field">
+    <template v-for="column in getColumns" :key="column?.field">
       <a-form-item :label="column?.title" v-bind="validateInfos.region">
-        <template v-if="column?.type === 'ASelect'">
-          <a-select
-            showSearch
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :options="column.options"
-            :placeholder="column?.placeholder"
-            allowClear
-          />
-        </template>
-        <template v-else-if="column?.type === 'ATreeSelect'">
-          <a-tree-select
-            class="tree-select"
-            showSearch
-            treeCheckable
-            :max-tag-count="1"
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :tree-data="column.options"
-            :placeholder="column?.placeholder"
-            allowClear
-          />
-        </template>
-        <template v-else-if="column?.type === 'ACascader'">
-          <a-cascader
-            :show-search="true"
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :options="column.options"
-            :placeholder="column?.placeholder"
-            allowClear
-          />
-        </template>
-        <template v-else-if="column?.type === 'ADatePicker'">
-          <a-range-picker
-            format="YYYY-MM-DD"
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :placeholder="column?.placeholder || ['开始日期', '结束日期']"
-            allowClear
-          />
-        </template>
-        <template v-else-if="column?.type === 'ACheckboxGroup'">
-          <a-checkbox-group
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :options="column.options"
-          />
-        </template>
-        <template v-else-if="column?.type === 'ARadioGroup'">
-          <a-radio-group
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :options="column.options"
-          />
-        </template>
-        <template v-else-if="column?.type === 'AInputNumber'">
-          <a-input-number v-bind="column?.props || {}" v-model:value="modelRef[column.field]" />
-        </template>
-        <template v-else>
-          <a-input
-            v-bind="column?.props || {}"
-            v-model:value="modelRef[column.field]"
-            :placeholder="column?.placeholder"
-            allowClear
-          />
-        </template>
+        <component
+          :is="column.type"
+          v-bind="column?.props || {}"
+          v-model:[getModelValue(column.type)]="modelRef[column.field]"
+          v-on="column?.events || {}"
+        ></component>
       </a-form-item>
     </template>
     <a-space class="mars-form-buttons">
@@ -85,9 +24,10 @@
   </a-form>
 </template>
 <script>
-import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
-import { momentToString } from '@utils/fn'
+import { dateToMoment, momentToString } from '@utils/fn'
+import { omit, pick } from 'lodash'
 export default defineComponent({
   name: 'MarsForm',
   props: {
@@ -116,16 +56,87 @@ export default defineComponent({
   },
   emits: ['ok', 'cancel'],
   setup(props, { emit }) {
+    const defaultState = {
+      AInput: {
+        allowClear: true
+      },
+      AInputNumber: {},
+      AAutoComplete: {
+        allowClear: true
+      },
+      ASelect: {
+        allowClear: true,
+        showSearch: true
+      },
+      ACheckboxGroup: {},
+      ARadioGroup: {},
+      ASwitch: {},
+      ASlider: {},
+      ATreeSelect: {
+        allowClear: true,
+        showSearch: true,
+        treeCheckable: true,
+        maxTagCount: 1
+      },
+      ACascader: {
+        showSearch: true,
+        allowClear: true
+      },
+      ADatePicker: {
+        allowClear: true
+      },
+      AWeekPicker: {
+        allowClear: true
+      },
+      AMonthPicker: {
+        allowClear: true
+      },
+      ARangePicker: {
+        allowClear: true,
+        format: 'YYYY-MM-DD'
+      },
+      ATimePicker: {
+        allowClear: true
+      }
+    }
+    // 获取格式化后的columns
+    const getColumns = computed(() => {
+      return props.columns.map((column) => {
+        const { props = {}, events = {} } = column
+        const defaultProps = defaultState[column?.type] || {}
+        const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
+        const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
+        const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
+        return { ...allColumn, props: allProps, events: events }
+      })
+    })
+    // 获取v-model绑定名称
+    const getModelValue = computed(() => {
+      return (type) => (['ASwitch'].includes(type) ? 'checked' : 'value')
+    })
+    // 是否是多选框
     const hasMultiple = (column) => {
       return (
-        (column?.type === 'ASelect' && ['multiple'].includes(column?.props?.mode)) ||
+        (column?.type === 'ASelect' && ['multiple', 'tags'].includes(column?.props?.mode)) ||
+        (column?.type === 'ASlider' && column?.props?.range) ||
         (column?.type === 'ATreeSelect' && column?.props?.multiple) ||
-        ['ACheckboxGroup', 'ADatePicker'].includes(column?.type)
+        ['ACheckboxGroup', 'ARangePicker'].includes(column?.type)
       )
     }
+    // 是否是日期选择框
+    const hasMoment = (column) => {
+      return ['ADatePicker', 'AWeekPicker', 'AMonthPicker', 'ARangePicker', 'ATimePicker'].includes(column?.type)
+    }
     const getModel = (columns) => {
+      const allDefaultValue = ['defaultValue', 'defaultPickerValue']
       return columns.reduce((prev, next) => {
-        prev[next.field] = next?.defaultValue || (hasMultiple(next) ? [] : null)
+        // 在使用useForm时，allDefaultValue中的默认值不生效；所以手动设置默认值
+        let value = allDefaultValue.map((val) => next?.props[val]).find((val) => val != null)
+        // 格式化时间
+        if (hasMoment(next)) {
+          value = dateToMoment(value)
+        }
+        prev[next.field] = value || (hasMultiple(next) ? [] : undefined)
         return prev
       }, {})
     }
@@ -138,10 +149,10 @@ export default defineComponent({
     let modelRef = reactive({})
     let rulesRef = reactive({})
     watch(
-      () => props.columns,
-      (value) => {
-        modelRef = reactive(getModel(value))
-        rulesRef = reactive(getRules(value))
+      () => getColumns,
+      (columns) => {
+        modelRef = reactive(getModel(columns.value))
+        rulesRef = reactive(getRules(columns.value))
       },
       { deep: true, immediate: true }
     )
@@ -153,6 +164,9 @@ export default defineComponent({
           const modelRaw = toRaw(modelRef)
           Object.keys(modelRaw).forEach((item) => {
             let value = modelRaw[item]
+            if (typeof value === 'string') {
+              value = value.trim()
+            }
             modelRaw[item] = momentToString(value)
           })
           emit('ok', modelRaw)
@@ -183,11 +197,13 @@ export default defineComponent({
       { immediate: true }
     )
     return {
-      reverses,
+      getModelValue,
+      getColumns,
+      modelRef,
       validateInfos,
+      reverses,
       handleOk,
-      handleCancel,
-      modelRef
+      handleCancel
     }
   }
 })

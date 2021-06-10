@@ -44,10 +44,10 @@ radioConfig | { highlight: true, checkMethod: () => true } | 单选框配置
 checkboxConfig | { highlight: true, checkMethod: () => true }) | 复选框配置
 mergeCells | - | 合并单元格
 editConfig | { trigger: 'click', mode: 'cell', showStatus: true } | 编辑配置
-editRules | {} | 编辑规则
+editRules | - | 编辑规则
 filterConfig | { remote: true, filterMethod: () => true } | 筛选配置
-tooltipConfig | { showAll: false } | tooltip 配置项
-treeConfig | { children: 'children' } | 树形结构配置项
+tooltipConfig | - | tooltip配置
+treeConfig | { children: 'children' } | 树形结构配置
 scrollX | { enabled: false } | 横向虚拟滚动配置
 scrollY | { enabled: false } | 纵向虚拟滚动配置
 rowClassName | - | 给行附加className
@@ -159,13 +159,12 @@ cancelText | '取消' | cancel按钮文本
 
 属性|可选值|描述
 :---:|:---:|:---:
-type | 'AInput' 'ASelect' 'ADatePicker' 'ACheckboxGroup' 'ARadioGroup' 'ACascader' 'ATreeSelect' 'AInputNumber' | 支持的渲染组件
+type | 'AInput' 'AInputNumber' 'AAutoComplete' 'ASelect' 'ACheckboxGroup' 'ARadioGroup' 'ASwitch' 'ASlider' 'ADatePicker' 'ATreeSelect' 'ACascader' 'ADatePicker' 'AWeekPicker' 'AMonthPicker' 'ARangePicker' 'ATimePicker' | 支持的渲染组件
 title | - | 字段文本
 field | - | 字段名称
-props | - | 渲染组件附加属性
-placeholder | - | 字段占位符
 rules | - | 字段校验规则
-options | - | ASelect/ACheckboxGroup/ARadioGroup/ACascader/ATreeSelect下拉组件选项列表
+props |  | 渲染组件附加属性
+event | - | 渲染组件附加事件
 
 #### emits
 

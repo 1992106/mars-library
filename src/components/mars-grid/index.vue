@@ -12,8 +12,8 @@
     :columns="columns"
     :data="data"
     :loading="loading"
-    :scroll-x="scrollX"
-    :scroll-y="scrollY"
+    :scroll-x="getScrollX"
+    :scroll-y="getScrollY"
     :row-id="rowId"
     :height="height"
     :row-class-name="rowClassName"
@@ -21,13 +21,13 @@
     :row-style="rowStyle"
     :cell-style="cellStyle"
     :seq-config="seqConfig"
-    :radio-config="radioConfig"
-    :checkbox-config="checkboxConfig"
+    :radio-config="getRadioConfig"
+    :checkbox-config="getCheckboxConfig"
     :tooltip-config="tooltipConfig"
     :merge-cells="mergeCells"
-    :edit-config="editConfig"
+    :edit-config="getEditConfig"
     :edit-rules="editRules"
-    :filter-config="filterConfig"
+    :filter-config="getFilterConfig"
     :tree-config="getTreeConfig"
     :toolbar-config="{ slots: { buttons: 'toolbar_buttons' } }"
     @edit-closed="handleEditClosed"
@@ -95,24 +95,24 @@ export default defineComponent({
     // 勾选项
     selectedValue: { type: Array, default: () => [] },
     // 单选框配置
-    radioConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
+    radioConfig: Object,
     // 复选框配置
-    checkboxConfig: { type: Object, default: () => ({ labelField: '_', highlight: true, checkMethod: () => true }) },
+    checkboxConfig: Object,
     // 合并单元格 (不能用于展开行，不建议用于固定列、树形结构)
     mergeCells: Array,
     // 编辑配置
-    editConfig: { type: Object, default: () => ({ trigger: 'click', mode: 'cell', showStatus: true }) },
-    editRules: { type: Object, default: () => ({}) },
+    editConfig: Object,
+    editRules: Object,
     // 筛选配置
-    filterConfig: { type: Object, default: () => ({ remote: true, filterMethod: () => true }) },
+    filterConfig: Object,
     // tooltip 配置项
-    tooltipConfig: { type: Object, default: () => ({ showAll: false }) },
+    tooltipConfig: Object,
     // 树形结构配置项（不支持虚拟滚动）
-    treeConfig: { type: Object, default: () => ({ children: 'children' }) },
+    treeConfig: Object,
     // 横向虚拟滚动配置
-    scrollX: { type: Object, default: () => ({ enabled: false }) },
+    scrollX: Object,
     // 纵向虚拟滚动配置
-    scrollY: { type: Object, default: () => ({ enabled: false }) },
+    scrollY: Object,
     // 给行附加 className
     rowClassName: [String, Function],
     // 给单元格附加 className
@@ -150,7 +150,13 @@ export default defineComponent({
         showQuickJumper: true,
         showTotal: (total) => `共 ${total} 条`,
         pageSizeOptions: ['20', '40', '60', '80', '100']
-      }
+      },
+      defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
+      defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
+      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
+      defaultFilterConfig: { remote: true, filterMethod: () => true },
+      defaultScrollX: { enabled: false },
+      defaultScrollY: { enabled: false }
     }
     /**
      * data
@@ -173,6 +179,12 @@ export default defineComponent({
         )
     })
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
+    const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
+    const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
+    const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
+    const getFilterConfig = computed(() => mergeProps(defaultState.defaultFilterConfig, props.filterConfig))
+    const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
+    const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getTreeConfig = computed(() => (props.stripe ? null : props.treeConfig))
     /**
      * methods
@@ -295,6 +307,12 @@ export default defineComponent({
       defaultPickerOptions: defaultState.defaultPickerOptions,
       getSlots,
       getPaginationConfig,
+      getRadioConfig,
+      getCheckboxConfig,
+      getEditConfig,
+      getFilterConfig,
+      getScrollX,
+      getScrollY,
       getTreeConfig,
       gridRef,
       handlePageChange,

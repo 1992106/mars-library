@@ -19,6 +19,10 @@
       :row-selection="rowSelection"
       :rowClassName="handleRowClassName"
       @change="handleChange"
+      :customRow="customRow"
+      :customHeaderRow="customHeaderRow"
+      :customCell="customCell"
+      :customHeaderCell="customHeaderCell"
     >
       <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
         <slot :name="slot" v-bind="scope"></slot>
@@ -84,7 +88,11 @@ export default defineComponent({
       default: 'default'
     },
     // 默认文案设置，目前包括排序、过滤、空数据文案
-    locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) }
+    locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) },
+    customRow: Function,
+    customHeaderRow: Function,
+    customCell: Function,
+    customHeaderCell: Function
   },
   emits: ['search', 'update:pagination', 'change'],
   setup(props, { emit }) {

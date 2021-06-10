@@ -51,7 +51,6 @@ export const routes = [
     path: '/',
     component: markRaw(BaseLayout),
     redirect: '/index',
-    name: 'index',
     children: [
       {
         path: 'index',
@@ -61,6 +60,15 @@ export const routes = [
           title: '仪表盘',
           icon: 'icon-dashboard'
         }
+      },
+      {
+        path: 'form',
+        name: 'form',
+        component: () => import('@views/Form.vue'),
+        meta: {
+          title: '表单',
+          icon: 'icon-project'
+        }
       }
     ]
   },
@@ -68,6 +76,7 @@ export const routes = [
     path: '/list',
     name: 'list',
     component: markRaw(BaseLayout),
+    redirect: '/list/vxeTable',
     meta: {
       title: '列表',
       icon: 'icon-table'

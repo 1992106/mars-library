@@ -19,7 +19,7 @@
         </a-form-item>
       </a-form>
       <div>
-        <div><strong>导出字段选择</strong></div>
+        <div v-if="columns?.length"><strong>导出字段选择</strong></div>
         <mars-form
           layout="horizontal"
           :reverse="true"
