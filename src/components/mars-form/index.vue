@@ -27,7 +27,7 @@
 import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
 import { dateToMoment, momentToString } from '@utils/fn'
-import { omit, pick } from 'lodash'
+import { omit, pick, isEmpty } from 'lodash'
 export default defineComponent({
   name: 'MarsForm',
   props: {
@@ -136,7 +136,10 @@ export default defineComponent({
         if (hasMoment(next)) {
           value = dateToMoment(value)
         }
-        prev[next.field] = value || (hasMultiple(next) ? [] : undefined)
+        if (isEmpty(value)) {
+          value = hasMultiple(next) ? [] : undefined
+        }
+        prev[next.field] = value
         return prev
       }, {})
     }

@@ -52,8 +52,7 @@ import {
   toRefs,
   unref
 } from 'vue'
-import { debounce } from 'lodash'
-import { isEmpty } from 'lodash/lang'
+import { debounce, isEmpty } from 'lodash'
 export default defineComponent({
   name: 'MarsTable',
   inheritAttrs: false,

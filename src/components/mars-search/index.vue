@@ -29,7 +29,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-search {
-  display: flex;
   margin-bottom: 10px;
   ::v-deep(.mars-form) {
     .ant-input-affix-wrapper,

@@ -47,7 +47,7 @@ export default defineComponent({
     const store = useStore()
     const formRef = ref()
     const form = reactive({
-      username: 'cmax',
+      username: 'admin',
       password: '123456'
     })
     const loading = ref(false)

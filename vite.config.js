@@ -55,8 +55,8 @@ export default ({ mode }) => {
         ]
       }),
       viteMockServe({
-        mockPath: 'mock',
-        ignore: /^_/
+        mockPath: 'src/mock',
+        supportTs: false
       }),
       html({
         minify: true,

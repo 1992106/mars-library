@@ -22,7 +22,7 @@ export const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@views/system/login/index.vue'),
+    component: () => import('@views/system/login.vue'),
     meta: {
       hidden: true
     }
