@@ -55,7 +55,7 @@
     <template #pager>
       <slot name="pagination">
         <a-pagination
-          v-if="showPagination"
+          v-if="showPagination && columns.length"
           v-bind="getPaginationConfig"
           :current="pagination.page"
           :pageSize="pagination.pageSize"

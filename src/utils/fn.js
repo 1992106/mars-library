@@ -72,8 +72,8 @@ export const momentToString = (value, valueFormat = 'YYYY-MM-DD') => {
 
 export const dateToMoment = (value, valueFormat = 'YYYY-MM-DD') => {
   if (Array.isArray(value)) {
-    return value.map((val) => (moment.isMoment(val) ? val : moment(val, valueFormat)))
+    return value.map((val) => (isEmpty(val) ? null : moment.isMoment(val) ? val : moment(val, valueFormat)))
   } else {
-    return moment.isMoment(value) ? value : moment(value, valueFormat)
+    return isEmpty(value) ? null : moment.isMoment(value) ? value : moment(value, valueFormat)
   }
 }

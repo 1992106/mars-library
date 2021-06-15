@@ -29,7 +29,7 @@
       </template>
     </a-table>
     <a-pagination
-      v-if="showPagination"
+      v-if="showPagination && getColumns.length"
       v-bind="getPaginationConfig"
       :current="pagination.page"
       :pageSize="pagination.pageSize"
