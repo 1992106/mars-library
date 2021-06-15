@@ -11,7 +11,7 @@ export async function post(url, params = {}) {
     return await myFetch(url, params, 'POST')
   } catch (err) {
     return err
-    // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return
+    // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return返回错误，就可以在外层.then或者await中接收错误
     // return Promise.reject(err)
   }
 }
@@ -27,7 +27,7 @@ export async function get(url, params = {}) {
     return await myFetch(url, params, 'GET')
   } catch (err) {
     return err
-    // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return
+    // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return返回错误，就可以在外层.then或者await中接收错误
     // return Promise.reject(err)
   }
 }
