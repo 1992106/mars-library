@@ -108,7 +108,7 @@ export default defineComponent({
     // tooltip 配置项
     tooltipConfig: Object,
     // 树形结构配置项（不支持虚拟滚动）
-    treeConfig: Object,
+    treeConfig: { type: Object, default: () => ({ children: 'children' }) },
     // 横向虚拟滚动配置
     scrollX: Object,
     // 纵向虚拟滚动配置
