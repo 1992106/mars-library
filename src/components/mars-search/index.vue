@@ -1,6 +1,12 @@
 <template>
   <div class="mars-search">
     <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch">
+      <template #only>
+        <div v-if="showOnly">
+          <a-switch v-model:checked="checked" />
+          只看我的
+        </div>
+      </template>
       <div class="extra-btn">
         <slot name="extra"></slot>
       </div>
@@ -8,20 +14,31 @@
   </div>
 </template>
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
   props: {
     // 自定义列
-    columns: { type: Array, default: () => [] }
+    columns: { type: Array, default: () => [] },
+    // 是否显示只看我的
+    showOnly: { type: Boolean, default: true },
+    only: { type: Boolean, default: false }
   },
   emits: ['search'],
-  setup(_, { emit }) {
-    const handleSearch = ($event) => {
-      emit('search', $event)
+  setup(props, { emit }) {
+    const checked = ref(false)
+    watch(
+      () => props.only,
+      (only) => {
+        checked.value = only
+      }
+    )
+    const handleSearch = ($event = {}) => {
+      emit('search', { ...$event, only: checked.value })
     }
     return {
+      checked,
       handleSearch
     }
   }

@@ -19,6 +19,8 @@
           <a-button @click="handleCancel">{{ cancelText }}</a-button>
         </template>
       </template>
+      <!--只看我的-->
+      <slot name="only"></slot>
     </a-space>
     <slot></slot>
   </a-form>
@@ -186,14 +188,14 @@ export default defineComponent({
     const reverses = ref(['ok', 'cancel'])
     watch(
       () => [props.reverse, props.showOk, props.showCancel],
-      ([value, showOK, showCancel]) => {
+      ([reverse, showOK, showCancel]) => {
         if (showOK === false) {
           reverses.value.shift()
         }
         if (showCancel === false) {
           reverses.value.pop()
         }
-        if (value === true) {
+        if (reverse === true) {
           reverses.value.reverse()
         }
       },
