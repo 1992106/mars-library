@@ -60,9 +60,9 @@ export default defineComponent({
     // 表格行 key 的取值
     rowKey: { type: [String, Function], default: 'id' },
     // 自定义列
-    columns: { type: Array, default: () => [] },
+    columns: { type: Array, required: true, default: () => [] },
     // 表格数据
-    dataSource: { type: Array, default: () => [] },
+    dataSource: { type: Array, required: true, default: () => [] },
     loading: { type: [Boolean, Object], default: false },
     total: { type: Number, default: 0 },
     // 页码

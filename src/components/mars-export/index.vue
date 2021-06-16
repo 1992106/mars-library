@@ -7,8 +7,8 @@
     <a-drawer
       :title="title"
       :width="width"
-      :visible="visible"
       :zIndex="zIndex"
+      v-model:visible="drawerVisible"
       :destroyOnClose="true"
       wrap-class-name="mars-export-wrap"
       @close="handleClose"
@@ -44,7 +44,7 @@ export default defineComponent({
   name: 'MarsExport',
   props: {
     // 自定义列
-    columns: { type: Array, default: () => [] },
+    columns: { type: Array, required: true, default: () => [] },
     labelCol: { type: Object, default: () => ({ span: 6 }) },
     wrapperCol: { type: Object, default: () => ({ span: 12 }) },
     // drawer配置
@@ -58,13 +58,13 @@ export default defineComponent({
   },
 
   setup(_, { emit }) {
-    const visible = ref(false)
+    const drawerVisible = ref(false)
     const handleShow = () => {
-      visible.value = true
+      drawerVisible.value = true
     }
     const handleClose = () => {
       resetFields()
-      visible.value = false
+      drawerVisible.value = false
     }
 
     const modelRef = reactive({
@@ -107,7 +107,7 @@ export default defineComponent({
         // eslint-disable-next-line prettier/prettier
         '三个月': [moment(new Date()).subtract(2, 'months').startOf('month'), moment().endOf('month')]
       },
-      visible,
+      drawerVisible,
       handleShow,
       handleClose,
       handleExport
@@ -120,18 +120,20 @@ export default defineComponent({
   .ant-drawer-wrapper-body {
     overflow: hidden;
     .ant-drawer-body {
-      height: calc(100% - 62px);
-      padding-bottom: 62px;
+      height: calc(100% - 63px);
+      padding-bottom: 63px;
       overflow: auto;
     }
   }
   .mars-form {
+    margin-bottom: 63px;
     &-buttons {
       position: absolute;
       right: 0;
       bottom: 0;
       width: 100%;
-      border-top: 1px solid #e9e9e9;
+      border-top: 1px solid #f0f0f0;
+      border-radius: 0 0 2px 2px;
       padding: 10px 16px;
       background: #fff;
       z-index: 1;

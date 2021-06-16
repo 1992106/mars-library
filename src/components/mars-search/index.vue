@@ -2,7 +2,7 @@
   <div class="mars-search">
     <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch">
       <template #only>
-        <div v-if="showOnly">
+        <div class="only-btn" v-if="showOnly">
           <a-switch v-model:checked="checked" />
           只看我的
         </div>
@@ -59,6 +59,12 @@ export default defineComponent({
     }
     .ant-calendar-picker {
       width: 220px;
+    }
+  }
+  .only-btn {
+    display: flex;
+    .ant-switch {
+      margin-right: 5px;
     }
   }
   .extra-btn {

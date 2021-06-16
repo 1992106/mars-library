@@ -36,7 +36,7 @@ export default defineComponent({
     // model: { type: Object, default: () => ({}) },
     // rules: { type: Object, default: () => ({}) },
     // 自定义字段
-    columns: { type: Array, default: () => [] },
+    columns: { type: Array, required: true, default: () => [] },
     // 表单布局
     layout: {
       validator(value) {
@@ -52,7 +52,7 @@ export default defineComponent({
     // 按钮
     reverse: { type: Boolean, default: false },
     showOk: { type: Boolean, default: true },
-    okText: { type: String, default: '确认' },
+    okText: { type: String, default: '确定' },
     showCancel: { type: Boolean, default: true },
     cancelText: { type: String, default: '取消' }
   },

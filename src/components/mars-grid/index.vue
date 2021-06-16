@@ -77,9 +77,9 @@ export default defineComponent({
     // 自定义行数据唯一主键的字段名
     rowId: { type: String, default: 'id' },
     // 自定义列
-    columns: { type: Array, default: () => [] },
+    columns: { type: Array, required: true, default: () => [] },
     // 表格数据
-    data: { type: Array, default: () => [] },
+    data: { type: Array, required: true, default: () => [] },
     loading: { type: Boolean, default: false },
     total: { type: Number, default: 0 },
     // 页码
