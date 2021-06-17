@@ -333,13 +333,16 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-grid {
-  ::v-deep(.vxe-cell) {
-    display: flex;
-    align-items: center;
-    .vxe-cell--title {
-      flex: 1;
+  ::v-deep(.vxe-table--header) {
+    .vxe-cell {
+      display: flex;
+      align-items: center;
+      .vxe-cell--title {
+        flex: 1;
+      }
     }
   }
+
   .ant-pagination {
     padding: 10px;
     text-align: right;

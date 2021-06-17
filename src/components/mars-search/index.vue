@@ -42,7 +42,8 @@ export default defineComponent({
       }
     )
     const handleSearch = ($event = {}) => {
-      emit('search', { ...$event, only: checked.value })
+      const searchData = { ...$event, ...(props.showOnly ? { only: checked.value } : {}) }
+      emit('search', searchData)
     }
 
     const handleReset = () => {

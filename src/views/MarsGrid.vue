@@ -13,7 +13,7 @@
       </template>
       <template #toolBar><div>toolBar</div></template>
       <template #operate="{ row }">
-        <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle></vxe-button>
+        <vxe-button icon="vxe-icon--edit-outline" title="编辑" circle @click="handleEdit(row)"></vxe-button>
       </template>
     </mars-grid>
     <mars-modal v-bind="modalOptions" v-model:visible="visible" @ok="handleModal"></mars-modal>
@@ -118,6 +118,10 @@ export default defineComponent({
         checkMethod: () => false
       }
     })
+
+    const handleEdit = (row) => {
+      console.log(row, 'table edit')
+    }
 
     const inputChange = ($event) => {
       console.log($event, 'inputChange')
@@ -512,6 +516,7 @@ export default defineComponent({
     return {
       xGrid,
       gridOptions,
+      handleEdit,
       searchOptions,
       handleSearch,
       exportOptions,

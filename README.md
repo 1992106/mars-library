@@ -176,7 +176,12 @@ emits: ['ok', 'cancel']
 
 #### props
 
-> 同mars-form组件一样
+> 同mars-form组件一样，额外拓展了以下props
+
+属性|默认值|描述
+:---:|:---:|:---:
+showOnly | true | 是否显示只看我的
+only | false | 只看我的
 
 #### emits
 

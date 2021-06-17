@@ -10,7 +10,7 @@
       </template>
       <template #toolBar><div>toolBar</div></template>
       <template #operate="{ record }">
-        <a-button type="primary" shape="circle">
+        <a-button type="primary" shape="circle" @click="handleEdit(record)">
           <template #icon><FormOutlined /></template>
         </a-button>
       </template>
@@ -83,6 +83,10 @@ export default defineComponent({
       },
       rowSelection
     })
+
+    const handleEdit = (row) => {
+      console.log(row, 'table edit')
+    }
 
     const inputChange = ($event) => {
       console.log($event, 'inputChange')
@@ -290,6 +294,7 @@ export default defineComponent({
     return {
       xTable,
       tableOptions,
+      handleEdit,
       searchOptions,
       handleSearch,
       exportOptions,
