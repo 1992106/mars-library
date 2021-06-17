@@ -33,7 +33,7 @@ export default ({ mode }) => {
           'ant-design-vue',
           '@ant-design/icons-vue',
           'vxe-table',
-          'xe-utils',
+          'axios',
           'lodash',
           'moment',
           'nprogress'
@@ -96,7 +96,8 @@ export default ({ mode }) => {
         'ant-design-vue/es/locale/zh_CN',
         'moment/dist/locale/zh-cn',
         'ant-design-vue/es/locale/en_US',
-        'moment/dist/locale/eu'
+        'moment/dist/locale/eu',
+        'axios/dist/axios'
       ],
       exclude: []
     },
