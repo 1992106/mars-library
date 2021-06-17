@@ -4,7 +4,7 @@
       <template #searchBar>
         <mars-search v-bind="searchOptions" @search="handleSearch">
           <template #extra>
-            <mars-export v-bind="searchOptions" @export="handleExport"></mars-export>
+            <mars-export v-bind="exportOptions" @export="handleExport"></mars-export>
           </template>
         </mars-search>
       </template>
@@ -272,6 +272,17 @@ export default defineComponent({
       console.log($event, 'search')
     }
 
+    const exportOptions = reactive({
+      columns: [
+        { title: 'Test1', field: 'a', defaultValue: true, rule: [] },
+        { title: 'Test2', field: 'b', defaultValue: true, rule: [] },
+        { title: 'Test3', field: 'c', defaultValue: true, rule: [] },
+        { title: 'Test4', field: 'd', defaultValue: true, rule: [] },
+        { title: 'Test5', field: 'e', defaultValue: true, rule: [] },
+        { title: 'Test6', field: 'f', defaultValue: true, rule: [] }
+      ]
+    })
+
     const handleExport = ($event) => {
       console.log($event, 'export')
     }
@@ -281,6 +292,7 @@ export default defineComponent({
       tableOptions,
       searchOptions,
       handleSearch,
+      exportOptions,
       handleExport
     }
   }

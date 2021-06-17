@@ -34,7 +34,7 @@ export default defineComponent({
     // modal配置
     visible: { type: Boolean, required: true, default: false },
     title: { type: String },
-    width: { type: [String, Number], default: 800 },
+    width: { type: [String, Number], default: 840 },
     zIndex: { type: Number, default: 1000 }
   },
   emits: ['update:visible', 'ok', 'cancel'],

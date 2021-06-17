@@ -181,27 +181,57 @@ emits: ['ok', 'cancel']
 #### emits
 
 ```markdown
-emits: ['search']
+emits: ['search', 'reset']
 ```
+
 #### slots
 ```markdown
 <slot name="extra"></slot> slot中的内容默认向右对齐
+```
+
+### mars-modal组件
+
+#### props
+
+> 同mars-form组件一样，额外拓展了以下props
+
+属性|默认值|描述
+:---:|:---:|:---:
+visible | false | 是否显示
+title | - | 标题
+width | 840 | 宽度
+zIndex | 10000 | zIndex
+
+#### emits
+
+```markdown
+emits: ['update:visible', 'ok', 'cancel']
 ```
 
 ### mars-export组件
 
 #### props
 
-> 同mars-form组件一样，额外扩展了一些
-
 属性|默认值|描述
 :---:|:---:|:---:
+columns | [] | 导出自定义字段
+labelCol | 6 | 标签布局
+wrapperCol | 12 | 控件布局
 title | '导出数据' | 标题
-width | 720 | 宽度
+width | 460 | 宽度
 zIndex | 10000 | zIndex
+
+#### columns
+
+属性|可选值|描述
+:---:|:---:|:---:
+title | - | 字段文本
+field | - | 字段名称
+defaultValue | true | 默认值
+rules | - | 字段校验规则
 
 #### emits
 
 ```markdown
-emits: ['export']
+emits: ['export', 'cancel']
 ```

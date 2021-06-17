@@ -1,11 +1,11 @@
 <template>
   <a-form class="mars-form" :layout="layout" :label-col="labelCol" :wrapper-col="wrapperCol">
-    <template v-for="column in getColumns" :key="column?.field">
-      <a-form-item :label="column?.title" v-bind="validateInfos.region">
+    <template v-for="column in getColumns" :key="column.field">
+      <a-form-item :label="column?.title" v-bind="validateInfos[column.field]">
         <component
           :is="column.type"
           v-bind="column?.props || {}"
-          v-model:[getModelValue(column.type)]="modelRef[column.field]"
+          v-model:[column.modelValue]="modelRef[column.field]"
           v-on="column?.events || {}"
         ></component>
       </a-form-item>
@@ -101,6 +101,8 @@ export default defineComponent({
         allowClear: true
       }
     }
+    // 获取v-model绑定名称
+    const getModelValue = (type) => (['ASwitch'].includes(type) ? 'checked' : 'value')
     // 获取格式化后的columns
     const getColumns = computed(() => {
       return props.columns.map((column) => {
@@ -109,12 +111,8 @@ export default defineComponent({
         const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
         const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
-        return { ...allColumn, props: allProps, events: events }
+        return { ...allColumn, modelValue: getModelValue(column?.type), props: allProps, events: events }
       })
-    })
-    // 获取v-model绑定名称
-    const getModelValue = computed(() => {
-      return (type) => (['ASwitch'].includes(type) ? 'checked' : 'value')
     })
     // 是否是多选框
     const hasMultiple = (column) => {
@@ -147,7 +145,7 @@ export default defineComponent({
     }
     const getRules = (columns) => {
       return columns.reduce((prev, next) => {
-        prev[next.field] = next?.rules
+        prev[next.field] = next?.rules || []
         return prev
       }, {})
     }
@@ -163,6 +161,7 @@ export default defineComponent({
     )
 
     const { validate, resetFields, validateInfos } = useForm(modelRef, rulesRef)
+
     const handleOk = () => {
       validate()
         .then(() => {
@@ -180,6 +179,7 @@ export default defineComponent({
           console.log('from error', err)
         })
     }
+
     const handleCancel = () => {
       resetFields()
       emit('cancel')

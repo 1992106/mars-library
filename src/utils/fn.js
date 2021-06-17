@@ -45,21 +45,16 @@ export const isEmpty = (value) => {
  * @param source
  * @returns {{}}
  */
-export function polyfill(target = {}, source = {}) {
-  const mergeObj = { ...target, ...source }
-  const newObj = {}
-  Object.keys(mergeObj).forEach((key) => {
-    if (getType(target[key]) === 'object') {
-      if (!isEmpty(source[key])) {
-        newObj[key] = polyfill(target[key], source[key])
-      } else {
-        newObj[key] = target[key]
-      }
+export function polyfill(target, source) {
+  const obj = {}
+  Object.keys(target).forEach((key) => {
+    if (isEmpty(source[key])) {
+      obj[key] = target[key]
     } else {
-      newObj[key] = isEmpty(source[key]) ? target[key] : source[key]
+      obj[key] = getType(target[key]) === 'object' ? polyfill(target[key], source[key]) : source[key]
     }
   })
-  return newObj
+  return obj
 }
 
 export const momentToString = (value, valueFormat = 'YYYY-MM-DD') => {

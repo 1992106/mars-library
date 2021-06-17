@@ -1,6 +1,13 @@
 <template>
   <div class="mars-search">
-    <mars-form okText="搜索" cancelText="重置" v-bind="$attrs" :columns="columns" @ok="handleSearch">
+    <mars-form
+      okText="搜索"
+      cancelText="重置"
+      v-bind="$attrs"
+      :columns="columns"
+      @ok="handleSearch"
+      @cancel="handleReset"
+    >
       <template #only>
         <div class="only-btn" v-if="showOnly">
           <a-switch v-model:checked="checked" />
@@ -25,7 +32,7 @@ export default defineComponent({
     showOnly: { type: Boolean, default: true },
     only: { type: Boolean, default: false }
   },
-  emits: ['search'],
+  emits: ['search', 'reset'],
   setup(props, { emit }) {
     const checked = ref(false)
     watch(
@@ -37,9 +44,15 @@ export default defineComponent({
     const handleSearch = ($event = {}) => {
       emit('search', { ...$event, only: checked.value })
     }
+
+    const handleReset = () => {
+      emit('reset')
+    }
+
     return {
       checked,
-      handleSearch
+      handleSearch,
+      handleReset
     }
   }
 })
