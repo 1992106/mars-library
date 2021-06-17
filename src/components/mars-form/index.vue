@@ -28,8 +28,8 @@
 <script>
 import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
-import { dateToMoment, momentToString } from '@utils/fn'
-import { omit, pick, isEmpty } from 'lodash'
+import { dateToMoment, isEmpty, momentToString } from '@src/utils'
+import { omit, pick } from 'lodash'
 export default defineComponent({
   name: 'MarsForm',
   props: {

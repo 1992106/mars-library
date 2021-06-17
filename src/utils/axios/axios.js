@@ -1,7 +1,7 @@
 import axios from 'axios'
 import setting from '@src/config/index'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@utils/accessToken'
+import { getAccessToken } from '@src/utils'
 import store from '@src/store'
 import router from '@src/router'
 

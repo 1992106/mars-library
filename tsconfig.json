@@ -28,7 +28,6 @@
       "@views/*": ["src/views/*"],
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"],
       "@store/*": ["src/store/*"],
     }
   },

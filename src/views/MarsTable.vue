@@ -58,18 +58,18 @@ export default defineComponent({
 
     const tableOptions = reactive({
       columns: [
-        { title: '操作', id: 'operate', fixed: 'left', slots: { customRender: 'operate' } },
-        { title: 'Full Name', dataIndex: 'name', id: 'name', slots: { customRender: 'name' } },
-        { title: 'Age', width: 100, dataIndex: 'age', id: 'age' },
-        { title: 'Column 1', dataIndex: 'address', id: '1', width: 150 },
-        { title: 'Column 2', dataIndex: 'address', id: '2', width: 150 },
-        { title: 'Column 3', dataIndex: 'address', id: '3', width: 150 },
-        { title: 'Column 4', dataIndex: 'address', id: '4', width: 150 },
-        { title: 'Column 5', dataIndex: 'address', id: '5', width: 150 },
-        { title: 'Column 6', dataIndex: 'address', id: '6', width: 150 },
-        { title: 'Column 7', dataIndex: 'address', id: '7', width: 150 },
-        { title: 'Column 8', dataIndex: 'address', id: '8' },
-        { title: 'Action', id: 'operation', fixed: 'right', slots: { customRender: 'action' } }
+        { title: '操作', fixed: 'left', width: 100, slots: { customRender: 'operate' } },
+        { title: 'Full Name', dataIndex: 'name', slots: { customRender: 'name' } },
+        { title: 'Age', width: 100, dataIndex: 'age' },
+        { title: 'Column 1', dataIndex: 'address', width: 150 },
+        { title: 'Column 2', dataIndex: 'address', width: 150 },
+        { title: 'Column 3', dataIndex: 'address', width: 150 },
+        { title: 'Column 4', dataIndex: 'address', width: 150 },
+        { title: 'Column 5', dataIndex: 'address', width: 150 },
+        { title: 'Column 6', dataIndex: 'address', width: 150 },
+        { title: 'Column 7', dataIndex: 'address', width: 150 },
+        { title: 'Column 8', dataIndex: 'address' },
+        { title: 'Action', fixed: 'right', width: 120, slots: { customRender: 'action' } }
       ],
       dataSource: data,
       loading: false,
@@ -274,11 +274,11 @@ export default defineComponent({
 
     const exportOptions = reactive({
       columns: [
-        { title: 'Test1', field: 'a', defaultValue: true, rule: [] },
-        { title: 'Test2', field: 'b', defaultValue: true, rule: [] },
-        { title: 'Test3', field: 'c', defaultValue: true, rule: [] },
+        { title: 'Test1', field: 'a' },
+        { title: 'Test2', field: 'b' },
+        { title: 'Test3', field: 'c', defaultValue: false, rule: [] },
         { title: 'Test4', field: 'd', defaultValue: true, rule: [] },
-        { title: 'Test5', field: 'e', defaultValue: true, rule: [] },
+        { title: 'Test5', field: 'e', defaultValue: false, rule: [] },
         { title: 'Test6', field: 'f', defaultValue: true, rule: [] }
       ]
     })

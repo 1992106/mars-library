@@ -53,7 +53,7 @@ import { ExportOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
 import moment from 'moment'
-import { momentToString } from '@utils/fn'
+import { isEmpty, momentToString } from '@src/utils'
 export default defineComponent({
   name: 'MarsExport',
   props: {
@@ -99,7 +99,7 @@ export default defineComponent({
         modelRef = reactive({
           date: [],
           ...columns.reduce((prev, next) => {
-            prev[next.field] = next?.defaultValue
+            prev[next.field] = isEmpty(next?.defaultValue) ? true : next?.defaultValue
             return prev
           }, {})
         })
