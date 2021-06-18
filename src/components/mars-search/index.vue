@@ -1,6 +1,7 @@
 <template>
   <div class="mars-search">
     <mars-form
+      ref="formRef"
       okText="搜索"
       cancelText="重置"
       v-bind="$attrs"
@@ -10,7 +11,7 @@
     >
       <template #only>
         <div class="only-btn" v-if="showOnly">
-          <a-switch v-model:checked="checked" />
+          <a-switch v-model:checked="checked" @change="handleOnly" />
           只看我的
         </div>
       </template>
@@ -21,7 +22,8 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, toRaw, watch } from 'vue'
+import { isEmpty } from '@src/utils'
 export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
@@ -34,15 +36,33 @@ export default defineComponent({
   },
   emits: ['search', 'reset'],
   setup(props, { emit }) {
+    const formRef = ref(null)
+
     const checked = ref(false)
+    const handleOnly = () => {
+      // 判断是否点击了搜索按钮
+      if (isEmpty(searchParams.value)) {
+        formRef.value?.handleOk && formRef.value.handleOk()
+        return
+      }
+      emitData()
+    }
+
     watch(
       () => props.only,
       (only) => {
         checked.value = only
       }
     )
+
+    const searchParams = ref({})
     const handleSearch = ($event = {}) => {
-      const searchData = { ...$event, ...(props.showOnly ? { only: checked.value } : {}) }
+      searchParams.value = $event
+      emitData()
+    }
+
+    const emitData = () => {
+      const searchData = { ...toRaw(searchParams.value), ...(props.showOnly ? { only: checked.value } : {}) }
       emit('search', searchData)
     }
 
@@ -51,7 +71,9 @@ export default defineComponent({
     }
 
     return {
+      formRef,
       checked,
+      handleOnly,
       handleSearch,
       handleReset
     }
