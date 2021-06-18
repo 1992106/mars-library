@@ -12,7 +12,8 @@
     ".": {
       "import": "./dist/mars-library.es.js",
       "require": "./dist/mars-library.cjs.js"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite --force",

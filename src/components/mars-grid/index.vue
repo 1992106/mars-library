@@ -79,7 +79,7 @@ export default defineComponent({
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
     // 表格数据
-    data: { type: Array, required: true, default: () => [] },
+    data: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
     total: { type: Number, default: 0 },
     // 页码

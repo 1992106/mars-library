@@ -27,7 +27,7 @@ export default defineComponent({
   inheritAttrs: false,
   props: {
     // 自定义列
-    columns: { type: Array, default: () => [] },
+    columns: { type: Array, required: true, default: () => [] },
     // 是否显示只看我的
     showOnly: { type: Boolean, default: true },
     only: { type: Boolean, default: false }
