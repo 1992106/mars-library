@@ -91,25 +91,33 @@ export default defineComponent({
       dates.value = val
     }
 
-    let modelRef = reactive({})
-    let rulesRef = reactive({})
+    const modelRef = reactive({})
+    const rulesRef = reactive({})
     watch(
       () => props.columns,
       (columns) => {
-        modelRef = reactive({
-          date: [],
-          ...columns.reduce((prev, next) => {
-            prev[next.field] = isEmpty(next?.defaultValue) ? true : next?.defaultValue
-            return prev
-          }, {})
-        })
-        rulesRef = reactive({
-          date: [{ required: true, message: '请选择创建日期', type: 'array' }],
-          ...columns.reduce((prev, next) => {
-            prev[next.field] = next?.rules || []
-            return prev
-          }, {})
-        })
+        Object.assign(
+          modelRef,
+          reactive({
+            date: [],
+            ...columns.reduce((prev, next) => {
+              prev[next.field] = isEmpty(next?.defaultValue) ? true : next?.defaultValue
+              return prev
+            }, {})
+          })
+        )
+        Object.assign(
+          rulesRef,
+          reactive({
+            date: [{ required: true, message: '请选择创建日期', type: 'array' }],
+            ...columns.reduce((prev, next) => {
+              if (!isEmpty(next?.rules)) {
+                prev[next.field] = next?.rules
+              }
+              return prev
+            }, {})
+          })
+        )
       },
       { deep: true, immediate: true }
     )

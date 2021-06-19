@@ -145,7 +145,9 @@ export default defineComponent({
     }
     const getRules = (columns) => {
       return columns.reduce((prev, next) => {
-        prev[next.field] = next?.rules || []
+        if (!isEmpty(next?.rules)) {
+          prev[next.field] = next?.rules
+        }
         return prev
       }, {})
     }
