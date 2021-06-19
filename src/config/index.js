@@ -5,10 +5,11 @@ const setting = {
   // 请求路径
   // base_url: 'http://localhost:8888/api',
   // http://oc.dev.patpat.vip/erp/micro_app/
-  base_url: 'http://oc.dev.patpat.vip',
+  // http://oc.dev.patpat.vip
+  base_url: 'https://newmars-test.patpat.shop',
 
   // 是否使用mock
-  mock: true,
+  mock: false,
 
   // 请求超时
   request_timeout: 10000,

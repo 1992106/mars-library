@@ -23,7 +23,8 @@
 </template>
 <script>
 import { defineComponent, ref, toRaw, watch } from 'vue'
-import { isEmpty } from '@src/utils'
+import { isEmpty, toEmpty } from '@src/utils'
+import { cloneDeep } from 'lodash'
 export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
@@ -62,7 +63,10 @@ export default defineComponent({
     }
 
     const emitData = () => {
-      const searchData = { ...toRaw(searchParams.value), ...(props.showOnly ? { only: checked.value } : {}) }
+      const searchData = {
+        ...toEmpty(cloneDeep(toRaw(searchParams.value))),
+        ...(props.showOnly ? { only: checked.value } : {})
+      }
       emit('search', searchData)
     }
 

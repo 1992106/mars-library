@@ -197,6 +197,7 @@ export default defineComponent({
       }
       emit('update:pagination', pagination)
       emit('search')
+      // gridRef.value.loadData()
     }
     const handleShowSizeChange = (_, pageSize) => {
       const pagination = {
@@ -205,6 +206,7 @@ export default defineComponent({
       }
       emit('update:pagination', pagination)
       emit('search')
+      // gridRef.value.loadData()
     }
     // 单选
     const handleRadioChange = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
@@ -245,6 +247,7 @@ export default defineComponent({
       const $xGrid = unref(gridRef)
       emit('update:selected-value', $xGrid.getCheckboxRecords())
       emit('checkbox-all', { records, reserves, indeterminates, checked, $event })
+      // gridRef.value.reloadData()
     }
     // 单元格点击事件
     const handleCellClick = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
@@ -257,6 +260,7 @@ export default defineComponent({
       const $xGrid = unref(gridRef)
       if ($xGrid.isUpdateByRow(row, field)) {
         emit('edit-closed', { row, field, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
+        // $xGrid.reloadRow(row, null, field)
       }
     }
     // 编辑校验
@@ -282,6 +286,7 @@ export default defineComponent({
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })
       emit('search', filters)
+      // gridRef.value.loadData()
     }
     // 清除所有筛选条件
     const handleClearFilter = ({ filterList, $event }) => {

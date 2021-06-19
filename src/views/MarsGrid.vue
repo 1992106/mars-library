@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
@@ -123,6 +124,12 @@ export default defineComponent({
       console.log(row, 'table edit')
     }
 
+    const store = useStore()
+    store.dispatch('dict/getEnumerator')
+    const enumerator = computed(() => {
+      return [{ label: '全部', value: null }].concat(store.getters['dict/enumerator'])
+    })
+
     const inputChange = ($event) => {
       console.log($event, 'inputChange')
     }
@@ -174,40 +181,7 @@ export default defineComponent({
           field: 'city',
           rules: [],
           props: {
-            options: [
-              {
-                value: 'zhejiang',
-                label: 'Zhejiang',
-                children: [
-                  {
-                    value: 'hangzhou',
-                    label: 'Hangzhou',
-                    children: [
-                      {
-                        value: 'xihu',
-                        label: 'West Lake'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                value: 'jiangsu',
-                label: 'Jiangsu',
-                children: [
-                  {
-                    value: 'nanjing',
-                    label: 'Nanjing',
-                    children: [
-                      {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
+            options: enumerator,
             placeholder: '请选择'
           }
         },

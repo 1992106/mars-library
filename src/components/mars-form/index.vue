@@ -149,13 +149,13 @@ export default defineComponent({
         return prev
       }, {})
     }
-    let modelRef = reactive({})
-    let rulesRef = reactive({})
+    const modelRef = reactive({})
+    const rulesRef = reactive({})
     watch(
       () => getColumns,
       (columns) => {
-        modelRef = reactive(getModel(columns.value))
-        rulesRef = reactive(getRules(columns.value))
+        Object.assign(modelRef, getModel(columns.value))
+        Object.assign(rulesRef, getRules(columns.value))
       },
       { deep: true, immediate: true }
     )

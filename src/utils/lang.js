@@ -40,6 +40,22 @@ export const isEmpty = (value) => {
 }
 
 /**
+ * 去空对象空值
+ * @param object
+ * @returns {*}
+ */
+export const toEmpty = (object) => {
+  if (getType(object) === 'object') {
+    Object.keys(object).forEach((key) => {
+      if (isEmpty(object[key])) {
+        delete object[key]
+      }
+    })
+  }
+  return object
+}
+
+/**
  * 填充对象
  * @param target
  * @param source
