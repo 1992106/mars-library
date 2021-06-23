@@ -12,8 +12,7 @@ const fetchPost = (url) => {
       method: 'POST',
       headers: {
         ...(token ? { [setting.authorization_name]: `${setting.token_prefix} ${token}` } : {})
-      },
-      credentials: 'include'
+      }
     })
       .then((response) => {
         // 当接收到一个代表错误的 HTTP 状态码时，从 fetch() 返回的 Promise 不会被标记为 reject， 即使响应的 HTTP 状态码是 404 或 500。

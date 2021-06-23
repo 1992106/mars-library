@@ -53,7 +53,6 @@ import {
   unref
 } from 'vue'
 import { debounce } from 'lodash'
-import { isEmpty } from '@src/utils'
 export default defineComponent({
   name: 'MarsTable',
   inheritAttrs: false,
@@ -70,6 +69,8 @@ export default defineComponent({
     showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, pageSize: 20 }) },
     paginationConfig: Object,
+    // 自动计算高度
+    resize: { type: Boolean, default: false },
     // 横向/纵向滚动
     scroll: { type: Object, default: () => ({ scrollToFirstRowOnChange: true }) },
     // 选择功能的配置
@@ -113,7 +114,7 @@ export default defineComponent({
      * data
      */
     const state = reactive({
-      scroll: { y: 300 }
+      scroll: {}
     })
     /**
      * refs
@@ -141,18 +142,18 @@ export default defineComponent({
     const onResize = () => {
       nextTick(() => {
         // TODO: 待优化
-        let $xTable = unref(tableRef)
-        let $xTableHeader = $xTable?.$el?.querySelector('.ant-table-header> table')
-        let tableHeaderHeight = $xTableHeader?.offsetHeight || 0
-        let pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 300
-        let HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
-        let paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
-        state.scroll.y = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
+        const $xTable = unref(tableRef)
+        const $xTableHeader = $xTable?.$el?.querySelector('.ant-table-header> table')
+        const tableHeaderHeight = $xTableHeader?.offsetHeight || 0
+        const pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 0
+        const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
+        const paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
+        state.scroll['y'] = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
       })
     }
     onMounted(() => {
-      if (isEmpty(props.scroll.y)) {
-        setTimeout(onResize, 100)
+      if (props.resize) {
+        setTimeout(onResize, 200)
         window.addEventListener('resize', debounce(onResize, 200))
       }
     })
@@ -207,9 +208,6 @@ export default defineComponent({
   flex-direction: column;
   background-color: #fff;
   height: 100%;
-  .ant-table-wrapper {
-    flex: 1;
-  }
   .ant-pagination {
     padding: 10px;
     text-align: right;

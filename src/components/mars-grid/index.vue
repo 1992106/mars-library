@@ -87,7 +87,7 @@ export default defineComponent({
     pagination: { type: Object, default: () => ({ page: 1, pageSize: 20 }) },
     paginationConfig: Object,
     // 高度
-    height: { type: [Number, String], default: 'auto' },
+    height: [Number, String],
     // 斑马纹
     stripe: { type: Boolean, default: true },
     // 序号配置
@@ -140,6 +140,7 @@ export default defineComponent({
     'toggle-tree-expand'
   ],
   setup(props, { emit }) {
+    console.log(props.height, 'height')
     /**
      * 默认值
      */

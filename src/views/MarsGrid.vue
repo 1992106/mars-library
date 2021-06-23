@@ -41,6 +41,7 @@ export default defineComponent({
       })
     }
     const gridOptions = reactive({
+      height: 'auto',
       columns: [
         { type: 'checkbox', title: '全选', width: 80 },
         { title: '操作', width: 100, slots: { default: 'operate' } },

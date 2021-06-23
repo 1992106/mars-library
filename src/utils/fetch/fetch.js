@@ -13,7 +13,7 @@ const initHeaders = (method) => {
   const token = getAccessToken()
   return new Headers({
     ...(token ? { [setting.authorization_name]: `${setting.token_prefix} ${token}` } : {}),
-    ...(method === 'POST' ? { 'Content-Type': 'application/json' } : {})
+    ...(method === 'POST' ? { 'Content-Type': 'application/json;charset=UTF-8' } : {})
   })
 }
 
@@ -29,8 +29,8 @@ const initRequest = (url, body, method) => {
   const myInit = {
     method: method,
     headers: initHeaders(method),
-    ...(method === 'POST' ? { body: JSON.stringify(body) } : {}),
-    credentials: 'include'
+    ...(method === 'POST' ? { body: JSON.stringify(body) } : {})
+    // credentials: 'include' // include: cookie既可以同域发送，也可以跨域发送; // 后端Access-Control-Allow-Credentials设置为true时, Access-Control-Allow-Origin不能设置为*，需要设置动态的origin
   }
   const aplUrl = setting.mock ? url : `${setting.base_url}${url}`
   return new Request(aplUrl, myInit)

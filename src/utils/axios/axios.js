@@ -8,7 +8,7 @@ import router from '@src/router'
 // 全局axios默认值
 axios.defaults.baseURL = !setting.mock ? setting.base_url : ''
 axios.defaults.timeout = setting.request_timeout
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true // 后端Access-Control-Allow-Credentials设置为true时, Access-Control-Allow-Origin不能设置为*，需要设置动态的origin
 
 // 创建axios实例
 const httpService = axios.create()

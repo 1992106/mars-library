@@ -36,7 +36,7 @@ total | 0 | 总数
 showPagination | true | 是否显示分页
 pagination | { page: 1, pageSize: 20 } | 当前页数、每页条数
 paginationConfig | { defaultPageSize: 20, showSizeChanger: true, showQuickJumper: true, showTotal: (total) => `共 ${total} 条`, pageSizeOptions: ['20', '40', '60', '80', '100'] } | [Pagination](https://2x.antdv.com/components/pagination-cn#API)
-height | 'auto' | 表格高度
+height | - | 表格高度
 stripe | true | 表格斑马纹
 seqConfig | - | 序号配置
 selectedValue | [] | 勾选数据
@@ -115,6 +115,7 @@ total | 0 | 总数
 showPagination | true | 是否显示分页
 pagination | { page: 1, pageSize: 20 } | 当前页数、每页条数
 paginationConfig | { defaultPageSize: 20, showSizeChanger: true, showQuickJumper: true, showTotal: (total) => `共 ${total} 条`, pageSizeOptions: ['20', '40', '60', '80', '100']  | [Pagination](https://2x.antdv.com/components/pagination-cn#API)
+resize | false | 自动设置高度
 scroll | { scrollToFirstRowOnChange: true } | 横向/纵向滚动
 rowSelection | - | 选择功能的配置
 rowClassName | - | 行的类名（默认内置table-striped）

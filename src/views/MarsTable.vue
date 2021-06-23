@@ -57,6 +57,7 @@ export default defineComponent({
     }
 
     const tableOptions = reactive({
+      resize: true,
       columns: [
         { title: '操作', fixed: 'left', width: 100, slots: { customRender: 'operate' } },
         { title: 'Full Name', dataIndex: 'name', slots: { customRender: 'name' } },
