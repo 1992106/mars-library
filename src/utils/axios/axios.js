@@ -8,10 +8,13 @@ import router from '@src/router'
 // 全局axios默认值
 axios.defaults.baseURL = !setting.mock ? setting.base_url : ''
 axios.defaults.timeout = setting.request_timeout
-// axios.defaults.withCredentials = true // 后端Access-Control-Allow-Credentials设置为true时, Access-Control-Allow-Origin不能设置为*，需要设置动态的origin
 
 // 创建axios实例
-const httpService = axios.create()
+const httpService = axios.create({
+  // withCredentials: true, // 后端Access-Control-Allow-Credentials设置为true时, Access-Control-Allow-Origin不能设置为*，需要设置动态的origin
+  // xsrfHeaderName: 'Authorization', // 表示请求 headers 中 token 对应的 header 名称
+  // xsrfCookieName: 'token' // 表示存储 token 的 cookie 名称
+})
 
 // 添加请求拦截器
 httpService.interceptors.request.use(
