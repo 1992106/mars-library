@@ -4,7 +4,7 @@ import { getAccessToken } from '@src/utils'
 import store from '@src/store'
 import router from '@src/router'
 
-const fetchPost = (url) => {
+const fetchPost = (url, body) => {
   const aplUrl = setting.mock ? url : `${setting.base_url}${url}`
   const token = getAccessToken()
   return new Promise((resolve, reject) => {
@@ -12,7 +12,8 @@ const fetchPost = (url) => {
       method: 'POST',
       headers: {
         ...(token ? { [setting.authorization_name]: `${setting.token_prefix} ${token}` } : {})
-      }
+      },
+      body: JSON.stringify(body)
     })
       .then((response) => {
         // 当接收到一个代表错误的 HTTP 状态码时，从 fetch() 返回的 Promise 不会被标记为 reject， 即使响应的 HTTP 状态码是 404 或 500。

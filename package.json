@@ -67,6 +67,7 @@
     "vite-plugin-mock": "^2.5.0",
     "vite-plugin-style-import": "^0.9.2",
     "vxe-table-plugin-antd": "^3.0.3",
+    "xe-ajax": "^4.0.5",
     "xe-utils": "^3.2.1"
   },
   "peerDependencies": {
