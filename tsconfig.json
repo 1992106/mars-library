@@ -33,10 +33,11 @@
   },
   "include": [
     "src/**/*.vue",
-    "src/**/*.jsx",
     "src/**/*.js",
-    "src/**/*.tsx",
-    "src/**/*.ts"
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
