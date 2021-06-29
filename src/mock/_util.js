@@ -1,5 +1,3 @@
-// Interface data format used to return a unified format
-
 export function resultSuccess(result, { code = 1, error = null } = {}) {
   return {
     code,

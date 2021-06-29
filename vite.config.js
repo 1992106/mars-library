@@ -1,9 +1,10 @@
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import path from 'path'
+import legacy from '@vitejs/plugin-legacy'
 import styleImport from 'vite-plugin-style-import'
 import html from 'vite-plugin-html'
 import { viteMockServe } from 'vite-plugin-mock'
+import path from 'path'
 import setting from './src/config'
 
 // https://vitejs.dev/config/
@@ -45,6 +46,12 @@ export default ({ mode }) => {
     plugins: [
       vue(),
       vueJsx({}),
+      mode !== 'lib'
+        ? legacy({
+            targets: ['ie >= 11'],
+            additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+          })
+        : [],
       styleImport({
         libs: [
           {

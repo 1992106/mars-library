@@ -5,15 +5,18 @@ module.exports = {
     node: true
   },
   extends: ['plugin:vue/vue3-essential', 'eslint:recommended', 'plugin:prettier/recommended'],
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    ecmaVersion: 12,
     parser: '@typescript-eslint/parser',
-    sourceType: 'module'
+    ecmaVersion: 12,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
   plugins: ['@typescript-eslint'],
+  globals: {},
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'prettier/prettier': [2, { endOfLine: 'lf' }],
     'vue/no-unused-components': 0,
     'vue/no-unused-vars': 0,
@@ -27,7 +30,6 @@ module.exports = {
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 0,
-    'no-underscore-dangle': 0,
     'no-param-reassign': 0
   }
 }

@@ -10,7 +10,6 @@
       "vite/client"
     ],
     "allowJs": true,
-    "checkJs": false,
     "skipLibCheck": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
