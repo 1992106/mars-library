@@ -1,7 +1,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import { Menu, Dropdown, Avatar, Modal, notification } from 'ant-design-vue'
 import { DownOutlined } from '@ant-design/icons-vue'
-import setting from '@src/config'
+import setting from '@/src/config'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import styles from './index.module.scss'

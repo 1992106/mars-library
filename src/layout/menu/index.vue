@@ -20,7 +20,7 @@
 import { defineComponent, reactive, watch, computed, toRefs } from 'vue'
 import { Menu } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { routes as routeList } from '@src/router'
+import { routes as routeList } from '@/src/router'
 import MenuItem from './item.vue'
 
 export default defineComponent({

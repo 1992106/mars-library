@@ -1,4 +1,4 @@
-import setting from '@src/config'
+import setting from '@/src/config'
 
 export function createPageGuard(router) {
   const loadedPageMap = new Map()

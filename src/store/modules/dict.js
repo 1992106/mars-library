@@ -1,4 +1,4 @@
-import request from '@src/utils/fetch'
+import request from '@/utils/fetch'
 const dict = {
   state: {
     //枚举类型

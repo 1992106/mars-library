@@ -1,4 +1,4 @@
-import setting from '@src/config/index.js'
+import setting from '@/src/config/index.js'
 
 const { token_name } = setting
 

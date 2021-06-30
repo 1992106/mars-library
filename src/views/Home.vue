@@ -24,8 +24,8 @@
 import { defineComponent, ref } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import request from '@src/utils/axios'
-// import request from '@src/utils/fetch'
+import request from '@/utils/axios'
+// import request from '@/utils/fetch'
 
 export default defineComponent({
   name: 'Dashboard',

@@ -53,7 +53,7 @@ import { ExportOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
 import moment from 'moment'
-import { isEmpty, momentToString } from '@src/utils'
+import { isEmpty, momentToString } from '@/utils'
 export default defineComponent({
   name: 'MarsExport',
   props: {

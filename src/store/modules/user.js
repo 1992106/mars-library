@@ -1,5 +1,5 @@
-import request from '@src/utils/fetch'
-import { setAccessToken, getAccessToken, removeAccessToken, isEmpty } from '@src/utils'
+import request from '@/utils/fetch'
+import { setAccessToken, getAccessToken, removeAccessToken, isEmpty } from '@/utils'
 
 const getLocalUserInfo = () => {
   try {

@@ -1,4 +1,4 @@
-import * as components from '@components/index'
+import * as components from '@/components/index'
 
 const install = function installMarsComponents(app) {
   Object.entries(components).forEach(([componentName, component]) => {
@@ -8,4 +8,4 @@ const install = function installMarsComponents(app) {
 
 export default install
 
-export * from '@components/index'
+export * from '@/components/index'

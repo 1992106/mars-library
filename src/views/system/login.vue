@@ -28,7 +28,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { Form, Input, Alert, Button, notification } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import setting from '@src/config'
+import setting from '@/src/config'
 
 export default defineComponent({
   name: 'Login',

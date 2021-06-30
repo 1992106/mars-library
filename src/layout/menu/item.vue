@@ -28,7 +28,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { Menu } from 'ant-design-vue'
-import IconFont from '@components/iconfont'
+import IconFont from '@/components/iconfont'
 
 export default defineComponent({
   name: 'menu-item',

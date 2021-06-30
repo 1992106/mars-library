@@ -1,8 +1,8 @@
-import setting from '@src/config/index'
+import setting from '@/src/config/index'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@src/utils'
-import store from '@src/store'
-import router from '@src/router'
+import { getAccessToken } from '@/utils'
+import store from '@/store'
+import router from '@/src/router'
 
 const fetchPost = (url, body) => {
   const aplUrl = setting.mock ? url : `${setting.base_url}${url}`

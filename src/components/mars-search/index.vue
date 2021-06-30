@@ -23,7 +23,7 @@
 </template>
 <script>
 import { defineComponent, ref, toRaw, watch } from 'vue'
-import { isEmpty, toEmpty } from '@src/utils'
+import { isEmpty, toEmpty } from '@/utils'
 import { cloneDeep } from 'lodash'
 export default defineComponent({
   name: 'MarsSearch',

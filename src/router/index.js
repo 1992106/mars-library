@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { BaseLayout } from '@src/layout'
+import { BaseLayout } from '@/src/layout'
 
 export const routes = [
   {
@@ -14,7 +14,7 @@ export const routes = [
   {
     path: '/404',
     name: '404',
-    component: () => import('@views/system/404.vue'),
+    component: () => import('@/views/system/404.vue'),
     meta: {
       hidden: true
     }
@@ -22,7 +22,7 @@ export const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@views/system/login.vue'),
+    component: () => import('@/views/system/login.vue'),
     meta: {
       hidden: true
     }
@@ -39,7 +39,7 @@ export const routes = [
       {
         path: '/redirect/:path(.*)',
         name: 'Redirect',
-        component: () => import('@views/system/Redirect.vue'),
+        component: () => import('@/views/system/Redirect.vue'),
         meta: {
           title: 'Redirect',
           hidden: true
@@ -55,7 +55,7 @@ export const routes = [
       {
         path: 'index',
         name: 'dashboard',
-        component: () => import('@views/Home.vue'),
+        component: () => import('@/views/Home.vue'),
         meta: {
           title: '仪表盘',
           icon: 'icon-dashboard'
@@ -64,7 +64,7 @@ export const routes = [
       {
         path: 'form',
         name: 'form',
-        component: () => import('@views/Form.vue'),
+        component: () => import('@/views/Form.vue'),
         meta: {
           title: '表单',
           icon: 'icon-project'
@@ -85,7 +85,7 @@ export const routes = [
       {
         path: 'vxeTable',
         name: 'vxeTable',
-        component: () => import('@views/VxeTable.vue'),
+        component: () => import('@/views/VxeTable.vue'),
         meta: {
           title: 'VxeTable'
         }
@@ -93,7 +93,7 @@ export const routes = [
       {
         path: 'marsGrid',
         name: 'marsGrid',
-        component: () => import('@views/MarsGrid.vue'),
+        component: () => import('@/views/MarsGrid.vue'),
         meta: {
           title: 'MarsGrid'
         }
@@ -101,7 +101,7 @@ export const routes = [
       {
         path: 'antTable',
         name: 'antTable',
-        component: () => import('@views/AntTable.vue'),
+        component: () => import('@/views/AntTable.vue'),
         meta: {
           title: 'AntTable'
         }
@@ -109,7 +109,7 @@ export const routes = [
       {
         path: 'marsTable',
         name: 'marsTable',
-        component: () => import('@views/MarsTable.vue'),
+        component: () => import('@/views/MarsTable.vue'),
         meta: {
           title: 'MarsTable'
         }

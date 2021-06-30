@@ -21,9 +21,9 @@
 import { defineComponent, unref, watch, computed, ref } from 'vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
-import { Tabs } from 'ant-design-vue'
-import IconFont from '@components/iconfont'
 import { useStore } from 'vuex'
+import { Tabs } from 'ant-design-vue'
+import IconFont from '@/components/iconfont'
 
 export default defineComponent({
   name: 'MultiTabs',

@@ -1,4 +1,4 @@
-import router from '@src/router'
+import router from '@/src/router'
 
 export function useGo(_router) {
   const __router = _router || router

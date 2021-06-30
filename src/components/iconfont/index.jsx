@@ -1,6 +1,6 @@
 import { defineComponent, unref, computed } from 'vue'
 import { createFromIconfontCN } from '@ant-design/icons-vue'
-import setting from '@src/config'
+import setting from '@/src/config'
 
 const IconFont = defineComponent({
   name: 'icon-font',

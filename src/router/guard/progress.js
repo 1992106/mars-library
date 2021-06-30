@@ -1,4 +1,4 @@
-import setting from '@src/config'
+import setting from '@/src/config'
 import nProgress from 'nprogress'
 
 export const createProgressGuard = (router) => {

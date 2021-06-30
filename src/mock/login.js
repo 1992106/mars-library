@@ -1,4 +1,4 @@
-import { resultError, resultSuccess } from '@src/mock/_util'
+import { resultError, resultSuccess } from '@/src/mock/_util'
 
 export default [
   {

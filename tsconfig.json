@@ -23,11 +23,12 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"],
-      "@views/*": ["src/views/*"],
-      "@components/*": ["src/components/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@store/*": ["src/store/*"],
+      "@/src/*": ["src/*"],
+      "@/views/*": ["src/views/*"],
+      "@/components/*": ["src/components/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/store/*": ["src/store/*"],
+      "@/utils/*": ["src/utils/*"]
     }
   },
   "include": [
