@@ -105,7 +105,7 @@ export default ({ mode }) => {
   }
 
   if (mode === 'development') {
-    build.server = {
+    config.server = {
       port: 8888,
       open: true
     }

@@ -31,7 +31,6 @@
     "ant-design-vue": "^2.1.6",
     "axios": "^0.21.1",
     "lodash-es": "^4.17.21",
-    "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "vue": "3.0.10",
     "vue-router": "^4.0.0-rc.6",
@@ -103,13 +102,13 @@
       "eslint --fix",
       "git add"
     ],
-    "*.vue": [
+    "src/**/*.vue": [
       "prettier --write",
       "stylelint --fix",
       "eslint --fix",
       "git add"
     ],
-    "*.{css,scss,sass,less}": [
+    "src/**/*.{css,scss,sass,less}": [
       "prettier --write",
       "stylelint --fix",
       "git add"
