@@ -17,7 +17,7 @@ export function request(url, params = {}, method = 'post') {
       .then((res = {}) => {
         resolve(res)
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err)
       })
   })
@@ -69,10 +69,10 @@ export function upload(url, params = {}) {
       data: params,
       headers: { 'Content-Type': 'multipart/form-data' }
     })
-      .then((response) => {
+      .then(response => {
         resolve(response)
       })
-      .catch((error) => {
+      .catch(error => {
         reject(error)
       })
   })

@@ -75,19 +75,19 @@ export default defineComponent({
     const drawerVisible = ref(false)
 
     const dates = ref([])
-    const disabledDate = (current) => {
+    const disabledDate = current => {
       if (!dates.value || dates.value.length === 0) {
         return false
       }
       const diffDate = current.diff(dates.value[0], 'days')
       return Math.abs(diffDate) > 90
     }
-    const handleOpenChange = (open) => {
+    const handleOpenChange = open => {
       if (open) {
         dates.value = []
       }
     }
-    const handleCalendarChange = (val) => {
+    const handleCalendarChange = val => {
       dates.value = val
     }
 
@@ -95,7 +95,7 @@ export default defineComponent({
     const rulesRef = reactive({})
     watch(
       () => props.columns,
-      (columns) => {
+      columns => {
         Object.assign(
           modelRef,
           reactive({
@@ -131,7 +131,7 @@ export default defineComponent({
           const exportData = { ...dateRaw, date: momentToString(dateRaw.date) }
           emit('export', exportData)
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('export error', err)
         })
     }

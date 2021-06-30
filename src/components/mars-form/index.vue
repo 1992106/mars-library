@@ -102,10 +102,10 @@ export default defineComponent({
       }
     }
     // 获取v-model绑定名称
-    const getModelValue = (type) => (['ASwitch'].includes(type) ? 'checked' : 'value')
+    const getModelValue = type => (['ASwitch'].includes(type) ? 'checked' : 'value')
     // 获取格式化后的columns
     const getColumns = computed(() => {
-      return props.columns.map((column) => {
+      return props.columns.map(column => {
         const { props = {}, events = {} } = column
         const defaultProps = defaultState[column?.type] || {}
         const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
@@ -115,7 +115,7 @@ export default defineComponent({
       })
     })
     // 是否是多选框
-    const hasMultiple = (column) => {
+    const hasMultiple = column => {
       return (
         (column?.type === 'ASelect' && ['multiple', 'tags'].includes(column?.props?.mode)) ||
         (column?.type === 'ASlider' && column?.props?.range) ||
@@ -124,14 +124,14 @@ export default defineComponent({
       )
     }
     // 是否是日期选择框
-    const hasMoment = (column) => {
+    const hasMoment = column => {
       return ['ADatePicker', 'AWeekPicker', 'AMonthPicker', 'ARangePicker', 'ATimePicker'].includes(column?.type)
     }
-    const getModel = (columns) => {
+    const getModel = columns => {
       const allDefaultValue = ['defaultValue', 'defaultPickerValue']
       return columns.reduce((prev, next) => {
         // 在使用useForm时，allDefaultValue中的默认值不生效；所以手动设置默认值
-        let value = allDefaultValue.map((val) => next?.props[val]).find((val) => val != null)
+        let value = allDefaultValue.map(val => next?.props[val]).find(val => val != null)
         // 格式化时间
         if (hasMoment(next)) {
           value = dateToMoment(value)
@@ -143,7 +143,7 @@ export default defineComponent({
         return prev
       }, {})
     }
-    const getRules = (columns) => {
+    const getRules = columns => {
       return columns.reduce((prev, next) => {
         if (!isEmpty(next?.rules)) {
           prev[next.field] = next?.rules
@@ -155,7 +155,7 @@ export default defineComponent({
     const rulesRef = reactive({})
     watch(
       () => getColumns,
-      (columns) => {
+      columns => {
         Object.assign(modelRef, getModel(columns.value))
         Object.assign(rulesRef, getRules(columns.value))
       },
@@ -168,7 +168,7 @@ export default defineComponent({
       validate()
         .then(() => {
           const modelRaw = toRaw(modelRef)
-          Object.keys(modelRaw).forEach((item) => {
+          Object.keys(modelRaw).forEach(item => {
             let value = modelRaw[item]
             if (typeof value === 'string') {
               value = value.trim()
@@ -177,7 +177,7 @@ export default defineComponent({
           })
           emit('ok', modelRaw)
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('from error', err)
         })
     }

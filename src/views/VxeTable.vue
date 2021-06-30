@@ -52,7 +52,7 @@ export default defineComponent({
             field: 'name',
             title: '名称',
             span: 8,
-            titlePrefix: { message: 'app.body.valid.rName', icon: 'fa fa-exclamation-circle' },
+            titlePrefix: { message: '名称', icon: 'fa fa-exclamation-circle' },
             itemRender: { name: '$input', props: { placeholder: '请输入名称' } }
           },
           {
@@ -96,8 +96,8 @@ export default defineComponent({
             itemRender: {
               name: '$buttons',
               children: [
-                { props: { type: 'submit', content: 'app.body.label.search', status: 'primary' } },
-                { props: { type: 'reset', content: 'app.body.label.reset' } }
+                { props: { type: 'submit', content: '搜索', status: 'primary' } },
+                { props: { type: 'reset', content: '重置' } }
               ]
             }
           }
@@ -108,7 +108,7 @@ export default defineComponent({
           { code: 'insert_actived', name: '新增', icon: 'fa fa-plus' },
           { code: 'delete', name: '直接删除', icon: 'fa fa-trash-o' },
           { code: 'mark_cancel', name: '删除/取消', icon: 'fa fa-trash-o' },
-          { code: 'save', name: 'app.body.button.save', icon: 'fa fa-save', status: 'success' }
+          { code: 'save', name: '保存', icon: 'fa fa-save', status: 'success' }
         ],
         refresh: true,
         import: true,
@@ -234,7 +234,7 @@ export default defineComponent({
           const formBody = new FormData()
           formBody.append('file', file)
           return XEAjax.post('https://api.xuliangzhan.com:10443/demo/api/pub/import', formBody)
-            .then((data) => {
+            .then(data => {
               VXETable.modal.message({ content: `成功导入 ${data.result.insertRows} 条记录！`, status: 'success' })
               // 导入完成，刷新表格
               $grid.commitProxy('query')
@@ -260,8 +260,8 @@ export default defineComponent({
             original: options.original,
             mode: options.mode,
             pager: proxyInfo ? proxyInfo.pager : null,
-            ids: options.mode === 'selected' ? options.data.map((item) => item.id) : [],
-            fields: options.columns.map((column) => {
+            ids: options.mode === 'selected' ? options.data.map(item => item.id) : [],
+            fields: options.columns.map(column => {
               return {
                 field: column.property,
                 title: column.title
@@ -270,12 +270,12 @@ export default defineComponent({
           }
           // 开始服务端导出
           return XEAjax.post('https://api.xuliangzhan.com:10443/demo/api/pub/export', body)
-            .then((data) => {
+            .then(data => {
               if (data.id) {
                 VXETable.modal.message({ content: '导出成功，开始下载', status: 'success' })
                 // 读取路径，请求文件
-                fetch(`https://api.xuliangzhan.com:10443/demo/api/pub/export/download/${data.id}`).then((response) => {
-                  response.blob().then((blob) => {
+                fetch(`https://api.xuliangzhan.com:10443/demo/api/pub/export/download/${data.id}`).then(response => {
+                  response.blob().then(blob => {
                     // 开始下载
                     VXETable.saveFile({ filename: '导出数据', type: 'xlsx', content: blob })
                   })
@@ -295,7 +295,7 @@ export default defineComponent({
       },
       editRules: {
         name: [
-          { required: true, message: 'app.body.valid.rName' },
+          { required: true, message: '名称必须填写' },
           { min: 3, max: 50, message: '名称长度在 3 到 50 个字符' }
         ],
         email: [{ required: true, message: '邮件必须填写' }],

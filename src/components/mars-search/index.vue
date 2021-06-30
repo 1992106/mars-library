@@ -51,7 +51,7 @@ export default defineComponent({
 
     watch(
       () => props.only,
-      (only) => {
+      only => {
         checked.value = only
       }
     )

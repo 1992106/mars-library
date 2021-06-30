@@ -16,7 +16,7 @@ const fetchPost = (url, body) => {
       },
       body: JSON.stringify(body)
     })
-      .then((response) => {
+      .then(response => {
         // 当接收到一个代表错误的 HTTP 状态码时，从 fetch() 返回的 Promise 不会被标记为 reject， 即使响应的 HTTP 状态码是 404 或 500。
         // 相反，它会将 Promise 状态标记为 resolve （但是会将 resolve 的返回值的 ok 属性设置为 false ），仅当网络故障时或请求被阻止时，才会标记为 reject
         if (response.ok) {
@@ -38,7 +38,7 @@ const fetchPost = (url, body) => {
           resolve(res)
         }
       })
-      .catch((err) => {
+      .catch(err => {
         // TODO: 该catch只捕获fetch内部抛出的异常（即第一个then中 throw 或者 return Promise.reject）
         // TODO: 全局请求错误拦截
         switch (err.status) {

@@ -32,7 +32,7 @@ export default defineComponent({
   setup() {
     const selectedRowKeys = ref([]) // Check here to configure the default column
 
-    const onSelectChange = (changableRowKeys) => {
+    const onSelectChange = changableRowKeys => {
       console.log('selectedRowKeys changed: ', changableRowKeys)
       selectedRowKeys.value = changableRowKeys
     }
@@ -85,11 +85,11 @@ export default defineComponent({
       rowSelection
     })
 
-    const handleEdit = (row) => {
+    const handleEdit = row => {
       console.log(row, 'table edit')
     }
 
-    const inputChange = ($event) => {
+    const inputChange = $event => {
       console.log($event, 'inputChange')
     }
 
@@ -273,7 +273,7 @@ export default defineComponent({
       ]
     })
 
-    const handleSearch = ($event) => {
+    const handleSearch = $event => {
       console.log($event, 'search')
     }
 
@@ -288,7 +288,7 @@ export default defineComponent({
       ]
     })
 
-    const handleExport = ($event) => {
+    const handleExport = $event => {
       console.log($event, 'export')
     }
 

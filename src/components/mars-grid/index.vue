@@ -149,7 +149,7 @@ export default defineComponent({
         defaultPageSize: 20,
         showSizeChanger: true,
         showQuickJumper: true,
-        showTotal: (total) => `共 ${total} 条`,
+        showTotal: total => `共 ${total} 条`,
         pageSizeOptions: ['20', '40', '60', '80', '100']
       },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
@@ -172,10 +172,10 @@ export default defineComponent({
      */
     const getSlots = computed(() => {
       return props.columns
-        .filter((col) => col.slots)
-        .flatMap((col) =>
+        .filter(col => col.slots)
+        .flatMap(col =>
           ['default', 'header', 'footer', 'edit', 'filter', 'title', 'checkbox', 'radio', 'content']
-            .map((val) => typeof val === 'string' && col.slots[val])
+            .map(val => typeof val === 'string' && col.slots[val])
             .filter(Boolean)
         )
     })

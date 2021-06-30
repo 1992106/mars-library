@@ -15,7 +15,7 @@ import { useStore } from 'vuex'
 export default defineComponent({
   setup() {
     const store = useStore()
-    const cachedTabList = computed(() => store.state.router.cachedTabList.map((item) => item.name))
+    const cachedTabList = computed(() => store.state.router.cachedTabList.map(item => item.name))
 
     return {
       cachedTabList

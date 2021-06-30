@@ -30,7 +30,7 @@ export default defineComponent({
       () => router.currentRoute.value.fullPath,
       () => {
         if (['ErrorPage', 'Login', 'Redirect'].includes(router.currentRoute.value.name)) return
-        routes.value = router.currentRoute.value.matched.filter((item) => item.path !== '/')
+        routes.value = router.currentRoute.value.matched.filter(item => item.path !== '/')
       },
       { immediate: true }
     )

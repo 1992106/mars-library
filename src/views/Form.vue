@@ -60,7 +60,7 @@ export default defineComponent({
         .then(() => {
           console.log(toRaw(modelRef))
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('error', err)
         })
     }

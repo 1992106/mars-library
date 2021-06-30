@@ -15,7 +15,7 @@ let dom = null
  * 检查配置是否合法
  * @param {*} options
  */
-const checkOptions = (options) => {
+const checkOptions = options => {
   if (!options.el) {
     throw new Error('el must be a nodeType')
   }
@@ -24,7 +24,7 @@ const checkOptions = (options) => {
     ...options
   }
 }
-const printf = (options) => {
+const printf = options => {
   const op = checkOptions(options)
   dom = op.el.cloneNode(true)
   const handle = createIframe(op)
@@ -42,7 +42,7 @@ const printf = (options) => {
   }, op.delay)
 }
 
-const createIframe = (op) => {
+const createIframe = op => {
   const { debug, importCss, importStyle, loadCss, title } = op
   removeIframe()
   iframe = document.createElement('iframe')
@@ -57,20 +57,20 @@ const createIframe = (op) => {
   //插入head中的link stylesheet
   if (importCss) {
     const stylesheets = document.querySelectorAll("link[rel = 'stylesheet']")
-    stylesheets.forEach((item) => {
+    stylesheets.forEach(item => {
       head.appendChild(item.cloneNode(true))
     })
   }
   //插入style
   if (importStyle) {
     const stylesheets = document.querySelectorAll('style')
-    stylesheets.forEach((item) => {
+    stylesheets.forEach(item => {
       body.appendChild(item.cloneNode(true))
     })
   }
   //插入外部样式文件
   if (Array.isArray(loadCss) && loadCss.length > 0) {
-    loadCss.forEach((item) => {
+    loadCss.forEach(item => {
       head.appendChild(item)
     })
   }

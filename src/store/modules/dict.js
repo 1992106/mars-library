@@ -5,11 +5,11 @@ const dict = {
     enumerator: []
   },
   getters: {
-    enumerator: (state) => state.enumerator
+    enumerator: state => state.enumerator
   },
   mutations: {
     setEnumerator(state, data) {
-      let array = data.map((item) => {
+      let array = data.map(item => {
         return {
           value: item.id,
           label: item.enumerator_value,
@@ -30,7 +30,7 @@ const dict = {
 
 const formatField = (data, label, value = 'id', status = 'status') => {
   if (Array.isArray(data)) {
-    return data.map((item) => {
+    return data.map(item => {
       return {
         label: item[label],
         value: item[value],

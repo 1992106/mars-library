@@ -15,7 +15,7 @@ const user = {
     token: getAccessToken()
   },
   getters: {
-    nickname: (state) => state.userInfo.nickname
+    nickname: state => state.userInfo.nickname
   },
   mutations: {
     setUserInfo(state, userInfo) {

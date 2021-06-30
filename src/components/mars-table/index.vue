@@ -106,7 +106,7 @@ export default defineComponent({
         defaultPageSize: 20,
         showSizeChanger: true,
         showQuickJumper: true,
-        showTotal: (total) => `共 ${total} 条`,
+        showTotal: total => `共 ${total} 条`,
         pageSizeOptions: ['20', '40', '60', '80', '100']
       }
     }
@@ -123,13 +123,13 @@ export default defineComponent({
     /**
      * computed
      */
-    const getColumns = computed(() => props.columns.map((column) => mergeProps(defaultState.defaultColumn, column)))
+    const getColumns = computed(() => props.columns.map(column => mergeProps(defaultState.defaultColumn, column)))
     const getSlots = computed(() =>
       props.columns
-        .filter((val) => val.slots)
-        .flatMap((col) =>
+        .filter(val => val.slots)
+        .flatMap(col =>
           ['customRender', 'filterDropdown', 'filterIcon']
-            .map((val) => typeof val === 'string' && col.slots[val])
+            .map(val => typeof val === 'string' && col.slots[val])
             .filter(Boolean)
         )
     )

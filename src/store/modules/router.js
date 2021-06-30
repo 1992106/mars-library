@@ -3,7 +3,7 @@ import setting from '@/src/config'
 import { useGo } from '@/hooks/useRouter'
 import { isEmpty } from '@/utils'
 
-const goToPage = (route) => {
+const goToPage = route => {
   const go = useGo()
   const { name, params, query, path } = route
 
@@ -24,7 +24,7 @@ const routers = {
   mutations: {
     // 添加tab页
     addVisitedRoutes(state, route) {
-      const targetIdx = state.visitedRoutes.findIndex((r) => r.path === route.path)
+      const targetIdx = state.visitedRoutes.findIndex(r => r.path === route.path)
       if (targetIdx === -1) {
         state.visitedRoutes.push(route)
       } else {
@@ -34,7 +34,7 @@ const routers = {
 
     // 添加进keep-alive列表
     addCachedTabList(state, route) {
-      if (!route.meta.ignoreKeepAlive && state.cachedTabList.findIndex((c) => c.fullPath === route.fullPath) === -1) {
+      if (!route.meta.ignoreKeepAlive && state.cachedTabList.findIndex(c => c.fullPath === route.fullPath) === -1) {
         state.cachedTabList.push(route)
       }
     },
@@ -45,7 +45,7 @@ const routers = {
       // 始终保留一个tab
       if (tabLen > 1) {
         const { currentRoute } = router
-        const idx = state.visitedRoutes.findIndex((item) => item.path === key)
+        const idx = state.visitedRoutes.findIndex(item => item.path === key)
         const isCurrentTab = unref(currentRoute).path === key
         let target = {}
 
@@ -66,7 +66,7 @@ const routers = {
     // 删除keep-alive列表中的一项
     delCachedTabList(state, path) {
       if (!state.cachedTabList?.length) return
-      const cachedIdx = state.cachedTabList.findIndex((item) => item.path === path)
+      const cachedIdx = state.cachedTabList.findIndex(item => item.path === path)
       if (cachedIdx !== -1) {
         state.cachedTabList.splice(cachedIdx, 1)
       }
@@ -95,7 +95,7 @@ const routers = {
     },
 
     goToVisitedPage({ state }, _path) {
-      const target = state.visitedRoutes.find((item) => item.path === _path)
+      const target = state.visitedRoutes.find(item => item.path === _path)
       if (!target) return
       goToPage(target)
     }

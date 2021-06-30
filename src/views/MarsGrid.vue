@@ -28,7 +28,7 @@ export default defineComponent({
   setup() {
     const xGrid = ref({})
     const data = []
-    const random = (len) => Math.floor(Math.random() * len)
+    const random = len => Math.floor(Math.random() * len)
     for (let i = 0; i < 100; i++) {
       data.push({
         id: i,
@@ -121,7 +121,7 @@ export default defineComponent({
       }
     })
 
-    const handleEdit = (row) => {
+    const handleEdit = row => {
       console.log(row, 'table edit')
     }
 
@@ -131,7 +131,7 @@ export default defineComponent({
       return [{ label: '全部', value: null }].concat(store.getters['dict/enumerator'])
     })
 
-    const inputChange = ($event) => {
+    const inputChange = $event => {
       console.log($event, 'inputChange')
     }
 
@@ -282,7 +282,7 @@ export default defineComponent({
       ]
     })
 
-    const handleSearch = ($event) => {
+    const handleSearch = $event => {
       console.log($event, 'search')
     }
 
@@ -297,7 +297,7 @@ export default defineComponent({
       ]
     })
 
-    const handleExport = ($event) => {
+    const handleExport = $event => {
       console.log($event, 'export')
     }
 
@@ -484,7 +484,7 @@ export default defineComponent({
       ]
     })
 
-    const handleModal = ($event) => {
+    const handleModal = $event => {
       console.log($event, 'modal')
     }
 

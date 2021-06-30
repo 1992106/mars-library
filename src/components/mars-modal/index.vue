@@ -43,12 +43,12 @@ export default defineComponent({
       get: () => {
         return props.visible
       },
-      set: (value) => {
+      set: value => {
         emit('update:visible', value)
       }
     })
 
-    const handleOk = ($event) => {
+    const handleOk = $event => {
       emit('ok', $event)
       modalVisible.value = false
     }

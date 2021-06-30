@@ -17,24 +17,24 @@ const Group = defineComponent({
     const isPreviewGroup = ref(false)
     const isShowPreview = computed({
       get: () => props.visible,
-      set: (val) => {
+      set: val => {
         emit('update:visible', val)
       }
     })
 
-    const setCurrent = (val) => {
+    const setCurrent = val => {
       current.value = val
     }
 
     watch(
       () => props.current,
-      (val) => setCurrent(val),
+      val => setCurrent(val),
       { immediate: true }
     )
 
     watch(
       () => props.visible,
-      (val) => {
+      val => {
         if (val) {
           props.urls.forEach((item, idx) => {
             previewUrls[idx] = item
@@ -47,11 +47,11 @@ const Group = defineComponent({
       }
     )
 
-    const onPreviewClose = (e) => {
+    const onPreviewClose = e => {
       e?.stopPropagation()
       isShowPreview.value = false
       emit('update:visible', false)
-      Object.keys(previewUrls).forEach((key) => {
+      Object.keys(previewUrls).forEach(key => {
         delete previewUrls[key]
       })
       current.value = props.current

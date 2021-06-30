@@ -6,6 +6,6 @@ export function useGo(_router) {
 
   return (options, isReplace = false) => {
     const handler = isReplace ? replace : push
-    handler(options).catch((err) => console.log(`hooks->useRouter:go${err}`))
+    handler(options).catch(err => console.log(`hooks->useRouter:go${err}`))
   }
 }

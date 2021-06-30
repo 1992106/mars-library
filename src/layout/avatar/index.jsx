@@ -15,7 +15,7 @@ const PageHeader = defineComponent({
 
     const userInfo = computed(() => store.state.user.userInfo)
 
-    const handleMenuClick = (e) => {
+    const handleMenuClick = e => {
       if (e.key === 'logout') {
         visible.value = true
       }

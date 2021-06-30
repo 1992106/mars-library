@@ -6,7 +6,7 @@ const getAccessToken = () => {
   return localStorage.getItem(token_name) || ''
 }
 
-const setAccessToken = (token) => {
+const setAccessToken = token => {
   return localStorage.setItem(token_name, token)
 }
 

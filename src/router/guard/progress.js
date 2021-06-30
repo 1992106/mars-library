@@ -1,8 +1,8 @@
 import setting from '@/src/config'
 import nProgress from 'nprogress'
 
-export const createProgressGuard = (router) => {
-  router.beforeEach((to) => {
+export const createProgressGuard = router => {
+  router.beforeEach(to => {
     if (to.meta.loaded) return true
     if (setting.header_progress) {
       nProgress.start()

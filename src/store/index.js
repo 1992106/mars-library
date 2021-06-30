@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 function loadModules() {
   const context = import.meta.globEager('./modules/*.js')
   const modules = Object.keys(context)
-    .map((key) => ({
+    .map(key => ({
       key,
       name: key.match(/([a-z_]+)\.js$/i)[1]
     }))

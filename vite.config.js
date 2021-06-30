@@ -16,7 +16,7 @@ const config = {
         {
           libraryName: 'ant-design-vue',
           esModule: true,
-          resolveStyle: (name) => `ant-design-vue/es/${name}/style/index`
+          resolveStyle: name => `ant-design-vue/es/${name}/style/index`
         }
       ]
     }),
@@ -70,7 +70,7 @@ const config = {
   }
 }
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default ({ command, mode }) => {
   const { plugins = [], build = {} } = config
 
   if (mode === 'lib') {
@@ -104,7 +104,7 @@ export default ({ mode }) => {
     }
   }
 
-  if (mode === 'development') {
+  if (command === 'serve') {
     config.server = {
       port: 8888,
       open: true

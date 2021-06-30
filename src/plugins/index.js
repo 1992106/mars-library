@@ -141,7 +141,7 @@ const components = [
 ]
 
 export function setupPlugins(app) {
-  components.forEach((component) => {
+  components.forEach(component => {
     app.use(component)
   })
   // 注册antd组件

@@ -42,7 +42,7 @@ export default defineComponent({
 
     watch(
       () => router.currentRoute.value,
-      (val) => {
+      val => {
         if (['Redirect', 'ErrorPage', 'Login'].includes(router.currentRoute.value.name)) return
         activeKey.value = val.path
         addVisitedRoutes()
@@ -61,7 +61,7 @@ export default defineComponent({
       }
     }
 
-    const onTabClick = (key) => {
+    const onTabClick = key => {
       if (key !== router.currentRoute.value.path) {
         store.dispatch('router/goToVisitedPage', key)
       }

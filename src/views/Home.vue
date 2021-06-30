@@ -40,7 +40,7 @@ export default defineComponent({
       router.push('/404')
     }
 
-    const go = (params) => {
+    const go = params => {
       router.push(params)
     }
 
@@ -53,7 +53,7 @@ export default defineComponent({
           id: '12312312aa78349827387429',
           name: 'mars'
         })
-        .then((res) => {
+        .then(res => {
           console.log(res)
         })
       // request
