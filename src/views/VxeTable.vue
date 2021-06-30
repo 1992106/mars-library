@@ -50,7 +50,7 @@ export default defineComponent({
         items: [
           {
             field: 'name',
-            title: 'app.body.label.name',
+            title: '名称',
             span: 8,
             titlePrefix: { message: 'app.body.valid.rName', icon: 'fa fa-exclamation-circle' },
             itemRender: { name: '$input', props: { placeholder: '请输入名称' } }
