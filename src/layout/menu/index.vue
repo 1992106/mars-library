@@ -3,10 +3,10 @@
     <Menu
       mode="inline"
       style="border: 0 none"
-      :selected-keys="selectedKeys"
-      :openKeys="openKeys"
       :inlineCollapsed="collapsed"
-      @click="clickMenuItem"
+      :openKeys="openKeys"
+      :selected-keys="selectedKeys"
+      @click="onClick"
       @openChange="onOpenChange"
     >
       <template v-for="item in routes" :key="item.name">
@@ -70,12 +70,12 @@ export default defineComponent({
     }
 
     // 点击菜单
-    function clickMenuItem({ key }) {
+    const onClick = ({ key }) => {
       router.push({ name: key })
     }
 
-    // 展开菜单
-    function onOpenChange(openKeys) {
+    // 展开/关闭子菜单
+    const onOpenChange = openKeys => {
       const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1)
       if (rootSubmenuKeys.value.indexOf(latestOpenKey) === -1) {
         state.openKeys = openKeys
@@ -86,7 +86,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      clickMenuItem,
+      onClick,
       onOpenChange
     }
   }

@@ -1,10 +1,10 @@
 <template>
-  <Layout class="page-layout">
+  <Layout class="app-layout">
     <app-sider :collapsed="collapsed" />
     <Layout>
       <app-header v-model:collapsed="collapsed" />
       <MultiTabs />
-      <Layout.Content class="page-content">
+      <Layout.Content class="app-content">
         <AppMain />
       </Layout.Content>
       <AppFooter />
@@ -43,10 +43,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.page-layout {
+.app-layout {
   height: 100vh;
 
-  .page-content {
+  .app-content {
     height: 100%;
     background-color: $bg-color;
   }

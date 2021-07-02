@@ -19,8 +19,6 @@ export default defineComponent({
       path: `/${_path}`,
       query
     })
-
-    return {}
   }
 })
 </script>
