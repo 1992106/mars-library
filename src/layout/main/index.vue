@@ -13,6 +13,7 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
+  name: 'AppMain',
   setup() {
     const store = useStore()
     const cachedTabList = computed(() => store.state.router.cachedTabList.map(item => item.name))

@@ -47,6 +47,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
-// .ant-menu-sub.ant-menu-inline > .ant-menu-item
-</style>
+<style lang="scss" scoped></style>

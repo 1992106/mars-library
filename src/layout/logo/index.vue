@@ -1,5 +1,5 @@
 <template>
-  <div class="logo">
+  <div class="my-logo">
     <img src="../../assets/logo.png" alt="" />
     <h2 v-show="!collapsed" class="title">Mars-SCM</h2>
   </div>
@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'index',
+  name: 'MyLogo',
   props: {
     collapsed: {
       type: Boolean
@@ -17,17 +17,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.my-logo {
+  @include flexRCC();
   height: $header-height;
   line-height: $header-height;
+  background: $bg-color;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
   z-index: 3;
-  background: $bg-color;
   img {
     height: 32px;
   }

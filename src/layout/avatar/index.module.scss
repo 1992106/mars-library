@@ -1,23 +1,24 @@
-.userDropdown {
+.myAvatar {
+  @include flexRCC;
   height: $header-height;
   line-height: $header-height;
-  @include flexRCC;
   padding: 0 10px;
   overflow: hidden;
   font-size: $font-size-base;
   cursor: pointer;
-  align-items: center;
   transition: background 0.3s;
   &:global(.ant-dropdown-open) {
     background-color: $bg-color-hover;
   }
+
+  .name {
+    color: $text-color-desc;
+    padding: 0 12px;
+  }
+
+  .icon {
+    font-size: $font-size-sm;
+  }
 }
 
-.icon {
-  font-size: $font-size-sm;
-}
 
-.username {
-  color: $text-color-desc;
-  padding: 0 12px;
-}

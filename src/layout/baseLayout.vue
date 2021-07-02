@@ -1,23 +1,13 @@
 <template>
-  <Layout class="layout">
-    <LayoutSider
-      v-model:collapsed="collapsed"
-      :trigger="null"
-      collapsible
-      class="layout-sider"
-      style="background: #fff"
-      :collapsedWidth="48"
-    >
-      <Logo :collapsed="collapsed" />
-      <SideMenu :collapsed="collapsed" />
-    </LayoutSider>
+  <Layout class="page-layout">
+    <app-sider :collapsed="collapsed" />
     <Layout>
-      <PageHeader v-model:collapsed="collapsed" />
+      <app-header v-model:collapsed="collapsed" />
       <MultiTabs />
-      <LayoutContent class="layout-content">
+      <Layout.Content class="page-content">
         <AppMain />
-      </LayoutContent>
-      <!-- <page-footer /> -->
+      </Layout.Content>
+      <AppFooter />
     </Layout>
   </Layout>
 </template>
@@ -25,24 +15,22 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { Layout } from 'ant-design-vue'
-import Logo from './logo/index.vue'
+import AppSider from './sider/index'
+import AppHeader from './header'
 import AppMain from './main/index.vue'
-import SideMenu from './menu/index.vue'
-import PageHeader from './header'
 import MultiTabs from './multiTabs/index.vue'
-// import PageFooter from './footer'
+import AppFooter from './footer'
 
 export default defineComponent({
   name: 'BaseLayout',
   components: {
-    PageHeader,
-    SideMenu,
-    MultiTabs,
-    Logo,
-    AppMain,
     Layout,
-    LayoutContent: Layout.Content,
-    LayoutSider: Layout.Sider
+    'Layout.Content': Layout.Content,
+    AppSider,
+    AppHeader,
+    MultiTabs,
+    AppMain,
+    AppFooter
   },
   setup() {
     const collapsed = ref(false)
@@ -55,23 +43,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/global';
-.layout {
-  display: flex;
-  overflow: hidden;
+.page-layout {
   height: 100vh;
 
-  .layout-sider ::v-deep(.ant-layout-sider-children) {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .ant-layout {
-    overflow: hidden;
-  }
-
-  .layout-content {
+  .page-content {
     height: 100%;
     background-color: $bg-color;
   }
