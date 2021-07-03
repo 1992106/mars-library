@@ -4,7 +4,7 @@ import MyLogo from '../logo/index.vue'
 import MyMenu from '../menu/index.vue'
 
 export default defineComponent({
-  name: 'PageSider',
+  name: 'AppSider',
   props: {
     collapsed: { type: Boolean, require: true }
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="menus">
+  <div class="my-menu">
     <Menu
       mode="inline"
       style="border: 0 none"
@@ -94,10 +94,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.menus {
-  flex: 1 1 0;
+.my-menu {
+  height: calc(100% - #{$header-height});
   overflow: hidden auto;
-  background-color: $bg-color;
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
   position: relative;
   z-index: 2;
@@ -105,41 +104,6 @@ export default defineComponent({
   &::-webkit-scrollbar {
     width: 6px;
     height: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.06);
-    border-radius: 3px;
-    box-shadow: inset 0 0 5px rgba(37, 37, 37, 0.05);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.12);
-    border-radius: 3px;
-    box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
-  }
-
-  ::v-deep(.ant-menu-inline) {
-    // border-right: 1px solid #bfbfbf;
-    .ant-menu-item {
-      width: 100%;
-    }
-  }
-
-  ::v-deep(.ant-menu-inline-collapsed) {
-    width: 48px;
-
-    .ant-menu-item,
-    .ant-menu-submenu-title {
-      width: 48px;
-      padding: 0 16px !important;
-    }
-  }
-
-  ::v-deep(.ant-menu-vertical) {
-    .ant-menu-submenu {
-      padding-bottom: 0.02px;
-    }
   }
 }
 </style>

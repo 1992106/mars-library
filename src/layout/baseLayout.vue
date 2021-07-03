@@ -5,9 +5,9 @@
       <app-header v-model:collapsed="collapsed" />
       <MultiTabs />
       <Layout.Content class="app-content">
-        <AppMain />
+        <app-main />
       </Layout.Content>
-      <AppFooter />
+      <app-footer />
     </Layout>
   </Layout>
 </template>
@@ -47,7 +47,7 @@ export default defineComponent({
   height: 100vh;
 
   .app-content {
-    height: 100%;
+    overflow-y: auto;
     background-color: $bg-color;
   }
 }
