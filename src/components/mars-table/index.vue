@@ -212,7 +212,7 @@ export default defineComponent({
     padding: 10px;
     text-align: right;
   }
-  ::v-deep(.table-striped) {
+  :deep(.table-striped) {
     background-color: #fafafa;
   }
 }

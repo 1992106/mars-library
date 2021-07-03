@@ -339,7 +339,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-grid {
-  ::v-deep(.vxe-table--header) {
+  :deep(.vxe-table--header) {
     .vxe-cell {
       display: flex;
       align-items: center;

@@ -110,7 +110,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     flex: 0 0 300px;
-    ::v-deep(.ant-form-item) {
+    :deep(.ant-form-item) {
       width: 100%;
       display: block;
     }
