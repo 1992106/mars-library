@@ -1,6 +1,7 @@
 <template>
   <div class="page-content">
     <a-input v-model:value="username" />
+    <MyDatePicker></MyDatePicker>
 
     <Space>
       <Button @click="go404">404</Button>
@@ -26,10 +27,11 @@ import { Button, Input, Space } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import request from '@/utils/axios'
 // import request from '@/utils/fetch'
+import MyDatePicker from '@/src/components/DatePicker/DatePicker'
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { Button, [Input.name]: Input, Space },
+  components: { Button, [Input.name]: Input, Space, MyDatePicker },
   setup() {
     const username = ref('')
     const loading = ref(false)

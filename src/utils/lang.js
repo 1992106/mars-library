@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { omit } from 'lodash'
 
 /**
  * 获取对象tag
@@ -40,19 +41,24 @@ export const isEmpty = value => {
 }
 
 /**
- * 去空对象空值
- * @param object
+ * 去除对象/数组空值
+ * @param value
  * @returns {*}
  */
-export const toEmpty = object => {
-  if (getType(object) === 'object') {
-    Object.keys(object).forEach(key => {
-      if (isEmpty(object[key])) {
-        delete object[key]
+export const omitEmpty = value => {
+  if (getType(value) === 'object') {
+    let newObj = {}
+    Object.keys(value).forEach(key => {
+      if (!isEmpty(value[key])) {
+        newObj[key] = value[key]
       }
     })
+    return newObj
   }
-  return object
+  if (Array.isArray(value)) {
+    return value.filter(val => !isEmpty(val))
+  }
+  return value
 }
 
 /**
@@ -73,7 +79,7 @@ export function polyfill(target, source) {
   return obj
 }
 
-export const momentToString = (value, valueFormat = 'YYYY-MM-DD') => {
+export const momentToDate = (value, valueFormat = 'YYYY-MM-DD') => {
   if (Array.isArray(value)) {
     return value.map(val => (moment.isMoment(val) ? val.format(valueFormat) : val))
   } else {

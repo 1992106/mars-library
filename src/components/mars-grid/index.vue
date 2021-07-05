@@ -69,6 +69,7 @@
 </template>
 <script>
 import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps } from 'vue'
+import { momentToDate } from '@/utils/index'
 
 export default defineComponent({
   name: 'MarsGrid',
@@ -140,7 +141,6 @@ export default defineComponent({
     'toggle-tree-expand'
   ],
   setup(props, { emit }) {
-    console.log(props.height, 'height')
     /**
      * 默认值
      */
@@ -268,19 +268,13 @@ export default defineComponent({
     const handleValidError = ({ rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex }) => {
       emit('valid-error', { rule, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex })
     }
-    // const hasMultiple = (column) => {
-    //   return (
-    //     (column?.filterRender?.name === 'ASelect' && ['multiple'].includes(column.filterRender?.props?.mode)) ||
-    //     (column?.filterRender?.name === '$select' && column.filterRender?.props?.multiple)
-    //   )
-    // }
     // 筛选
     const handleFilterChange = ({ column, property, values, datas, filterList, $event }) => {
       const filters = {}
       filterList.forEach(({ column, property, values, datas }) => {
         // TODO:
         if (column?.filterRender) {
-          filters[property] = datas[0]
+          filters[property] = momentToDate(datas[0])
         } else {
           filters[property] = column?.filterMultiple ? values : values.join()
         }

@@ -1,6 +1,6 @@
 import setting from '@/src/config/index'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@/utils'
+import { getAccessToken } from '@/utils/index'
 import store from '@/store'
 import router from '@/src/router'
 
@@ -12,7 +12,7 @@ const fetchPost = (url, body) => {
       method: 'POST',
       headers: {
         ...(token ? { [setting.authorization_name]: `${setting.token_prefix} ${token}` } : {}),
-        'content-type': 'application/json'
+        'content-type': 'application/json;charset=UTF-8'
       },
       body: JSON.stringify(body)
     })

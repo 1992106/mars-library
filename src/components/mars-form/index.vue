@@ -28,7 +28,7 @@
 <script>
 import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
-import { dateToMoment, isEmpty, momentToString } from '@/utils'
+import { dateToMoment, isEmpty, momentToDate } from '@/utils/index'
 import { omit, pick } from 'lodash'
 export default defineComponent({
   name: 'MarsForm',
@@ -173,7 +173,7 @@ export default defineComponent({
             if (typeof value === 'string') {
               value = value.trim()
             }
-            modelRaw[item] = momentToString(value)
+            modelRaw[item] = momentToDate(value)
           })
           emit('ok', modelRaw)
         })

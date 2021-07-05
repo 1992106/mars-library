@@ -37,6 +37,7 @@ export default defineComponent({
         role: ['Develop', 'Test', 'PM', 'Designer'][random(4)],
         sex: ['Man', 'Woman'][random(2)],
         age: [22, 24, 25, 28, 32][random(5)],
+        date: new Date(),
         address: ['Shenzhen', 'Guangzhou', 'Shanghai', 'Beijing'][random(4)]
       })
     }
@@ -79,6 +80,11 @@ export default defineComponent({
               }
             },
             { field: 'age', title: 'Age', editRender: { name: 'input' } },
+            {
+              field: 'date',
+              title: 'Date'
+              // editRender: { name: 'ADatePicker' }
+            },
             {
               field: 'role',
               title: 'Role',

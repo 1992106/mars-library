@@ -1,7 +1,7 @@
 import { unref } from 'vue'
 import setting from '@/src/config'
 import { useGo } from '@/hooks/useRouter'
-import { isEmpty } from '@/utils'
+import { isEmpty } from '@/utils/index'
 
 const goToPage = route => {
   const go = useGo()

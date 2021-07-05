@@ -1,13 +1,14 @@
 import axios from 'axios'
 import setting from '@/src/config/index'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@/utils'
+import { getAccessToken } from '@/utils/index'
 import store from '@/store'
 import router from '@/src/router'
 
 // 全局axios默认值
 axios.defaults.baseURL = !setting.mock ? setting.base_url : ''
 axios.defaults.timeout = setting.request_timeout
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 // 创建axios实例
 const httpService = axios.create({

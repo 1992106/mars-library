@@ -53,7 +53,7 @@ import { ExportOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
 import { useForm } from '@ant-design-vue/use'
 import moment from 'moment'
-import { isEmpty, momentToString } from '@/utils'
+import { isEmpty, momentToDate } from '@/utils/index'
 export default defineComponent({
   name: 'MarsExport',
   props: {
@@ -128,7 +128,7 @@ export default defineComponent({
       validate()
         .then(() => {
           const dateRaw = toRaw(modelRef)
-          const exportData = { ...dateRaw, date: momentToString(dateRaw.date) }
+          const exportData = { ...dateRaw, date: momentToDate(dateRaw.date) }
           emit('export', exportData)
         })
         .catch(err => {
