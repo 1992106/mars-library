@@ -1,6 +1,8 @@
 import { defineComponent } from 'vue'
-import { RangePicker } from 'ant-design-vue'
+import { DatePicker } from 'ant-design-vue'
 import { dateToMoment, momentToDate } from '@/src/utils'
+
+const RangePicker = DatePicker.RangePicker
 
 const MyRangePicker = defineComponent({
   name: 'MyRangePicker',

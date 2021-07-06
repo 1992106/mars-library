@@ -1,6 +1,8 @@
 import { defineComponent } from 'vue'
-import { MonthPicker } from 'ant-design-vue'
+import { DatePicker } from 'ant-design-vue'
 import { dateToMoment, momentToDate } from '@/src/utils'
+
+const MonthPicker = DatePicker.MonthPicker
 
 const MyMonthPicker = defineComponent({
   name: 'MyMonthPicker',

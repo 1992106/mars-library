@@ -1,6 +1,8 @@
 import { defineComponent } from 'vue'
-import { WeekPicker } from 'ant-design-vue'
+import { DatePicker } from 'ant-design-vue'
 import { dateToMoment, momentToDate } from '@/src/utils'
+
+const WeekPicker = DatePicker.WeekPicker
 
 const MyWeekPicker = defineComponent({
   name: 'MyWeekPicker',

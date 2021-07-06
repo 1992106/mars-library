@@ -64,7 +64,7 @@ export default defineComponent({
     const emitData = () => {
       const searchData = {
         ...omitEmpty(toRaw(searchParams.value)),
-        ...(props.showOnly ? { only: checked.value } : {})
+        ...(props.showOnly ? { only_myself: checked.value } : {})
       }
       emit('search', searchData)
     }
