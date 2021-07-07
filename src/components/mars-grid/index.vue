@@ -175,7 +175,7 @@ export default defineComponent({
         .filter(col => col.slots)
         .flatMap(col =>
           ['default', 'header', 'footer', 'edit', 'filter', 'title', 'checkbox', 'radio', 'content']
-            .map(val => typeof val === 'string' && col.slots[val])
+            .map(val => col.slots[val])
             .filter(Boolean)
         )
     })
