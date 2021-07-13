@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <mars-table ref="xTable" v-bind="tableOptions" v-model:pagination="tableOptions.pagination" @search="handleSearch">
+    <mars-table ref="xTable" v-bind="tableOptions" v-model:pagination="tableOptions.pagination" @search="handleFilter">
       <template #searchBar>
         <mars-search v-bind="searchOptions" @search="handleSearch">
           <template #extra>
@@ -22,6 +22,7 @@
 import { computed, defineComponent, reactive, ref, unref } from 'vue'
 import { Table, Button } from 'ant-design-vue'
 import { DownOutlined, FormOutlined } from '@ant-design/icons-vue'
+import { useSearch } from '@/hooks/useSearch'
 export default defineComponent({
   components: {
     [Table.name]: Table,
@@ -273,9 +274,11 @@ export default defineComponent({
       ]
     })
 
-    const handleSearch = $event => {
-      console.log($event, 'search')
+    const getList = () => {
+      console.log(params.value, 'search')
     }
+
+    const { params, handleSearch, handleFilter } = useSearch(getList)
 
     const exportOptions = reactive({
       columns: [
@@ -298,6 +301,7 @@ export default defineComponent({
       handleEdit,
       searchOptions,
       handleSearch,
+      handleFilter,
       exportOptions,
       handleExport
     }

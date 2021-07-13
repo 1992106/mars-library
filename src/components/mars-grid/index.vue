@@ -273,10 +273,11 @@ export default defineComponent({
       const filters = {}
       filterList.forEach(({ column, property, values, datas }) => {
         // TODO:
+        const alias = column?.params?.filterAlias || property
         if (column?.filterRender) {
-          filters[property] = momentToDate(datas[0])
+          filters[alias] = momentToDate(datas[0])
         } else {
-          filters[property] = column?.filterMultiple ? values : values.join()
+          filters[alias] = column?.filterMultiple ? values : values.join()
         }
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })

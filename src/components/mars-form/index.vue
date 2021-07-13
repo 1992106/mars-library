@@ -68,7 +68,8 @@ export default defineComponent({
       },
       ASelect: {
         allowClear: true,
-        showSearch: true
+        showSearch: true,
+        optionFilterProp: 'label'
       },
       ACheckboxGroup: {},
       ARadioGroup: {},
@@ -120,7 +121,7 @@ export default defineComponent({
         (column?.type === 'ASelect' && ['multiple', 'tags'].includes(column?.props?.mode)) ||
         (column?.type === 'ASlider' && column?.props?.range) ||
         (column?.type === 'ATreeSelect' && column?.props?.multiple) ||
-        ['ACheckboxGroup', 'ARangePicker'].includes(column?.type)
+        ['ACheckboxGroup', 'ACascader', 'ARangePicker'].includes(column?.type)
       )
     }
     // 是否是日期选择框

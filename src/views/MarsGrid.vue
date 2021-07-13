@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="handleSearch">
+    <mars-grid ref="xGrid" v-bind="gridOptions" v-model:pagination="gridOptions.pagination" @search="handleFilter">
       <template #searchBar>
         <mars-search v-bind="searchOptions" @search="handleSearch">
           <template #extra>
@@ -23,6 +23,7 @@
 <script>
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useSearch } from '@/hooks/useSearch'
 
 export default defineComponent({
   setup() {
@@ -30,12 +31,15 @@ export default defineComponent({
     const data = []
     const random = len => Math.floor(Math.random() * len)
     for (let i = 0; i < 100; i++) {
+      let sex_id = ['0', '1'][random(2)]
       data.push({
         id: i,
         name: `Text${i}`,
         nickname: `T${i}`,
         role: ['Develop', 'Test', 'PM', 'Designer'][random(4)],
-        sex: ['Man', 'Woman'][random(2)],
+        sex_ids: ['0', '1'],
+        sex: ['Man', 'Woman'][sex_id],
+        sex_id: sex_id,
         age: [22, 24, 25, 28, 32][random(5)],
         date: new Date(),
         address: ['Shenzhen', 'Guangzhou', 'Shanghai', 'Beijing'][random(4)]
@@ -53,29 +57,48 @@ export default defineComponent({
           children: [
             { field: 'nickname', title: 'Nickname', editRender: { name: 'input' } },
             {
-              field: 'sex',
-              title: 'Sex',
+              field: 'sex_ids',
+              title: 'Sexs',
               headerAlign: 'center',
               align: 'center',
               editRender: {
                 name: 'ASelect',
                 options: [
-                  { label: 'Man', value: '1' },
-                  { label: 'Woman', value: '0' }
+                  { label: 'Man', value: '0' },
+                  { label: 'Woman', value: '1' }
                 ],
                 props: {
-                  filterOption: true
+                  mode: 'multiple'
                 }
               },
               filters: [{ data: [] }],
               filterRender: {
                 name: 'ASelect',
-                options: [
-                  { label: 'Man', value: '1' },
-                  { label: 'Woman', value: '0' }
-                ],
                 props: {
-                  mode: 'multiple'
+                  mode: 'multiple',
+                  options: [
+                    { label: 'Man', value: '0' },
+                    { label: 'Woman', value: '1' }
+                  ]
+                }
+              }
+            },
+            {
+              field: 'sex',
+              title: 'Sex',
+              headerAlign: 'center',
+              align: 'center',
+              params: {
+                filterAlias: 'sex_id'
+              },
+              filters: [{ data: [] }],
+              filterRender: {
+                name: 'ASelect',
+                props: {
+                  options: [
+                    { label: 'Man', value: '0' },
+                    { label: 'Woman', value: '1' }
+                  ]
                 }
               }
             },
@@ -98,6 +121,10 @@ export default defineComponent({
                 ]
               },
               filters: [{ data: [] }],
+              params: {
+                filterAlias: 'role_filter',
+                editAlias: 'role_edit'
+              },
               filterRender: {
                 name: '$select',
                 options: [
@@ -288,9 +315,11 @@ export default defineComponent({
       ]
     })
 
-    const handleSearch = $event => {
-      console.log($event, 'search')
+    const getList = () => {
+      console.log(params.value, 'search')
     }
+
+    const { params, handleSearch, handleFilter } = useSearch(getList)
 
     const exportOptions = reactive({
       columns: [
@@ -500,6 +529,7 @@ export default defineComponent({
       handleEdit,
       searchOptions,
       handleSearch,
+      handleFilter,
       exportOptions,
       handleExport,
       visible,
