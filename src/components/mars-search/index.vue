@@ -73,12 +73,24 @@ export default defineComponent({
       emit('reset')
     }
 
+    // 搜索方法
+    const onSearch = () => {
+      formRef.value?.handleOk && formRef.value.handleOk()
+    }
+
+    // 重置方法
+    const onReset = () => {
+      formRef.value?.handleCancel && formRef.value.handleCancel()
+    }
+
     return {
       formRef,
       checked,
       handleOnly,
       handleSearch,
-      handleReset
+      handleReset,
+      onSearch,
+      onReset
     }
   }
 })

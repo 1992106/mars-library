@@ -4,8 +4,8 @@
       <a-form-item :label="column?.title" v-bind="validateInfos[column.field]">
         <component
           :is="column.type"
+          v-model:[`${column.modelValue}`]="modelRef[column.field]"
           v-bind="column?.props || {}"
-          v-model:[column.modelValue]="modelRef[column.field]"
           v-on="column?.events || {}"
         ></component>
       </a-form-item>
@@ -164,6 +164,24 @@ export default defineComponent({
     )
 
     const { validate, resetFields, validateInfos } = useForm(modelRef, rulesRef)
+    // 获取组件名
+    const getTypeByField = field => {
+      return getColumns.value.find(val => val?.field === field).type
+    }
+    // TODO: 修饰符
+    watch(
+      () => modelRef,
+      values => {
+        Object.keys(values).forEach(field => {
+          const value = values[field]
+          const type = getTypeByField(field)
+          if (['AInput'].includes(type)) {
+            values[field] = value.trim()
+          }
+        })
+      },
+      { deep: true, immediate: true }
+    )
 
     const handleOk = () => {
       validate()
@@ -171,9 +189,6 @@ export default defineComponent({
           const modelRaw = toRaw(modelRef)
           Object.keys(modelRaw).forEach(item => {
             let value = modelRaw[item]
-            if (typeof value === 'string') {
-              value = value.trim()
-            }
             modelRaw[item] = momentToDate(value)
           })
           emit('ok', modelRaw)

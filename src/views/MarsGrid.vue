@@ -121,10 +121,6 @@ export default defineComponent({
                 ]
               },
               filters: [{ data: [] }],
-              params: {
-                filterAlias: 'role_filter',
-                editAlias: 'role_edit'
-              },
               filterRender: {
                 name: '$select',
                 options: [

@@ -303,6 +303,7 @@ export default defineComponent({
         localStorage.setItem(props.storageName, JSON.stringify($xGrid.getColumns()))
       }
     }
+
     return {
       ...toRefs(state),
       defaultPickerOptions: defaultState.defaultPickerOptions,
