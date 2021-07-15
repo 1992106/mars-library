@@ -168,7 +168,7 @@ export default defineComponent({
     const getTypeByField = field => {
       return getColumns.value.find(val => val?.field === field).type
     }
-    // TODO: 修饰符
+    // TODO: 修饰符实现
     watch(
       () => modelRef,
       values => {
@@ -180,7 +180,7 @@ export default defineComponent({
           }
         })
       },
-      { deep: true, immediate: true }
+      { deep: true }
     )
 
     const handleOk = () => {
