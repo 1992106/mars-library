@@ -168,7 +168,7 @@ export default defineComponent({
     const getTypeByField = field => {
       return getColumns.value.find(val => val?.field === field).type
     }
-    // TODO: 修饰符实现
+    // TODO: 实现内置修饰符（trim）效果
     watch(
       () => modelRef,
       values => {
