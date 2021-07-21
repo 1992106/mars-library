@@ -2,7 +2,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import legacy from '@vitejs/plugin-legacy'
 // import ViteComponents, { AntDesignVueResolver } from 'vite-plugin-components'
-import html from 'vite-plugin-html'
+import ViteHtml from 'vite-plugin-html'
 import { viteMockServe } from 'vite-plugin-mock'
 import path from 'path'
 import setting from './src/config'
@@ -12,9 +12,10 @@ const config = {
     vue(),
     vueJsx({}),
     // ViteComponents({
+    //   globalComponentsDeclaration: true,
     //   customComponentResolvers: [AntDesignVueResolver()]
     // }),
-    html({
+    ViteHtml({
       minify: true,
       inject: {
         injectData: {

@@ -7,10 +7,20 @@ import VXETablePluginAntd from 'vxe-table-plugin-antd'
 import 'vxe-table-plugin-antd/dist/style.css'
 import MarsLibrary from '../entry'
 
+import MyModal from '@/components/Modal'
+import MyIcon from '@/components/iconfont'
+
+// 本地全局组件
+const localComponents = [MyIcon, MyModal]
+
 // VXETable引入antd组件
 VXETable.use(VXETablePluginAntd)
 
 export function setupPlugins(app) {
+  // 注册本地全局组件
+  localComponents.forEach(component => {
+    app.component(component.name, component)
+  })
   // 注册ant-design-vue
   app.use(Antd)
   // 注册vxe-table
