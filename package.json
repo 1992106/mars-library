@@ -69,7 +69,6 @@
     "vite-plugin-components": "^0.13.0",
     "vite-plugin-html": "^2.0.7",
     "vite-plugin-mock": "^2.9.3",
-    "vite-plugin-style-import": "^1.0.1",
     "vue-eslint-parser": "^7.6.0",
     "vxe-table-plugin-antd": "^3.0.3",
     "xe-ajax": "^4.0.5",
