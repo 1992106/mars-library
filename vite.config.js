@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import legacy from '@vitejs/plugin-legacy'
-import styleImport from 'vite-plugin-style-import'
+// import ViteComponents, { AntDesignVueResolver } from 'vite-plugin-components'
 import html from 'vite-plugin-html'
 import { viteMockServe } from 'vite-plugin-mock'
 import path from 'path'
@@ -11,15 +11,9 @@ const config = {
   plugins: [
     vue(),
     vueJsx({}),
-    styleImport({
-      libs: [
-        {
-          libraryName: 'ant-design-vue',
-          esModule: true,
-          resolveStyle: name => `ant-design-vue/es/${name}/style/index`
-        }
-      ]
-    }),
+    // ViteComponents({
+    //   customComponentResolvers: [AntDesignVueResolver()]
+    // }),
     html({
       minify: true,
       inject: {
@@ -86,6 +80,7 @@ export default ({ command, mode }) => {
           vue: 'vue',
           lodash: 'lodash',
           moment: 'moment',
+          'ant-design-vue': 'ant-design-vue',
           '@ant-design/icons-vue': '@ant-design/icons-vue'
         }
       },

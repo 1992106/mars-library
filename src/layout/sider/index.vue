@@ -1,5 +1,5 @@
 <template>
-  <Layout.Sider
+  <a-layout-sider
     class="app-sider"
     :trigger="null"
     collapsible
@@ -9,19 +9,17 @@
   >
     <my-logo :collapsed="collapsed" />
     <my-menu :collapsed="collapsed" />
-  </Layout.Sider>
+  </a-layout-sider>
 </template>
 
 <script>
 import { defineComponent, computed } from 'vue'
-import { Layout } from 'ant-design-vue'
 import MyLogo from '../logo/index.vue'
 import MyMenu from '../menu/index.vue'
 
 export default defineComponent({
   name: 'AppSider',
   components: {
-    'Layout.Sider': Layout.Sider,
     MyLogo,
     MyMenu
   },

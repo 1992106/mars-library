@@ -1,6 +1,6 @@
 <template>
   <div class="my-menu">
-    <Menu
+    <a-menu
       mode="inline"
       style="border: 0 none"
       :inlineCollapsed="collapsed"
@@ -12,21 +12,19 @@
       <template v-for="item in routes" :key="item.name">
         <MenuItem :menu-info="item" />
       </template>
-    </Menu>
+    </a-menu>
   </div>
 </template>
 
 <script>
 import { defineComponent, reactive, watch, computed, toRefs } from 'vue'
-import { Menu } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { routes as routeList } from '@/src/router'
 import MenuItem from './item.vue'
 
 export default defineComponent({
   components: {
-    MenuItem,
-    Menu
+    MenuItem
   },
   props: {
     collapsed: {

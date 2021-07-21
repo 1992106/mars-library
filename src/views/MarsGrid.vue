@@ -4,10 +4,7 @@
       <template #searchBar>
         <mars-search v-bind="searchOptions" @search="handleSearch">
           <template #extra>
-            <a-space>
-              <a-button @click="visible = true">添加modal弹窗</a-button>
-              <mars-export v-bind="exportOptions" @export="handleExport"></mars-export>
-            </a-space>
+            <a-button @click="visible = true">添加modal弹窗</a-button>
           </template>
         </mars-search>
       </template>
@@ -156,9 +153,7 @@ export default defineComponent({
 
     const store = useStore()
     store.dispatch('dict/getEnumerator')
-    const enumerator = computed(() => {
-      return [{ label: '全部', value: null }].concat(store.getters['dict/enumerator'])
-    })
+    const enumerator = computed(() => store.getters['dict/enumerator'])
 
     const inputChange = $event => {
       console.log($event, 'inputChange')
@@ -175,7 +170,7 @@ export default defineComponent({
           events: { change: inputChange }
         },
         { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
-        { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
+        // { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
         {
           type: 'ASelect',
           title: '下拉框',
@@ -316,21 +311,6 @@ export default defineComponent({
     }
 
     const { params, handleSearch, handleFilter } = useSearch(getList)
-
-    const exportOptions = reactive({
-      columns: [
-        { title: 'Test1', field: 'a', defaultValue: true, rule: [] },
-        { title: 'Test2', field: 'b', defaultValue: true, rule: [] },
-        { title: 'Test3', field: 'c', defaultValue: true, rule: [] },
-        { title: 'Test4', field: 'd', defaultValue: true, rule: [] },
-        { title: 'Test5', field: 'e', defaultValue: true, rule: [] },
-        { title: 'Test6', field: 'f', defaultValue: true, rule: [] }
-      ]
-    })
-
-    const handleExport = $event => {
-      console.log($event, 'export')
-    }
 
     const visible = ref(false)
 
@@ -526,8 +506,6 @@ export default defineComponent({
       searchOptions,
       handleSearch,
       handleFilter,
-      exportOptions,
-      handleExport,
       visible,
       modalOptions,
       handleModal

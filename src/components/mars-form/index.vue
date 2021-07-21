@@ -4,7 +4,7 @@
       <a-form-item :label="column?.title" v-bind="validateInfos[column.field]">
         <component
           :is="column.type"
-          v-model:[`${column.modelValue}`]="modelRef[column.field]"
+          v-model:[column.modelValue]="modelRef[column.field]"
           v-bind="column?.props || {}"
           v-on="column?.events || {}"
         ></component>
@@ -27,7 +27,7 @@
 </template>
 <script>
 import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
-import { useForm } from '@ant-design-vue/use'
+import { Form } from 'ant-design-vue'
 import { dateToMoment, isEmpty, momentToDate } from '@/utils/index'
 import { omit, pick } from 'lodash'
 export default defineComponent({
@@ -163,7 +163,7 @@ export default defineComponent({
       { deep: true, immediate: true }
     )
 
-    const { validate, resetFields, validateInfos } = useForm(modelRef, rulesRef)
+    const { validate, resetFields, validateInfos } = Form.useForm(modelRef, rulesRef)
     // 获取组件名
     const getTypeByField = field => {
       return getColumns.value.find(val => val?.field === field).type
@@ -175,8 +175,8 @@ export default defineComponent({
         Object.keys(values).forEach(field => {
           const value = values[field]
           const type = getTypeByField(field)
-          if (['AInput'].includes(type)) {
-            values[field] = value.trim()
+          if (['AInput'].includes(type) && typeof value === 'string') {
+            modelRef[field] = value.trim()
           }
         })
       },
@@ -231,3 +231,10 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="less" scoped>
+.mars-form {
+  .ant-form-item {
+    line-height: 40px;
+  }
+}
+</style>

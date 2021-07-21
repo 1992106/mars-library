@@ -1,6 +1,6 @@
 <template>
   <div class="multi-tabs">
-    <Tabs
+    <a-tabs
       hideAdd
       v-model:activeKey="activeKey"
       type="editable-card"
@@ -8,13 +8,13 @@
       @edit="onEdit"
       @tabClick="onTabClick"
     >
-      <TabPane v-for="item in visitedRoutes" :key="item.path" style="height: 0" :closable="visitedRoutes.length > 1">
+      <a-tab-pane v-for="pane in visitedRoutes" :key="pane.path" style="height: 0" :closable="visitedRoutes.length > 1">
         <template #tab>
-          {{ item.meta.title }}
-          <ReloadOutlined v-show="activeKey === item.path" @click.stop.prevent="onRefresh()" />
+          {{ pane.meta.title }}
+          <ReloadOutlined v-show="activeKey === pane.path" @click.stop.prevent="onRefresh()" />
         </template>
-      </TabPane>
-    </Tabs>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 <script>
@@ -22,16 +22,13 @@ import { defineComponent, unref, watch, computed, ref } from 'vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { Tabs } from 'ant-design-vue'
 import IconFont from '@/components/iconfont'
 
 export default defineComponent({
   name: 'MultiTabs',
   components: {
     IconFont,
-    ReloadOutlined,
-    Tabs,
-    TabPane: Tabs.TabPane
+    ReloadOutlined
   },
 
   setup() {

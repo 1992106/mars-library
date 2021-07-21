@@ -1,20 +1,19 @@
 <template>
-  <Layout class="app-layout">
+  <a-layout class="app-layout">
     <app-sider :collapsed="collapsed" />
-    <Layout>
+    <a-layout>
       <app-header v-model:collapsed="collapsed" />
       <MultiTabs />
-      <Layout.Content class="app-content">
+      <a-layout-content class="app-content">
         <app-main />
-      </Layout.Content>
+      </a-layout-content>
       <app-footer />
-    </Layout>
-  </Layout>
+    </a-layout>
+  </a-layout>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { Layout } from 'ant-design-vue'
 import AppSider from './sider/index'
 import AppHeader from './header'
 import AppMain from './main/index.vue'
@@ -24,8 +23,6 @@ import AppFooter from './footer'
 export default defineComponent({
   name: 'BaseLayout',
   components: {
-    Layout,
-    'Layout.Content': Layout.Content,
     AppSider,
     AppHeader,
     MultiTabs,

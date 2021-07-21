@@ -3,27 +3,26 @@
     <a-input v-model:value="username" />
     <MyDatePicker></MyDatePicker>
 
-    <Space>
-      <Button @click="go404">404</Button>
-      <Button :loading="loading" v-throttle="fetchData">Fetch Data</Button>
-      <Button v-debounce:[username]="testDebounce" :wait="300">Debounce</Button>
-    </Space>
+    <a-space>
+      <a-button @click="go404">404</a-button>
+      <a-button :loading="loading" v-throttle="fetchData">Fetch Data</a-button>
+      <a-button v-debounce:[username]="testDebounce" :wait="300">Debounce</a-button>
+    </a-space>
     <p>
-      <Space>
-        <Button @click="go({ name: 'home' })">首页</Button>
-        <Button @click="go({ name: 'marsGrid' })">MarsGrid</Button>
-        <Button @click="go({ path: '/list/vxeTable' })">VxeTable</Button>
-        <Button @click="go({ name: 'marsTable' })">MarsTable</Button>
-        <Button @click="go({ path: '/list/antTable' })">AntTable</Button>
-        <Button @click="go('/list/antTable?a=1')">列表</Button>
-      </Space>
+      <a-space>
+        <a-button @click="go({ name: 'home' })">首页</a-button>
+        <a-button @click="go({ name: 'marsGrid' })">MarsGrid</a-button>
+        <a-button @click="go({ path: '/list/vxeTable' })">VxeTable</a-button>
+        <a-button @click="go({ name: 'marsTable' })">MarsTable</a-button>
+        <a-button @click="go({ path: '/list/antTable' })">AntTable</a-button>
+        <a-button @click="go('/list/antTable?a=1')">列表</a-button>
+      </a-space>
     </p>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { Button, Input, Space } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import request from '@/utils/axios'
 // import request from '@/utils/fetch'
@@ -31,7 +30,7 @@ import MyDatePicker from '@/src/components/DatePicker/DatePicker'
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { Button, [Input.name]: Input, Space, MyDatePicker },
+  components: { MyDatePicker },
   setup() {
     const username = ref('')
     const loading = ref(false)

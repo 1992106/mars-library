@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import { ExportOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
-import { useForm } from '@ant-design-vue/use'
+import { Form } from 'ant-design-vue'
+import { ExportOutlined } from '@ant-design/icons-vue'
 import moment from 'moment'
 import { isEmpty, momentToDate } from '@/utils/index'
 export default defineComponent({
@@ -121,7 +121,7 @@ export default defineComponent({
       },
       { deep: true, immediate: true }
     )
-    const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef)
+    const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
     // 导出
     const handleExport = () => {

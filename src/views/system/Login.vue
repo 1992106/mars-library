@@ -1,23 +1,23 @@
 <template>
   <div class="main">
     <Form ref="formRef" :model="form" :rules="rules" class="form" @keypress.enter="handleSubmit">
-      <Item name="username">
+      <FormItem name="username">
         <Input v-model:value="form.username" placeholder="请输入用户名">
           <template #prefix>
             <UserOutlined />
           </template>
         </Input>
-      </Item>
-      <Item name="password">
+      </FormItem>
+      <FormItem name="password">
         <InputPassword v-model:value="form.password" visibilityToggle placeholder="请输入密码">
           <template #prefix>
             <LockOutlined />
           </template>
         </InputPassword>
-      </Item>
-      <Item :wrapperCol="{ span: 24 }">
+      </FormItem>
+      <FormItem :wrapperCol="{ span: 24 }">
         <Button type="primary" size="large" block @click.prevent="handleSubmit" :loading="loading">登录</Button>
-      </Item>
+      </FormItem>
     </Form>
   </div>
 </template>
@@ -25,7 +25,7 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { Form, Input, Alert, Button, notification } from 'ant-design-vue'
+import { notification } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import setting from '@/src/config'
@@ -33,12 +33,6 @@ import setting from '@/src/config'
 export default defineComponent({
   name: 'Login',
   components: {
-    Form,
-    Item: Form.Item,
-    Input,
-    Alert,
-    Button,
-    InputPassword: Input.Password,
     UserOutlined,
     LockOutlined
   },

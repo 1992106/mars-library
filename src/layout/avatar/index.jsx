@@ -1,5 +1,5 @@
 import { defineComponent, ref, computed } from 'vue'
-import { Menu, Dropdown, Avatar, Modal, notification } from 'ant-design-vue'
+import { Menu, MenuItem, Dropdown, Avatar, Modal, notification } from 'ant-design-vue'
 import { DownOutlined } from '@ant-design/icons-vue'
 import setting from '@/src/config'
 import { useStore } from 'vuex'
@@ -32,7 +32,7 @@ const MyAvatar = defineComponent({
 
     const menu = (
       <Menu onClick={handleMenuClick}>
-        <Menu.Item key='logout'>退出登录</Menu.Item>
+        <MenuItem key='logout'>退出登录</MenuItem>
       </Menu>
     )
 

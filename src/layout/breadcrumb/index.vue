@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb :routes="routes" separator=">">
+  <a-breadcrumb :routes="routes" separator=">">
     <template #itemRender="{ route, routes, paths }">
       <span v-if="routes.indexOf(route) === routes.length - 1">
         {{ route.meta.title }}
@@ -8,16 +8,14 @@
         {{ route.meta.title }}
       </router-link>
     </template>
-  </Breadcrumb>
+  </a-breadcrumb>
 </template>
 <script>
 import { defineComponent, ref, watch } from 'vue'
-import { Breadcrumb } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'MyBreadcrumb',
-  components: { Breadcrumb },
   setup() {
     const router = useRouter()
     const routes = ref([])

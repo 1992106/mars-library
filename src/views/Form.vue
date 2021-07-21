@@ -24,7 +24,7 @@
 </template>
 <script>
 import { defineComponent, reactive, toRaw } from 'vue'
-import { useForm } from '@ant-design-vue/use'
+import { Form } from 'ant-design-vue'
 export default defineComponent({
   setup() {
     const modelRef = reactive({
@@ -53,7 +53,7 @@ export default defineComponent({
         }
       ]
     })
-    const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef)
+    const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
     const onSubmit = () => {
       validate()
