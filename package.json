@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
@@ -45,7 +45,7 @@
     "@vitejs/plugin-legacy": "^1.4.3",
     "@vitejs/plugin-vue": "^1.1.5",
     "@vitejs/plugin-vue-jsx": "^1.1.4",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/compiler-sfc": "^3.2.0-beta.3",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.26.0",
