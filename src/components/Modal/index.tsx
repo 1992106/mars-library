@@ -1,11 +1,21 @@
+import { computed, defineComponent, unref, PropType } from 'vue'
 import { Modal, Spin } from 'ant-design-vue'
-import { computed, unref } from 'vue'
 
-const MyModal = {
-  name: 'MyModal',
+type SpinProps = {
+  prefixCls?: string
+  spinning?: boolean
+  size?: 'default' | 'small' | 'large'
+  wrapperClassName?: string
+  tip?: string
+  delay?: number
+  indicator?: any
+}
+
+const MyModal = defineComponent({
+  name: 'AModal',
   inheritAttrs: false,
   props: {
-    spinProps: { type: [Boolean, Object] }
+    spinProps: { type: [Boolean, Object] as PropType<boolean | SpinProps>, default: false }
   },
   setup(props, ctx) {
     const maskClosable = import.meta.env.MODE === 'development'
@@ -25,6 +35,6 @@ const MyModal = {
       </Modal>
     )
   }
-}
+})
 
 export default MyModal

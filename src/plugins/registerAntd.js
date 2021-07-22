@@ -244,7 +244,7 @@ const components = [
   UploadDragger
 ]
 
-export default function registerAntDesign(app) {
+export default function registerAntd(app) {
   // 注册antd组件
   components.forEach(key => {
     const component = components[key]

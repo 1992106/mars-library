@@ -1,6 +1,6 @@
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
-// import Antd from './registerAntDesign'
+// import Antd from './registerAntd'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
