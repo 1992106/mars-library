@@ -22,7 +22,7 @@ import { defineComponent, unref, watch, computed, ref } from 'vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import IconFont from '@/components/iconfont'
+import IconFont from '@/components/Iconfont'
 
 export default defineComponent({
   name: 'MultiTabs',

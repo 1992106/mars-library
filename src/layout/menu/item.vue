@@ -27,7 +27,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue'
-import IconFont from '@/components/iconfont'
+import IconFont from '@/components/Iconfont'
 
 export default defineComponent({
   name: 'menu-item',

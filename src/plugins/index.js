@@ -8,7 +8,7 @@ import 'vxe-table-plugin-antd/dist/style.css'
 import MarsLibrary from '../entry'
 
 import MyModal from '@/components/Modal'
-import MyIcon from '@/components/iconfont'
+import MyIcon from '@/components/Iconfont'
 
 // 本地全局组件
 const localComponents = [MyIcon, MyModal]
