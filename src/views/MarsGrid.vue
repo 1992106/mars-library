@@ -52,7 +52,13 @@ export default defineComponent({
         {
           title: '基础信息',
           children: [
-            { field: 'nickname', title: 'Nickname', editRender: { name: 'input' } },
+            {
+              field: 'nickname',
+              title: 'Nickname',
+              editRender: { name: 'input' },
+              filters: [{ data: null }],
+              filterRender: { name: 'FilterInput' }
+            },
             {
               field: 'sex_ids',
               title: 'Sexs',

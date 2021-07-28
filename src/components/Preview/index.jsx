@@ -2,8 +2,8 @@ import { ref, defineComponent, computed, reactive, watch } from 'vue'
 import Preview from 'ant-design-vue/es/vc-image/src/Preview'
 import { context } from 'ant-design-vue/es/vc-image/src/PreviewGroup'
 
-const Group = defineComponent({
-  name: 'PreviewGroup',
+const MyPreview = defineComponent({
+  name: 'MyPreview',
   inheritAttrs: false,
   props: {
     visible: { type: Boolean, required: true },
@@ -76,4 +76,4 @@ const Group = defineComponent({
   }
 })
 
-export default Group
+export default MyPreview

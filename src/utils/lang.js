@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { omit } from 'lodash'
 
 /**
  * 获取对象tag

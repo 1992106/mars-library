@@ -12,17 +12,11 @@ const MyWeekPicker = defineComponent({
   },
   emits: ['update:value'],
   setup(props, { emit, attrs }) {
-    const onInput = $event => {
+    const onChange = $event => {
       emit('update:value', momentToDate($event))
     }
 
-    const newProps = {
-      value: dateToMoment(props.value),
-      'onUpdate:value': onInput,
-      ...attrs
-    }
-
-    return () => <WeekPicker {...newProps} />
+    return () => <WeekPicker {...attrs} v-model={[dateToMoment(props.value), 'value']} onChange={onChange} />
   }
 })
 

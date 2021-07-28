@@ -5,6 +5,8 @@ import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 import 'vxe-table-plugin-antd/dist/style.css'
+import './vxe-table/filter'
+// 引入Mars组件
 import MarsLibrary from '../entry'
 
 import MyModal from '@/components/Modal'

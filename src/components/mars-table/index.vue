@@ -144,11 +144,14 @@ export default defineComponent({
         const pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 0
         const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
         const paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
-        state.scroll['y'] = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
+        const height = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
+        if (!Number.isNaN(height)) {
+          state.scroll['y'] = height
+        }
       })
     }
     onMounted(() => {
-      if (props.resize) {
+      if (props.resize && unref(tableRef)) {
         setTimeout(onResize, 200)
         window.addEventListener('resize', debounce(onResize, 200))
       }

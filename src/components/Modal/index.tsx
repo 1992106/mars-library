@@ -12,7 +12,7 @@ type SpinProps = {
 }
 
 const MyModal = defineComponent({
-  name: 'AModal',
+  name: 'MyModal',
   inheritAttrs: false,
   props: {
     spinProps: { type: [Boolean, Object] as PropType<boolean | SpinProps>, default: false }
