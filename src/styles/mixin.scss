@@ -46,3 +46,19 @@
 
   justify-content: center;
 }
+
+// 文本溢出显示省略号
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本溢出显示省略号
+@mixin multi-ellipsis($num: 2) {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical;
+}
