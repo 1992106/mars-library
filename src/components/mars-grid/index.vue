@@ -170,8 +170,16 @@ export default defineComponent({
     /**
      * 计算属性
      */
+    const generateSlots = (columns, slots = []) => {
+      columns.forEach(column => {
+        slots.push(column)
+        column.children && generateSlots(column.children, slots)
+      })
+      return slots
+    }
     const getSlots = computed(() => {
-      return props.columns
+      const columns = generateSlots(props.columns)
+      return (columns || [])
         .filter(col => col.slots)
         .flatMap(col =>
           ['default', 'header', 'footer', 'edit', 'filter', 'title', 'checkbox', 'radio', 'content']

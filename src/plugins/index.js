@@ -5,7 +5,9 @@ import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 import 'vxe-table-plugin-antd/dist/style.css'
+// vxe-table自定义功能
 import './vxe-table/filter'
+import './vxe-table/formats'
 // 引入Mars组件
 import MarsLibrary from '../entry'
 

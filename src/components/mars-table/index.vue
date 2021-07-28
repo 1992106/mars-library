@@ -145,7 +145,7 @@ export default defineComponent({
         const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
         const paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
         const height = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
-        if (!Number.isNaN(height)) {
+        if (Number.isFinite(height) && height > 0) {
           state.scroll['y'] = height
         }
       })
