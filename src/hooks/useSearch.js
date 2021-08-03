@@ -1,5 +1,5 @@
 import { computed, ref, unref } from 'vue'
-import { isFunction } from 'lodash'
+import { isFunction } from 'lodash-es'
 
 export function useSearch(fn) {
   const searchParams = ref({})

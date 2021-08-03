@@ -29,7 +29,7 @@
 import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
 import { Form } from 'ant-design-vue'
 import { dateToMoment, isEmpty, momentToDate } from '@/utils/index'
-import { omit, pick } from 'lodash'
+import { omit, pick } from 'lodash-es'
 export default defineComponent({
   name: 'MarsForm',
   props: {

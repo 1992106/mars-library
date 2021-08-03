@@ -80,7 +80,7 @@ export default defineComponent({
                 props: {
                   mode: 'multiple',
                   options: [
-                    { label: 'Man', value: '0' },
+                    { label: 'Man', value: '0', disabled: true },
                     { label: 'Woman', value: '1' }
                   ]
                 }
@@ -96,10 +96,10 @@ export default defineComponent({
               },
               filters: [{ data: [] }],
               filterRender: {
-                name: 'ASelect',
+                name: 'MySelect',
                 props: {
                   options: [
-                    { label: 'Man', value: '0' },
+                    { label: 'Man', value: '0', disabled: true },
                     { label: 'Woman', value: '1' }
                   ]
                 }
@@ -185,7 +185,7 @@ export default defineComponent({
           props: {
             mode: 'multiple',
             options: [
-              { value: '1', label: '男' },
+              { value: '1', label: '男', disabled: true },
               { value: '2', label: '女' }
             ],
             placeholder: '请选择'

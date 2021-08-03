@@ -79,7 +79,7 @@ export default ({ command, mode }) => {
         exports: 'named',
         globals: {
           vue: 'vue',
-          lodash: 'lodash',
+          'lodash-es': 'lodash-es',
           moment: 'moment',
           'ant-design-vue': 'ant-design-vue',
           '@ant-design/icons-vue': '@ant-design/icons-vue'
@@ -93,7 +93,7 @@ export default ({ command, mode }) => {
         '@ant-design/icons-vue',
         'vxe-table',
         'axios',
-        'lodash',
+        'lodash-es',
         'moment',
         'nprogress'
       ]

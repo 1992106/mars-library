@@ -5,7 +5,7 @@
       okText="搜索"
       cancelText="重置"
       v-bind="$attrs"
-      :columns="columns"
+      :columns="getColumns"
       @ok="handleSearch"
       @cancel="handleReset"
     >
@@ -23,7 +23,8 @@
 </template>
 <script>
 import { defineComponent, ref, toRaw, watch } from 'vue'
-import { isEmpty, omitEmpty } from '@/utils/index'
+import { isEmpty, omitDisabled, omitEmpty } from '@/utils/index'
+import { omit } from 'lodash-es'
 export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
@@ -37,7 +38,6 @@ export default defineComponent({
   emits: ['search', 'reset'],
   setup(props, { emit }) {
     const formRef = ref(null)
-
     const checked = ref(false)
     const handleOnly = () => {
       // 判断是否点击了搜索按钮
@@ -53,6 +53,31 @@ export default defineComponent({
       only => {
         checked.value = only
       }
+    )
+
+    const getColumns = ref([])
+    watch(
+      () => props.columns,
+      columns => {
+        getColumns.value = columns.map(column => {
+          const props = column?.props || {}
+          if (column.type === 'ASelect') {
+            const options = props.options.map(val => omit(val, ['disabled']))
+            return { ...column, props: { ...props, options } }
+          } else if (column.type === 'ACascader') {
+            const options = props.options
+            omitDisabled(options)
+            return { ...column, props: { ...props, options } }
+          } else if (column.type === 'ATreeSelect') {
+            const treeData = props.treeData
+            omitDisabled(treeData)
+            return { ...column, props: { ...props, treeData } }
+          } else {
+            return column
+          }
+        })
+      },
+      { immediate: true, deep: true }
     )
 
     const searchParams = ref({})
@@ -84,6 +109,7 @@ export default defineComponent({
     }
 
     return {
+      getColumns,
       formRef,
       checked,
       handleOnly,

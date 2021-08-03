@@ -6,7 +6,7 @@ const setting = {
   // base_url: 'http://localhost:8888/api',
   // http://oc.dev.patpat.vip/erp/micro_app/
   // http://oc.dev.patpat.vip
-  base_url: 'https://newmars-test.patpat.shop',
+  base_url: 'http://mars.dev.patpat.vip',
 
   // 是否使用mock
   mock: false,

@@ -11,10 +11,10 @@ const dict = {
     setEnumerator(state, data) {
       let array = data.map(item => {
         return {
-          value: item.id,
+          value: item.enumerator_type,
           label: item.enumerator_value,
-          disabeld: !item.status,
-          children: formatField(item.enumerator_item_archives, 'enumerator_item_value')
+          disabled: !item.status,
+          children: formatField(item.enumerator_items, 'enumerator_item_value')
         }
       })
       state.enumerator = Object.freeze(array)
@@ -23,18 +23,18 @@ const dict = {
   actions: {
     async getEnumerator({ commit }) {
       const res = await request.get('/archive/enumerator/index')
-      commit('setEnumerator', res.data || [])
+      commit('setEnumerator', res?.data?.list || [])
     }
   }
 }
 
-const formatField = (data, label, value = 'id', status = 'status') => {
+const formatField = (data, label, value = 'id', disabled = 'status') => {
   if (Array.isArray(data)) {
     return data.map(item => {
       return {
         label: item[label],
         value: item[value],
-        disabled: !item[status]
+        disabled: !item[disabled]
       }
     })
   }

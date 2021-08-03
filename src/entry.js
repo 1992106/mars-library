@@ -9,3 +9,5 @@ const install = function installMarsComponents(app) {
 export default install
 
 export * from '@/components/index'
+
+export { VXETablePluginMars } from './plugins/antd/index'

@@ -61,6 +61,20 @@ export const omitEmpty = value => {
 }
 
 /**
+ * 去除disabled字段
+ * @param tree
+ */
+export const omitDisabled = tree => {
+  let node,
+    list = [...tree]
+  while ((node = list.shift())) {
+    delete node.disabled
+    delete node.disableCheckbox
+    node.children && list.push(...node.children)
+  }
+}
+
+/**
  * 填充对象
  * @param target
  * @param source
