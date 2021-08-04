@@ -11,7 +11,7 @@
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
 import { TreeSelect } from 'ant-design-vue'
-import { omitDisabled } from '@/src/utils'
+import { recursive } from '@/src/utils'
 
 export default defineComponent({
   name: 'MyTreeSelect',
@@ -35,7 +35,10 @@ export default defineComponent({
         state.option = column.filters[0]
         const treeSelectProps = column.filterRender?.props || {}
         const { treeData = [] } = treeSelectProps
-        omitDisabled(treeData)
+        recursive(treeData, node => {
+          delete node.disabled
+          delete node.disableCheckbox
+        })
         state.treeData = treeData
         state.treeSelectProps = treeSelectProps
       }

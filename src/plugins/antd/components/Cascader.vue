@@ -6,7 +6,7 @@
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
 import { Cascader } from 'ant-design-vue'
-import { omitDisabled } from '@/src/utils'
+import { recursive } from '@/src/utils'
 
 export default defineComponent({
   name: 'MyCascader',
@@ -29,7 +29,9 @@ export default defineComponent({
         const { column } = params
         state.option = column.filters[0]
         const options = column.filterRender?.options || column.filterRender?.props?.options || []
-        omitDisabled(options)
+        recursive(options, node => {
+          delete node.disabled
+        })
         state.options = options
         state.cascaderProps = { placeholder: '', ...(column.filterRender.props || {}) }
       }

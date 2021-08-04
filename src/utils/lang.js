@@ -61,15 +61,15 @@ export const omitEmpty = value => {
 }
 
 /**
- * 去除disabled字段
+ * 广度递归遍历树
  * @param tree
+ * @param callback
  */
-export const omitDisabled = tree => {
+export const recursive = (tree, callback) => {
   let node,
     list = [...tree]
   while ((node = list.shift())) {
-    delete node.disabled
-    delete node.disableCheckbox
+    callback(node)
     node.children && list.push(...node.children)
   }
 }

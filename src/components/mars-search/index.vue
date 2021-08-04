@@ -23,7 +23,7 @@
 </template>
 <script>
 import { defineComponent, ref, toRaw, watch } from 'vue'
-import { isEmpty, omitDisabled, omitEmpty } from '@/utils/index'
+import { isEmpty, recursive, omitEmpty } from '@/utils/index'
 import { omit } from 'lodash-es'
 export default defineComponent({
   name: 'MarsSearch',
@@ -66,11 +66,16 @@ export default defineComponent({
             return { ...column, props: { ...props, options } }
           } else if (column.type === 'ACascader') {
             const options = props.options
-            omitDisabled(options)
+            recursive(options, node => {
+              delete node.disabled
+            })
             return { ...column, props: { ...props, options } }
           } else if (column.type === 'ATreeSelect') {
             const treeData = props.treeData
-            omitDisabled(treeData)
+            recursive(treeData, node => {
+              delete node.disabled
+              delete node.disableCheckbox
+            })
             return { ...column, props: { ...props, treeData } }
           } else {
             return column
