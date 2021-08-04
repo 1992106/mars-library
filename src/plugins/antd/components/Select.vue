@@ -28,9 +28,15 @@ export default defineComponent({
       if (params) {
         const { column } = params
         state.option = column.filters[0]
-        const options = column.filterRender?.options || column.filterRender?.props?.options || []
+        const selectProps = column.filterRender?.props || {}
+        const options = column.filterRender?.options || selectProps?.options || []
         state.options = options.map(val => omit(val, ['disabled']))
-        state.selectProps = column.filterRender?.props || {}
+        state.selectProps = {
+          allowClear: true,
+          showSearch: true,
+          optionFilterProp: 'label',
+          ...selectProps
+        }
       }
     }
 

@@ -40,7 +40,13 @@ export default defineComponent({
           delete node.disableCheckbox
         })
         state.treeData = treeData
-        state.treeSelectProps = treeSelectProps
+        state.treeSelectProps = {
+          allowClear: true,
+          showSearch: true,
+          treeCheckable: true,
+          maxTagCount: 1,
+          ...treeSelectProps
+        }
       }
     }
 

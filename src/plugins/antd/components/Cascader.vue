@@ -28,12 +28,18 @@ export default defineComponent({
       if (params) {
         const { column } = params
         state.option = column.filters[0]
-        const options = column.filterRender?.options || column.filterRender?.props?.options || []
+        const cascaderProps = column.filterRender?.props || {}
+        const options = column.filterRender?.options || cascaderProps?.options || []
         recursive(options, node => {
           delete node.disabled
         })
         state.options = options
-        state.cascaderProps = { placeholder: '', ...(column.filterRender.props || {}) }
+        state.cascaderProps = {
+          showSearch: true,
+          allowClear: true,
+          placeholder: '',
+          ...cascaderProps
+        }
       }
     }
 

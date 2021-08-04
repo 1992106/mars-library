@@ -26,7 +26,7 @@ export default defineComponent({
       if (params) {
         const { column } = params
         state.option = column.filters[0]
-        state.dateProps = column.filterRender?.props || {}
+        state.dateProps = { allowClear: true, format: 'YYYY-MM-DD', ...(column.filterRender?.props || {}) }
       }
     }
 
