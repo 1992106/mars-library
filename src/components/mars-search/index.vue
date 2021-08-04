@@ -62,16 +62,16 @@ export default defineComponent({
         getColumns.value = columns.map(column => {
           const props = column?.props || {}
           if (column.type === 'ASelect') {
-            const options = props.options.map(val => omit(val, ['disabled']))
+            const options = (props?.options || []).map(val => omit(val, ['disabled']))
             return { ...column, props: { ...props, options } }
           } else if (column.type === 'ACascader') {
-            const options = props.options
+            const options = props?.options || []
             recursive(options, node => {
               delete node.disabled
             })
             return { ...column, props: { ...props, options } }
           } else if (column.type === 'ATreeSelect') {
-            const treeData = props.treeData
+            const treeData = props?.treeData || []
             recursive(treeData, node => {
               delete node.disabled
               delete node.disableCheckbox
