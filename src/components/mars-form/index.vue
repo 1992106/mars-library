@@ -92,11 +92,11 @@ export default defineComponent({
       },
       AWeekPicker: {
         allowClear: true,
-        valueFormat: 'YYYY-wo'
+        valueFormat: 'YYYY-MM-DD' // YYYY-wo
       },
       AMonthPicker: {
         allowClear: true,
-        valueFormat: 'YYYY-MM'
+        valueFormat: 'YYYY-MM-DD' // YYYY-MM
       },
       ARangePicker: {
         allowClear: true,
@@ -136,7 +136,7 @@ export default defineComponent({
     const getModel = columns => {
       const allDefaultValue = ['defaultValue', 'defaultPickerValue']
       return columns.reduce((prev, next) => {
-        // 在使用useForm时，allDefaultValue中的默认值不生效；所以手动设置默认值
+        // 在使用useForm时，allDefaultValue中的默认值不生效；需要手动设置默认值
         let value = allDefaultValue.map(val => next?.props[val]).find(val => val != null)
         // 格式化时间
         if (hasMoment(next)) {
