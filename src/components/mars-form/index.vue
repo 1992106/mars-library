@@ -83,20 +83,25 @@ export default defineComponent({
       },
       ACascader: {
         showSearch: true,
-        allowClear: true
+        allowClear: true,
+        placeholder: ''
       },
       ADatePicker: {
-        allowClear: true
+        allowClear: true,
+        valueFormat: 'YYYY-MM-DD'
       },
       AWeekPicker: {
-        allowClear: true
+        allowClear: true,
+        valueFormat: 'YYYY-wo'
       },
       AMonthPicker: {
-        allowClear: true
+        allowClear: true,
+        valueFormat: 'YYYY-MM'
       },
       ARangePicker: {
         allowClear: true,
-        format: 'YYYY-MM-DD'
+        format: 'YYYY-MM-DD',
+        valueFormat: 'YYYY-MM-DD'
       },
       ATimePicker: {
         allowClear: true
@@ -135,7 +140,7 @@ export default defineComponent({
         let value = allDefaultValue.map(val => next?.props[val]).find(val => val != null)
         // 格式化时间
         if (hasMoment(next)) {
-          value = dateToMoment(value)
+          value = dateToMoment(value, next?.props?.valueFormat)
         }
         if (isEmpty(value)) {
           value = hasMultiple(next) ? [] : undefined
@@ -187,9 +192,11 @@ export default defineComponent({
       validate()
         .then(() => {
           const modelRaw = toRaw(modelRef)
-          Object.keys(modelRaw).forEach(item => {
-            let value = modelRaw[item]
-            modelRaw[item] = momentToDate(value)
+          getColumns.value.forEach(column => {
+            if (hasMoment(column)) {
+              const value = modelRaw[column.field]
+              modelRaw[column.field] = momentToDate(value, column?.props?.valueFormat)
+            }
           })
           emit('ok', modelRaw)
         })

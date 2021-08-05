@@ -55,23 +55,22 @@ export default defineComponent({
       }
     )
 
+    // 监听columns，删除disabled
     const getColumns = ref([])
     watch(
       () => props.columns,
       columns => {
         getColumns.value = columns.map(column => {
           const props = column?.props || {}
+          const { options = [], treeData = [] } = props
           if (column.type === 'ASelect') {
-            const options = (props?.options || []).map(val => omit(val, ['disabled']))
-            return { ...column, props: { ...props, options } }
+            return { ...column, props: { ...props, options: options.map(val => omit(val, ['disabled'])) } }
           } else if (column.type === 'ACascader') {
-            const options = props?.options || []
             recursive(options, node => {
               delete node.disabled
             })
             return { ...column, props: { ...props, options } }
           } else if (column.type === 'ATreeSelect') {
-            const treeData = props?.treeData || []
             recursive(treeData, node => {
               delete node.disabled
               delete node.disableCheckbox

@@ -59,7 +59,7 @@ storageName | - | 本地Storage名称
 #### filterRender配置
 属性|可选值|描述
 :---:|:---:|:---:
-name | 'AInput', 'AAutocomplete', 'AInputNumber', 'ASelect', 'ASwitch', 'ARate' | 支持的渲染组件
+name | 'AInput', 'AAutocomplete', 'AInputNumber', 'ASelect', 'ASwitch', 'ARate', 'MyDatePicker', 'MyRangePicker', 'MyCascader', 'MySelect', 'MyTreeSelect' | 支持的渲染组件
 props | - | 渲染组件附加属性
 options | - | 只对 name=ASelect 有效，下拉组件选项列表
 optionProps | - |  只对 name=ASelect 有效，下拉组件选项属性参数配置
