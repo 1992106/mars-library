@@ -33,6 +33,7 @@ export default defineComponent({
     columns: { type: Array, required: true, default: () => [] },
     // 是否显示只看我的
     showOnly: { type: Boolean, default: true },
+    onlyField: { type: String, default: 'is_mine' },
     only: { type: Boolean, default: false }
   },
   emits: ['search', 'reset'],
@@ -93,7 +94,7 @@ export default defineComponent({
     const emitData = () => {
       const searchData = {
         ...omitEmpty(toRaw(searchParams.value)),
-        ...(props.showOnly ? { only_myself: checked.value } : {})
+        ...(props.showOnly ? { [props.onlyField]: checked.value } : {})
       }
       emit('search', searchData)
     }
