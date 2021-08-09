@@ -273,10 +273,10 @@ export default defineComponent({
     })
 
     const getList = () => {
-      console.log(params.value, 'search')
+      console.log(paramsRef.value, 'search')
     }
 
-    const { params, handleSearch, handleFilter } = useSearch(getList)
+    const { paramsRef, handleSearch, handleFilter } = useSearch(getList)
 
     const visible = ref(false)
 

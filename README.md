@@ -170,7 +170,7 @@ event | - | 渲染组件附加事件
 #### emits
 
 ```markdown
-emits: ['ok', 'cancel']
+emits: ['ok', 'cancel', 'clear']
 ```
 
 ### mars-search组件
@@ -181,13 +181,16 @@ emits: ['ok', 'cancel']
 
 属性|默认值|描述
 :---:|:---:|:---:
+clearSearch | true | 清空搜索
+resetSearch | true | 重置搜索
 showOnly | true | 是否显示只看我的
+onlyField | 'is_mine' | 自定义名称
 only | false | 只看我的
 
 #### emits
 
 ```markdown
-emits: ['search', 'reset']
+emits: ['search', 'reset', 'clear']
 ```
 
 #### slots

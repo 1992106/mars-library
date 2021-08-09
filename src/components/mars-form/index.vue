@@ -56,68 +56,134 @@ export default defineComponent({
     showCancel: { type: Boolean, default: true },
     cancelText: { type: String, default: '取消' }
   },
-  emits: ['ok', 'cancel'],
+  emits: ['ok', 'cancel', 'clear'],
   setup(props, { emit }) {
     const defaultState = {
       AInput: {
-        allowClear: true
+        props: {
+          allowClear: true
+        },
+        events: ['change', 'pressEnter']
       },
-      AInputNumber: {},
+      AInputNumber: {
+        events: ['pressEnter']
+      },
       AAutoComplete: {
-        allowClear: true
+        props: {
+          allowClear: true
+        },
+        events: ['change']
       },
       ASelect: {
-        allowClear: true,
-        showSearch: true,
-        optionFilterProp: 'label'
+        props: {
+          allowClear: true,
+          showSearch: true,
+          optionFilterProp: 'label'
+        },
+        events: ['clear']
       },
       ACheckboxGroup: {},
       ARadioGroup: {},
       ASwitch: {},
       ASlider: {},
       ATreeSelect: {
-        allowClear: true,
-        showSearch: true,
-        treeCheckable: true,
-        maxTagCount: 1
+        props: {
+          allowClear: true,
+          showSearch: true,
+          treeCheckable: true,
+          maxTagCount: 1
+        },
+        events: ['change']
       },
       ACascader: {
-        showSearch: true,
-        allowClear: true,
-        placeholder: ''
+        props: {
+          allowClear: true,
+          showSearch: true,
+          placeholder: ''
+        },
+        events: ['change']
       },
       ADatePicker: {
-        allowClear: true,
-        valueFormat: 'YYYY-MM-DD'
+        props: {
+          allowClear: true,
+          format: 'YYYY-MM-DD',
+          valueFormat: 'YYYY-MM-DD'
+        },
+        events: ['change']
       },
       AWeekPicker: {
-        allowClear: true,
-        valueFormat: 'YYYY-MM-DD' // YYYY-wo
+        props: {
+          allowClear: true,
+          format: 'YYYY-wo',
+          valueFormat: 'YYYY-MM-DD'
+        },
+        events: ['change']
       },
       AMonthPicker: {
-        allowClear: true,
-        valueFormat: 'YYYY-MM-DD' // YYYY-MM
+        props: {
+          allowClear: true,
+          format: 'YYYY-MM',
+          valueFormat: 'YYYY-MM-DD'
+        },
+        events: ['change']
       },
       ARangePicker: {
-        allowClear: true,
-        format: 'YYYY-MM-DD',
-        valueFormat: 'YYYY-MM-DD'
+        props: {
+          allowClear: true,
+          format: 'YYYY-MM-DD',
+          valueFormat: 'YYYY-MM-DD'
+        },
+        events: ['change']
       },
       ATimePicker: {
-        allowClear: true
+        props: {
+          allowClear: true
+        },
+        events: ['change']
       }
     }
     // 获取v-model绑定名称
     const getModelValue = type => (['ASwitch'].includes(type) ? 'checked' : 'value')
+    // 合并事件
+    const defaultEventsMap = {
+      change: $event => {
+        // Input/Cascader/DatePicker/TreeSelect
+        if ($event.type === 'click' || isEmpty($event)) {
+          emit('clear', emitData())
+        }
+      },
+      // Select
+      clear: () => emit('clear', emitData()),
+      pressEnter: () => emit('ok', emitData())
+    }
+    const mergeEvents = (defaultEvents = [], events = {}) => {
+      const newEvents = defaultEvents.reduce((prev, name) => {
+        const defaultEvent = defaultEventsMap[name]
+        const event = events[name]
+        prev[name] = event
+          ? $event => {
+              event($event)
+              defaultEvent($event)
+            }
+          : defaultEvent
+        return prev
+      }, {})
+      return { ...events, ...newEvents }
+    }
     // 获取格式化后的columns
     const getColumns = computed(() => {
       return props.columns.map(column => {
         const { props = {}, events = {} } = column
-        const defaultProps = defaultState[column?.type] || {}
+        // props
+        const defaultAllState = defaultState[column?.type] || {}
+        const defaultProps = defaultAllState.props || {}
         const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
         const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
-        return { ...allColumn, modelValue: getModelValue(column?.type), props: allProps, events: events }
+        // events
+        const defaultEvents = defaultAllState.events || []
+        const allEvents = mergeEvents(defaultEvents, events)
+        return { ...allColumn, modelValue: getModelValue(column?.type), props: allProps, events: allEvents }
       })
     })
     // 是否是多选框
@@ -138,7 +204,7 @@ export default defineComponent({
       return columns.reduce((prev, next) => {
         // 在使用useForm时，需要手动设置默认值
         let value = allDefaultValue.map(val => next?.props[val]).find(val => val != null)
-        // 格式化时间
+        // 格式化时间（antd不支持new Date()）
         if (hasMoment(next)) {
           value = dateToMoment(value, next?.props?.valueFormat)
         }
@@ -191,18 +257,19 @@ export default defineComponent({
     const handleOk = () => {
       validate()
         .then(() => {
-          const modelRaw = toRaw(modelRef)
-          getColumns.value.forEach(column => {
-            if (hasMoment(column)) {
-              const value = modelRaw[column.field]
-              modelRaw[column.field] = momentToDate(value, column?.props?.valueFormat)
-            }
-          })
-          emit('ok', modelRaw)
+          emit('ok', emitData())
         })
         .catch(err => {
           console.log('from error', err)
         })
+    }
+
+    const emitData = () => {
+      return getColumns.value.reduce((prev, column) => {
+        const value = modelRef[column.field]
+        prev[column.field] = hasMoment(column) ? momentToDate(value, column?.props?.valueFormat) : value
+        return prev
+      }, {})
     }
 
     const handleCancel = () => {

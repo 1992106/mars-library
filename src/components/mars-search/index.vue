@@ -7,6 +7,7 @@
       v-bind="$attrs"
       :columns="getColumns"
       @ok="handleSearch"
+      @clear="handleClear"
       @cancel="handleReset"
     >
       <template #only>
@@ -31,12 +32,16 @@ export default defineComponent({
   props: {
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
+    // 清空搜索
+    clearSearch: { type: Boolean, default: true },
+    // 重置搜索
+    resetSearch: { type: Boolean, default: true },
     // 是否显示只看我的
     showOnly: { type: Boolean, default: true },
     onlyField: { type: String, default: 'is_mine' },
     only: { type: Boolean, default: false }
   },
-  emits: ['search', 'reset'],
+  emits: ['search', 'reset', 'clear'],
   setup(props, { emit }) {
     const formRef = ref(null)
     const checked = ref(false)
@@ -46,7 +51,7 @@ export default defineComponent({
         formRef.value?.handleOk && formRef.value.handleOk()
         return
       }
-      emitData()
+      emit('search', emitData())
     }
 
     watch(
@@ -86,21 +91,32 @@ export default defineComponent({
     )
 
     const searchParams = ref({})
+
     const handleSearch = ($event = {}) => {
       searchParams.value = $event
-      emitData()
+      emit('search', emitData())
+    }
+
+    const handleClear = ($event = {}) => {
+      searchParams.value = $event
+      emit('clear', emitData())
+      if (props.clearSearch) {
+        emit('search', emitData())
+      }
     }
 
     const emitData = () => {
-      const searchData = {
+      return {
         ...omitEmpty(toRaw(searchParams.value)),
         ...(props.showOnly ? { [props.onlyField]: checked.value } : {})
       }
-      emit('search', searchData)
     }
 
     const handleReset = () => {
       emit('reset')
+      if (props.resetSearch) {
+        emit('search', emitData())
+      }
     }
 
     // 搜索方法
@@ -119,6 +135,7 @@ export default defineComponent({
       checked,
       handleOnly,
       handleSearch,
+      handleClear,
       handleReset,
       onSearch,
       onReset
