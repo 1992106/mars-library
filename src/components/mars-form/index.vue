@@ -146,19 +146,21 @@ export default defineComponent({
     const getModelValue = type => (['ASwitch'].includes(type) ? 'checked' : 'value')
     // 合并事件
     const defaultEventsMap = {
+      // 组件不支持clear，使用change模拟clear
       change: $event => {
-        // Input/Cascader/DatePicker/TreeSelect
-        if ($event.type === 'click' || isEmpty($event)) {
+        // Input或Cascader/DatePicker/TreeSelect
+        if (($event?.type === 'click' && !$event.target.value) || isEmpty($event)) {
           emit('clear', emitData())
         }
       },
       // Select
       clear: () => emit('clear', emitData()),
+      // Input/InputNumber
       pressEnter: () => emit('ok', emitData())
     }
     const mergeEvents = (defaultEvents = [], events = {}) => {
       const newEvents = defaultEvents.reduce((prev, name) => {
-        const defaultEvent = defaultEventsMap[name]
+        const defaultEvent = defaultEventsMap[name] || Function.prototype
         const event = events[name]
         prev[name] = event
           ? $event => {
@@ -181,8 +183,11 @@ export default defineComponent({
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
         const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
         // events
-        const defaultEvents = defaultAllState.events || []
-        const allEvents = allProps.allowClear ? mergeEvents(defaultEvents, events) : events
+        let defaultEvents = defaultAllState.events || []
+        if (!allProps.allowClear) {
+          defaultEvents = defaultEvents.filter(val => !['change', 'clear'].includes(val))
+        }
+        const allEvents = mergeEvents(defaultEvents, events)
         return { ...allColumn, modelValue: getModelValue(column?.type), props: allProps, events: allEvents }
       })
     })
@@ -254,6 +259,14 @@ export default defineComponent({
       { deep: true }
     )
 
+    const emitData = () => {
+      return getColumns.value.reduce((prev, column) => {
+        const value = modelRef[column.field]
+        prev[column.field] = hasMoment(column) ? momentToDate(value, column?.props?.valueFormat) : value
+        return prev
+      }, {})
+    }
+
     const handleOk = () => {
       validate()
         .then(() => {
@@ -264,17 +277,9 @@ export default defineComponent({
         })
     }
 
-    const emitData = () => {
-      return getColumns.value.reduce((prev, column) => {
-        const value = modelRef[column.field]
-        prev[column.field] = hasMoment(column) ? momentToDate(value, column?.props?.valueFormat) : value
-        return prev
-      }, {})
-    }
-
     const handleCancel = () => {
       resetFields()
-      emit('cancel')
+      emit('cancel', emitData())
     }
 
     const reverses = ref(['ok', 'cancel'])

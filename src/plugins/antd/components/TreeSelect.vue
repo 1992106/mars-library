@@ -5,13 +5,14 @@
       :treeData="treeData"
       v-model:value="option.data"
       @change="onChange"
+      @blur="onBlur"
     ></TreeSelect>
   </div>
 </template>
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
 import { TreeSelect } from 'ant-design-vue'
-import { recursive } from '@/src/utils'
+import { isEmpty, recursive } from '@/src/utils'
 
 export default defineComponent({
   name: 'MyTreeSelect',
@@ -55,8 +56,28 @@ export default defineComponent({
       const { option } = state
       if (params && option) {
         const { $panel } = params
-        const checked = !!option.data
+        const checked = !isEmpty(option.data)
         $panel.changeOption(null, checked, option)
+        // 清空
+        if (isEmpty(option.data)) {
+          onFilter()
+        }
+      }
+    }
+
+    const onBlur = () => {
+      if (!isEmpty(state.option.data)) {
+        onFilter()
+      }
+    }
+
+    const onFilter = () => {
+      const { params: { $panel } = {} } = props
+      const { option } = state
+      if ($panel && option) {
+        // TODO: 未知bug，手动设置
+        option.checked = option._checked
+        $panel?.confirmFilter(null)
       }
     }
 
@@ -64,7 +85,8 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      onChange
+      onChange,
+      onBlur
     }
   }
 })

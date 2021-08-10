@@ -94,7 +94,7 @@ export default defineComponent({
               params: {
                 filterAlias: 'sex_id'
               },
-              filters: [{ data: [] }],
+              filters: [{ data: null }],
               filterRender: {
                 name: 'MySelect',
                 props: {
@@ -105,7 +105,13 @@ export default defineComponent({
                 }
               }
             },
-            { field: 'age', title: 'Age', editRender: { name: 'input' } },
+            {
+              field: 'age',
+              title: 'Age',
+              editRender: { name: 'input' },
+              filters: [{ data: '' }],
+              filterRender: { name: 'MyInput' }
+            },
             {
               field: 'date',
               title: 'Date'

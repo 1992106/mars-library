@@ -181,7 +181,7 @@ emits: ['ok', 'cancel', 'clear']
 
 属性|默认值|描述
 :---:|:---:|:---:
-clearSearch | true | 清空搜索
+clearSearch | false | 清空搜索
 resetSearch | true | 重置搜索
 showOnly | true | 是否显示只看我的
 onlyField | 'is_mine' | 自定义名称

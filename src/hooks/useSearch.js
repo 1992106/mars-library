@@ -10,18 +10,12 @@ export function useSearch(fn) {
     }
   }
 
-  const handleReset = () => {
-    searchParams.value = {}
-    if (isFunction(fn)) {
-      fn({ page: 1 })
-    }
+  const handleReset = ($event = {}) => {
+    searchParams.value = $event
   }
 
   const handleClear = ($event = {}) => {
     searchParams.value = $event
-    if (isFunction(fn)) {
-      fn({ ...unref(paramsRef), page: 1 })
-    }
   }
 
   const filterParams = ref({})

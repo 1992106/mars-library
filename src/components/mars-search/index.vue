@@ -33,7 +33,7 @@ export default defineComponent({
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
     // 清空搜索
-    clearSearch: { type: Boolean, default: true },
+    clearSearch: { type: Boolean, default: false },
     // 重置搜索
     resetSearch: { type: Boolean, default: true },
     // 是否显示只看我的
@@ -48,7 +48,7 @@ export default defineComponent({
     const handleOnly = () => {
       // 判断是否点击了搜索按钮
       if (isEmpty(searchParams.value)) {
-        formRef.value?.handleOk && formRef.value.handleOk()
+        onSearch()
         return
       }
       emit('search', emitData())
@@ -92,19 +92,6 @@ export default defineComponent({
 
     const searchParams = ref({})
 
-    const handleSearch = ($event = {}) => {
-      searchParams.value = $event
-      emit('search', emitData())
-    }
-
-    const handleClear = ($event = {}) => {
-      searchParams.value = $event
-      emit('clear', emitData())
-      if (props.clearSearch) {
-        emit('search', emitData())
-      }
-    }
-
     const emitData = () => {
       return {
         ...omitEmpty(toRaw(searchParams.value)),
@@ -112,8 +99,22 @@ export default defineComponent({
       }
     }
 
-    const handleReset = () => {
-      emit('reset')
+    const handleSearch = ($event = {}) => {
+      searchParams.value = $event
+      emit('search', emitData())
+    }
+
+    const handleClear = ($event = {}) => {
+      searchParams.value = $event
+      emit('clear', emitData(), { name: 'clear', isSearch: props.clearSearch })
+      if (props.clearSearch) {
+        emit('search', emitData())
+      }
+    }
+
+    const handleReset = ($event = {}) => {
+      searchParams.value = $event
+      emit('reset', emitData(), { name: 'reset', isSearch: props.resetSearch })
       if (props.resetSearch) {
         emit('search', emitData())
       }
@@ -129,6 +130,11 @@ export default defineComponent({
       formRef.value?.handleCancel && formRef.value.handleCancel()
     }
 
+    // 获取最新数据
+    const getData = () => {
+      return emitData()
+    }
+
     return {
       getColumns,
       formRef,
@@ -138,7 +144,8 @@ export default defineComponent({
       handleClear,
       handleReset,
       onSearch,
-      onReset
+      onReset,
+      getData
     }
   }
 })

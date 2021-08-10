@@ -1,24 +1,22 @@
 <template>
   <div class="vxe-table--filter-antd-wrapper">
-    <Select
-      v-bind="selectProps"
-      :options="options"
+    <Input
+      v-bind="inputProps"
       v-model:value="option.data"
       @change="onChange"
+      @pressEnter="onEnter"
       @blur="onBlur"
-    ></Select>
+    ></Input>
   </div>
 </template>
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
-import { Select } from 'ant-design-vue'
-import { omit } from 'lodash-es'
-import { isEmpty } from '@/src/utils'
+import { Input } from 'ant-design-vue'
 
 export default defineComponent({
-  name: 'MySelect',
+  name: 'MyInput',
   components: {
-    Select
+    Input
   },
   props: {
     params: { type: Object }
@@ -26,8 +24,8 @@ export default defineComponent({
   setup(props) {
     const state = reactive({
       option: null,
-      options: [],
-      selectProps: {}
+      inputProps: {},
+      isEnter: false
     })
 
     const init = () => {
@@ -35,36 +33,40 @@ export default defineComponent({
       if (params) {
         const { column } = params
         state.option = column.filters[0]
-        const selectProps = column.filterRender?.props || {}
-        const options = column.filterRender?.options || selectProps?.options || []
-        state.options = options.map(val => omit(val, ['disabled']))
-        state.selectProps = {
+        const inputProps = column.filterRender?.props || {}
+        state.inputProps = {
           allowClear: true,
-          showSearch: true,
-          optionFilterProp: 'label',
-          ...selectProps
+          ...inputProps
         }
       }
     }
 
-    const onChange = () => {
+    const onChange = $event => {
       const { params } = props
       const { option } = state
       if (params && option) {
         const { $panel } = params
-        const checked = !isEmpty(option.data)
+        const checked = !!option.data
         $panel.changeOption(null, checked, option)
         // 清空
-        if (isEmpty(option.data)) {
+        if ($event?.type === 'click' && !option.data) {
           onFilter()
         }
       }
     }
 
+    const onEnter = $event => {
+      if (state.option.data && $event.keyCode === 13) {
+        onFilter()
+        state.isEnter = true
+      }
+    }
+
     const onBlur = () => {
-      if (!isEmpty(state.option.data)) {
+      if (state.option.data && !state.isEnter) {
         onFilter()
       }
+      state.isEnter = false
     }
 
     const onFilter = () => {
@@ -77,16 +79,12 @@ export default defineComponent({
       }
     }
 
-    // const hasMultiple = (column = {}) => {
-    //   const { props = {} } = column?.filterRender || {}
-    //   return ['multiple', 'tags'].includes(props?.mode)
-    // }
-
     init()
 
     return {
       ...toRefs(state),
       onChange,
+      onEnter,
       onBlur
     }
   }

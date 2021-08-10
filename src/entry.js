@@ -10,4 +10,4 @@ export default install
 
 export * from '@/components/index'
 
-export { VXETablePluginMars } from './plugins/antd/index'
+export { VXETablePluginMars } from './plugins/VXETablePluginMars'

@@ -1,12 +1,18 @@
 <template>
   <div class="vxe-table--filter-antd-wrapper">
-    <Cascader v-bind="cascaderProps" :options="options" v-model:value="option.data" @change="onChange"></Cascader>
+    <Cascader
+      v-bind="cascaderProps"
+      :options="options"
+      v-model:value="option.data"
+      @change="onChange"
+      @popupVisibleChange="onVisibleChange"
+    ></Cascader>
   </div>
 </template>
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
 import { Cascader } from 'ant-design-vue'
-import { recursive } from '@/src/utils'
+import { isEmpty, recursive } from '@/src/utils'
 
 export default defineComponent({
   name: 'MyCascader',
@@ -48,8 +54,28 @@ export default defineComponent({
       const { option } = state
       if (params && option) {
         const { $panel } = params
-        const checked = !!option.data
+        const checked = !isEmpty(option.data)
         $panel.changeOption(null, checked, option)
+        // 清空
+        if (isEmpty(option.data)) {
+          onFilter()
+        }
+      }
+    }
+
+    const onVisibleChange = () => {
+      if (!isEmpty(state.option.data)) {
+        onFilter()
+      }
+    }
+
+    const onFilter = () => {
+      const { params: { $panel } = {} } = props
+      const { option } = state
+      if ($panel && option) {
+        // TODO: 未知bug，手动设置
+        option.checked = option._checked
+        $panel?.confirmFilter(null)
       }
     }
 
@@ -57,7 +83,8 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      onChange
+      onChange,
+      onVisibleChange
     }
   }
 })
