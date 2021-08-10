@@ -174,15 +174,15 @@ export default defineComponent({
     const getColumns = computed(() => {
       return props.columns.map(column => {
         const { props = {}, events = {} } = column
-        // props
         const defaultAllState = defaultState[column?.type] || {}
+        // props
         const defaultProps = defaultAllState.props || {}
         const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
         const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
         // events
         const defaultEvents = defaultAllState.events || []
-        const allEvents = mergeEvents(defaultEvents, events)
+        const allEvents = allProps.allowClear ? mergeEvents(defaultEvents, events) : events
         return { ...allColumn, modelValue: getModelValue(column?.type), props: allProps, events: allEvents }
       })
     })

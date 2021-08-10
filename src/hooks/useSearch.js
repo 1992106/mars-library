@@ -10,6 +10,20 @@ export function useSearch(fn) {
     }
   }
 
+  const handleReset = () => {
+    searchParams.value = {}
+    if (isFunction(fn)) {
+      fn({ page: 1 })
+    }
+  }
+
+  const handleClear = ($event = {}) => {
+    searchParams.value = $event
+    if (isFunction(fn)) {
+      fn({ ...unref(paramsRef), page: 1 })
+    }
+  }
+
   const filterParams = ref({})
   const handleFilter = $event => {
     const pagination = {}
@@ -32,6 +46,8 @@ export function useSearch(fn) {
   return {
     paramsRef,
     handleSearch,
+    handleReset,
+    handleClear,
     handleFilter
   }
 }
