@@ -63,8 +63,8 @@ export default defineComponent({
       }
     }
 
-    const onVisibleChange = () => {
-      if (!isEmpty(state.option.data)) {
+    const onVisibleChange = visible => {
+      if (!visible && !isEmpty(state.option.data)) {
         onFilter()
       }
     }

@@ -1,12 +1,6 @@
 <template>
   <div class="vxe-table--filter-antd-wrapper">
-    <Select
-      v-bind="selectProps"
-      :options="options"
-      v-model:value="option.data"
-      @change="onChange"
-      @blur="onBlur"
-    ></Select>
+    <Select v-bind="selectProps" :options="options" v-model:value="option.data" @change="onChange"></Select>
   </div>
 </template>
 <script>
@@ -14,6 +8,7 @@ import { defineComponent, reactive, toRefs } from 'vue'
 import { Select } from 'ant-design-vue'
 import { omit } from 'lodash-es'
 import { isEmpty } from '@/src/utils'
+import useFilter from './hooks'
 
 export default defineComponent({
   name: 'MySelect',
@@ -61,22 +56,6 @@ export default defineComponent({
       }
     }
 
-    const onBlur = () => {
-      if (!isEmpty(state.option.data)) {
-        onFilter()
-      }
-    }
-
-    const onFilter = () => {
-      const { params: { $panel } = {} } = props
-      const { option } = state
-      if ($panel && option) {
-        // TODO: 未知bug，手动设置
-        option.checked = option._checked
-        $panel?.confirmFilter(null)
-      }
-    }
-
     // const hasMultiple = (column = {}) => {
     //   const { props = {} } = column?.filterRender || {}
     //   return ['multiple', 'tags'].includes(props?.mode)
@@ -84,10 +63,11 @@ export default defineComponent({
 
     init()
 
+    const { onFilter } = useFilter(props.params, state)
+
     return {
       ...toRefs(state),
-      onChange,
-      onBlur
+      onChange
     }
   }
 })

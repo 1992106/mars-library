@@ -60,6 +60,13 @@ export default defineComponent({
               filterRender: { name: 'FilterInput' }
             },
             {
+              field: 'age',
+              title: 'Age',
+              editRender: { name: 'input' },
+              filters: [{ data: '' }],
+              filterRender: { name: 'MyInput' }
+            },
+            {
               field: 'sex_ids',
               title: 'Sexs',
               headerAlign: 'center',
@@ -76,7 +83,7 @@ export default defineComponent({
               },
               filters: [{ data: [] }],
               filterRender: {
-                name: 'ASelect',
+                name: 'MySelect',
                 props: {
                   mode: 'multiple',
                   options: [
@@ -106,16 +113,13 @@ export default defineComponent({
               }
             },
             {
-              field: 'age',
-              title: 'Age',
-              editRender: { name: 'input' },
-              filters: [{ data: '' }],
-              filterRender: { name: 'MyInput' }
-            },
-            {
               field: 'date',
-              title: 'Date'
+              title: 'Date',
               // editRender: { name: 'ADatePicker' }
+              filters: [{ data: null }],
+              filterRender: {
+                name: 'MyDatePicker'
+              }
             },
             {
               field: 'role',
@@ -131,15 +135,14 @@ export default defineComponent({
               },
               filters: [{ data: [] }],
               filterRender: {
-                name: '$select',
-                options: [
-                  { label: 'Develop', value: 'Develop' },
-                  { label: 'Test', value: 'Test' },
-                  { label: 'PM', value: 'PM' },
-                  { label: 'Designer', value: 'Designer' }
-                ],
+                name: 'MyTreeSelect',
                 props: {
-                  multiple: true
+                  treeData: [
+                    { label: 'Develop', value: 'Develop' },
+                    { label: 'Test', value: 'Test' },
+                    { label: 'PM', value: 'PM' },
+                    { label: 'Designer', value: 'Designer' }
+                  ]
                 }
               }
             }

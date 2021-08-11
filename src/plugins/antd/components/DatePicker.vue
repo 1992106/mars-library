@@ -1,17 +1,13 @@
 <template>
   <div class="vxe-table--filter-antd-wrapper">
-    <DatePicker
-      v-bind="dateProps"
-      v-model:value="option.data"
-      @change="onChange"
-      @openChange="onOpenChange"
-    ></DatePicker>
+    <DatePicker v-bind="dateProps" v-model:value="option.data" @change="onChange"></DatePicker>
   </div>
 </template>
 <script>
 import { defineComponent, reactive, toRefs } from 'vue'
 import { DatePicker } from 'ant-design-vue'
 import { isEmpty } from '@/src/utils'
+import useFilter from './hooks'
 
 export default defineComponent({
   name: 'MyDatePicker',
@@ -54,28 +50,13 @@ export default defineComponent({
       }
     }
 
-    const onOpenChange = () => {
-      if (!isEmpty(state.option.data)) {
-        onFilter()
-      }
-    }
-
-    const onFilter = () => {
-      const { params: { $panel } = {} } = props
-      const { option } = state
-      if ($panel && option) {
-        // TODO: 未知bug，手动设置
-        option.checked = option._checked
-        $panel?.confirmFilter(null)
-      }
-    }
-
     init()
+
+    const { onFilter } = useFilter(props.params, state)
 
     return {
       ...toRefs(state),
-      onChange,
-      onOpenChange
+      onChange
     }
   }
 })
