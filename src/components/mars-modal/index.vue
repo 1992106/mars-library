@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <my-modal
     v-bind="$attrs"
     :title="title"
     :width="width"
@@ -18,7 +18,7 @@
       @ok="handleOk"
       @cancel="handleCancel"
     ></mars-form>
-  </a-modal>
+  </my-modal>
 </template>
 <script>
 import { defineComponent, computed } from 'vue'
@@ -73,7 +73,7 @@ export default defineComponent({
     &-buttons {
       position: absolute;
       right: 0;
-      bottom: 0;
+      //bottom: 0;
       width: 100%;
       border-top: 1px solid #f0f0f0;
       border-radius: 0 0 2px 2px;
