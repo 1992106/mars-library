@@ -58,15 +58,13 @@ const MyModal = defineComponent({
     }
 
     const renderIcon = () => {
-      const Fullscreen = props.fullscreen ? (
-        <FullscreenExitOutlined onClick={handleFullScreen} />
-      ) : (
-        <FullscreenOutlined onClick={handleFullScreen} />
-      )
-
       return props?.showFullscreen ? (
         <div class='my-model-close-fullscreen'>
-          {Fullscreen}
+          {props.fullscreen ? (
+            <FullscreenExitOutlined onClick={handleFullScreen} />
+          ) : (
+            <FullscreenOutlined onClick={handleFullScreen} />
+          )}
           <CloseOutlined />
         </div>
       ) : (
