@@ -51,13 +51,10 @@ httpService.interceptors.response.use(
     if (error?.response) {
       // TODO: 定义全局错误拦截
       switch (error.response.status) {
-        case 403:
+        case 401:
           message.error(`登录已过期，重新登录！`)
           store.dispatch('user/logout')
           router.replace('/login')
-          break
-        case 404:
-          message.error(`请求错误,未找到该资源！`)
           break
         default:
           message.error(`未知错误${error.response.status}`)

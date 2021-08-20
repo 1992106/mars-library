@@ -5,14 +5,17 @@ import httpService from './axios'
  * @param url
  * @param params
  * @param method
+ * @param options
  * @returns {Promise<unknown>}
  */
-export function request(url, params = {}, method = 'post') {
+export function request(url, params = {}, method = 'post', options = {}) {
   return new Promise((resolve, reject) => {
     httpService({
       url: url,
       method: method,
-      data: params
+      ...(method === 'post' ? { data: params } : {}),
+      ...(method === 'get' ? { params: params } : {}),
+      options
     })
       .then((res = {}) => {
         resolve(res)
@@ -27,11 +30,12 @@ export function request(url, params = {}, method = 'post') {
  * post请求
  * @param url
  * @param params
- * @returns {Promise<minimist.Opts.unknown>}
+ * @param options
+ * @returns {Promise<unknown>}
  */
-export async function post(url, params = {}) {
+export async function post(url, params = {}, options = {}) {
   try {
-    return await request(url, params, 'post')
+    return await request(url, params, 'post', options)
   } catch (err) {
     return err
     // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return返回错误，就可以在外层.then或者await中接收错误
@@ -43,11 +47,12 @@ export async function post(url, params = {}) {
  * get请求
  * @param url
  * @param params
- * @returns {Promise<minimist.Opts.unknown>}
+ * @param options
+ * @returns {Promise<unknown>}
  */
-export async function get(url, params = {}) {
+export async function get(url, params = {}, options = {}) {
   try {
-    return await request(url, params, 'get')
+    return await request(url, params, 'get', options)
   } catch (err) {
     return err
     // TODO: 由于业务调用接口没有使用.catch或try catch，故不能抛出异常；只能return返回错误，就可以在外层.then或者await中接收错误
