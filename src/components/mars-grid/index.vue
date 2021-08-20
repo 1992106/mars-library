@@ -69,7 +69,7 @@
 </template>
 <script>
 import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps } from 'vue'
-import { momentToDate } from '@/utils/index'
+import { momentToDate } from '@/utils'
 
 export default defineComponent({
   name: 'MarsGrid',

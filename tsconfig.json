@@ -23,11 +23,11 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
+      "@/*": ["src/*"],
       "@/src/*": ["src/*"],
       "@/views/*": ["src/views/*"],
       "@/components/*": ["src/components/*"],
       "@/hooks/*": ["src/hooks/*"],
-      "@/store/*": ["src/store/*"],
       "@/utils/*": ["src/utils/*"]
     }
   },

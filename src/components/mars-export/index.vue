@@ -53,9 +53,12 @@ import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
 import { Form } from 'ant-design-vue'
 import { ExportOutlined } from '@ant-design/icons-vue'
 import moment from 'moment'
-import { isEmpty, momentToDate } from '@/utils/index'
+import { isEmpty, momentToDate } from '@/utils'
 export default defineComponent({
   name: 'MarsExport',
+  components: {
+    ExportOutlined
+  },
   props: {
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
@@ -67,10 +70,6 @@ export default defineComponent({
     zIndex: { type: Number, default: 1000 }
   },
   emits: ['export', 'cancel'],
-  components: {
-    ExportOutlined
-  },
-
   setup(props, { emit }) {
     const drawerVisible = ref(false)
 

@@ -1,7 +1,7 @@
 import setting from '@/src/config/index'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@/utils/index'
-import store from '@/store'
+import { getAccessToken } from '@/utils'
+import store from '@/src/store'
 import router from '@/src/router'
 
 const fetchPost = (url, body) => {

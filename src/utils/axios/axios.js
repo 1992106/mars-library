@@ -1,8 +1,8 @@
 import axios from 'axios'
-import setting from '@/src/config/index'
+import setting from '@/src/config'
 import { message } from 'ant-design-vue'
-import { getAccessToken } from '@/utils/index'
-import store from '@/store'
+import { getAccessToken } from '@/utils'
+import store from '@/src/store'
 import router from '@/src/router'
 
 // 全局axios默认值

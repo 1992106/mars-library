@@ -24,7 +24,7 @@
 </template>
 <script>
 import { defineComponent, ref, toRaw, watch } from 'vue'
-import { isEmpty, recursive, omitEmpty } from '@/utils/index'
+import { isEmpty, recursive, omitEmpty } from '@/utils'
 import { omit } from 'lodash-es'
 export default defineComponent({
   name: 'MarsSearch',
@@ -156,15 +156,17 @@ export default defineComponent({
   :deep(.mars-form) {
     .ant-input-affix-wrapper,
     .ant-select {
-      width: 130px;
+      width: 150px;
     }
     .ant-cascader-picker,
     .tree-select {
       width: 100%;
-      min-width: 130px;
+      min-width: 150px;
     }
     .ant-calendar-picker {
-      width: 220px;
+      span[class='ant-calendar-picker-input ant-input'] {
+        width: 300px;
+      }
     }
   }
   .only-btn {
