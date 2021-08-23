@@ -25,8 +25,8 @@ export function useModalDragMove(context: UseModalDragMoveContext) {
       // 鼠标按下，计算当前元素距离可视区的距离
       const disX = e.clientX
       const disY = e.clientY
-      const screenWidth = document.body.clientWidth // body当前宽度
-      const screenHeight = document.documentElement.clientHeight // 可见区域高度(应为body高度，可某些环境下无法获取)
+      const screenWidth = document.body.clientWidth
+      const screenHeight = document.body.clientHeight
 
       const dragDomWidth = dragDom.offsetWidth // 对话框宽度
       const dragDomHeight = dragDom.offsetHeight // 对话框高度
@@ -36,6 +36,7 @@ export function useModalDragMove(context: UseModalDragMoveContext) {
 
       const minDragDomTop = dragDom.offsetTop
       const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
+
       // 获取到的值带px 正则匹配替换
       const domLeft = getStyle(dragDom, 'left')
       const domTop = getStyle(dragDom, 'top')
@@ -59,13 +60,13 @@ export function useModalDragMove(context: UseModalDragMoveContext) {
         // 边界处理
         if (-left > minDragDomLeft) {
           left = -minDragDomLeft
-        } else if (left > maxDragDomLeft) {
+        } else if (left > maxDragDomLeft && maxDragDomLeft > 0) {
           left = maxDragDomLeft
         }
 
         if (-top > minDragDomTop) {
           top = -minDragDomTop
-        } else if (top > maxDragDomTop) {
+        } else if (top > maxDragDomTop && maxDragDomTop > 0) {
           top = maxDragDomTop
         }
 

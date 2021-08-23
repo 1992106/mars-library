@@ -72,7 +72,9 @@ const MyModal = defineComponent({
       )
     }
 
-    const wrapClassName = computed(() => `${props.wrapClassName} ${unref(fullScreenRef) ? 'my-model-fullscreen' : ''}`)
+    const wrapClassName = computed(
+      () => `${props.wrapClassName ? props.wrapClassName : ''} ${unref(fullScreenRef) ? 'my-model-fullscreen' : ''}`
+    )
 
     return () => (
       <Modal
