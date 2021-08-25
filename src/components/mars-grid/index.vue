@@ -352,7 +352,6 @@ export default defineComponent({
       }
     }
   }
-
   .ant-pagination {
     padding: 10px;
     text-align: right;

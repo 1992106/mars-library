@@ -22,7 +22,7 @@
 </template>
 <script>
 import { defineComponent, computed } from 'vue'
-
+import MyModal from '../Modal'
 export default defineComponent({
   name: 'MarsModal',
   inheritAttrs: false,
@@ -38,6 +38,9 @@ export default defineComponent({
     zIndex: { type: Number, default: 1000 }
   },
   emits: ['update:visible', 'ok', 'cancel'],
+  components: {
+    MyModal
+  },
   setup(props, { emit }) {
     const modalVisible = computed({
       get: () => {

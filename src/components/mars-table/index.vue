@@ -127,7 +127,9 @@ export default defineComponent({
     const getSlots = computed(() =>
       props.columns
         .filter(val => val.slots)
-        .flatMap(col => ['customRender', 'filterDropdown', 'filterIcon'].map(val => col.slots[val]).filter(Boolean))
+        .flatMap(col =>
+          ['customRender', 'title', 'filterDropdown', 'filterIcon'].map(val => col.slots[val]).filter(Boolean)
+        )
     )
     const getScroll = computed(() => mergeProps(state.scroll, props.scroll))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))

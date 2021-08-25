@@ -106,7 +106,7 @@ export default defineComponent({
 
     const handleClear = ($event = {}) => {
       searchParams.value = $event
-      emit('clear', emitData(), { name: 'clear', isSearch: props.clearSearch })
+      emit('clear', emitData())
       if (props.clearSearch) {
         emit('search', emitData())
       }
@@ -114,7 +114,7 @@ export default defineComponent({
 
     const handleReset = ($event = {}) => {
       searchParams.value = $event
-      emit('reset', emitData(), { name: 'reset', isSearch: props.resetSearch })
+      emit('reset', emitData())
       if (props.resetSearch) {
         emit('search', emitData())
       }
