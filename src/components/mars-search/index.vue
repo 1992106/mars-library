@@ -162,7 +162,6 @@ export default defineComponent({
     .ant-select {
       width: 150px;
     }
-    .ant-cascader-picker,
     .tree-select {
       width: 100%;
       min-width: 150px;
