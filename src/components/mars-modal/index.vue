@@ -12,6 +12,7 @@
     <mars-form
       layout="horizontal"
       :reverse="true"
+      :showExpand="false"
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
       :columns="columns"

@@ -16,14 +16,14 @@
           只看我的
         </div>
       </template>
-      <div class="extra-btn">
+      <div class="extra-btn" v-if="showExtra">
         <slot name="extra"></slot>
       </div>
     </mars-form>
   </div>
 </template>
 <script>
-import { defineComponent, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, ref, toRaw, watch } from 'vue'
 import { isEmpty, recursive, omitEmpty } from '@/utils'
 import { omit } from 'lodash-es'
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
     only: { type: Boolean, default: false }
   },
   emits: ['search', 'reset', 'clear'],
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const formRef = ref(null)
     const checked = ref(false)
     const handleOnly = () => {
@@ -60,6 +60,9 @@ export default defineComponent({
         checked.value = only
       }
     )
+
+    // 是否显示
+    const showExtra = computed(() => !!slots['extra'])
 
     // 监听columns，删除disabled
     const getColumns = ref([])
@@ -140,6 +143,7 @@ export default defineComponent({
       formRef,
       checked,
       handleOnly,
+      showExtra,
       handleSearch,
       handleClear,
       handleReset,
@@ -171,6 +175,7 @@ export default defineComponent({
   }
   .only-btn {
     display: flex;
+    min-width: 105px;
     .ant-switch {
       margin-right: 5px;
     }

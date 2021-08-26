@@ -10,26 +10,40 @@
         ></component>
       </a-form-item>
     </template>
-    <a-space class="mars-form-buttons">
-      <template v-for="btn in reverses" :key="btn">
-        <template v-if="btn === 'ok'">
-          <a-button type="primary" @click.prevent="handleOk">{{ okText }}</a-button>
+    <div class="mars-form-buttons">
+      <a-space>
+        <template v-for="btn in reverses" :key="btn">
+          <template v-if="btn === 'ok'">
+            <a-button type="primary" @click.prevent="handleOk">{{ okText }}</a-button>
+          </template>
+          <template v-else>
+            <a-button @click="handleCancel">{{ cancelText }}</a-button>
+          </template>
         </template>
-        <template v-else>
-          <a-button @click="handleCancel">{{ cancelText }}</a-button>
-        </template>
-      </template>
-      <!--只看我的-->
-      <slot name="only"></slot>
-    </a-space>
-    <slot></slot>
+        <div class="expand" v-if="isShowExpand" @click="handleExpand">
+          <template v-if="isExpand">
+            <span>收起</span>
+            <UpOutlined />
+          </template>
+          <template v-else>
+            <span>展开</span>
+            <DownOutlined />
+          </template>
+        </div>
+        <!--只看我的-->
+        <slot name="only"></slot>
+      </a-space>
+      <slot></slot>
+    </div>
   </a-form>
 </template>
 <script>
-import { computed, defineComponent, mergeProps, reactive, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, mergeProps, onMounted, reactive, ref, toRaw, watch } from 'vue'
 import { Form } from 'ant-design-vue'
+import { DownOutlined, UpOutlined } from '@ant-design/icons-vue'
 import { dateToMoment, isEmpty, momentToDate } from '@/utils'
 import { omit, pick } from 'lodash-es'
+import { useFormLayout } from './useFormLayout'
 export default defineComponent({
   name: 'MarsForm',
   props: {
@@ -54,9 +68,14 @@ export default defineComponent({
     showOk: { type: Boolean, default: true },
     okText: { type: String, default: '确定' },
     showCancel: { type: Boolean, default: true },
-    cancelText: { type: String, default: '取消' }
+    cancelText: { type: String, default: '取消' },
+    showExpand: null
   },
   emits: ['ok', 'cancel', 'clear'],
+  components: {
+    DownOutlined,
+    UpOutlined
+  },
   setup(props, { emit }) {
     const defaultState = {
       AInput: {
@@ -298,6 +317,23 @@ export default defineComponent({
       },
       { immediate: true }
     )
+
+    // 表单布局
+    const { updateLayout, hasExpand } = useFormLayout()
+    const isExpand = ref(false)
+    const handleExpand = () => {
+      isExpand.value = !isExpand.value
+      updateLayout()
+    }
+    const isShowExpand = ref(false)
+    onMounted(() => {
+      if (typeof props.showExpand === 'undefined') {
+        isShowExpand.value = hasExpand()
+      } else {
+        isShowExpand.value = props.showExpand
+      }
+    })
+
     return {
       getModelValue,
       getColumns,
@@ -305,7 +341,10 @@ export default defineComponent({
       validateInfos,
       reverses,
       handleOk,
-      handleCancel
+      handleCancel,
+      isExpand,
+      isShowExpand,
+      handleExpand
     }
   }
 })
@@ -314,6 +353,17 @@ export default defineComponent({
 .mars-form {
   .ant-form-item {
     line-height: 40px;
+    &.active {
+      display: none !important;
+    }
+  }
+  &-buttons {
+    display: flex;
+    flex: 1;
+    :deep(.expand) {
+      cursor: pointer;
+      min-width: 50px;
+    }
   }
 }
 </style>
