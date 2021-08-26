@@ -320,7 +320,7 @@ export default defineComponent({
 
     // 表单布局
     const { updateLayout, hasExpand } = useFormLayout()
-    const isExpand = ref(false)
+    const isExpand = ref(true)
     const handleExpand = () => {
       isExpand.value = !isExpand.value
       updateLayout()
