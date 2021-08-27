@@ -1,12 +1,11 @@
 <template>
   <div class="page-content">
-    <a-input v-model:value="username" />
+    <a-input v-model:value.trim="username" @input="handleChange" />
     <MyDatePicker></MyDatePicker>
 
     <a-space>
       <a-button @click="go404">404</a-button>
       <a-button :loading="loading" v-throttle="fetchData">Fetch Data</a-button>
-      <a-button v-debounce:[username]="testDebounce" :wait="300">Debounce</a-button>
     </a-space>
     <p>
       <a-space>
@@ -45,7 +44,9 @@ export default defineComponent({
       router.push(params)
     }
 
-    const testDebounce = () => {}
+    const handleChange = $event => {
+      console.log($event)
+    }
 
     const fetchData = async () => {
       loading.value = true
@@ -70,10 +71,10 @@ export default defineComponent({
 
     return {
       username,
+      handleChange,
       loading,
       go404,
       fetchData,
-      testDebounce,
       go
     }
   }

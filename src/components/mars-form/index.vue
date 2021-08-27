@@ -82,7 +82,7 @@ export default defineComponent({
         props: {
           allowClear: true
         },
-        events: ['change', 'pressEnter']
+        events: ['change', 'pressEnter', 'input']
       },
       AInputNumber: {
         events: ['pressEnter']
@@ -175,7 +175,11 @@ export default defineComponent({
       // Select
       clear: () => emit('clear', emitData()),
       // Input/InputNumber
-      pressEnter: () => emit('ok', emitData())
+      pressEnter: () => emit('ok', emitData()),
+      // Input
+      input: () => {
+        proxyModifier()
+      }
     }
     const mergeEvents = (defaultEvents = [], events = {}) => {
       const newEvents = defaultEvents.reduce((prev, name) => {
@@ -263,20 +267,17 @@ export default defineComponent({
     const getTypeByField = field => {
       return getColumns.value.find(val => val?.field === field).type
     }
-    // TODO: 实现内置修饰符（trim）效果
-    watch(
-      () => modelRef,
-      values => {
-        Object.keys(values).forEach(field => {
-          const value = values[field]
-          const type = getTypeByField(field)
-          if (['AInput'].includes(type) && typeof value === 'string') {
-            modelRef[field] = value.trim()
-          }
-        })
-      },
-      { deep: true }
-    )
+    // 实现内置修饰符
+    const proxyModifier = () => {
+      Object.keys(modelRef).forEach(field => {
+        const value = modelRef[field]
+        const type = getTypeByField(field)
+        // trim
+        if (['AInput'].includes(type) && typeof value === 'string') {
+          modelRef[field] = value.trim()
+        }
+      })
+    }
 
     const emitData = () => {
       return getColumns.value.reduce((prev, column) => {
