@@ -34,7 +34,7 @@ const MyModal = defineComponent({
 
     // 加载
     const spinProps = computed(() => {
-      return typeof props.spinProps === 'boolean' ? { spinning: props.spinProps } : props.spinProps
+      return typeof props.spinProps === 'object' ? props.spinProps : { spinning: props.spinProps }
     })
 
     // 拖拽
