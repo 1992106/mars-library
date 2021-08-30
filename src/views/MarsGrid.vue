@@ -185,7 +185,7 @@ export default defineComponent({
           events: { change: inputChange }
         },
         { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
-        // { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
+        { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
         {
           type: 'ASelect',
           title: '下拉框',

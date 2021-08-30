@@ -165,19 +165,25 @@ export default defineComponent({
     const getModelValue = type => (['ASwitch'].includes(type) ? 'checked' : 'value')
     // 合并事件
     const defaultEventsMap = {
-      // 组件不支持clear，使用change模拟clear
+      // 实现清除事件
       change: $event => {
-        // Input或Cascader/DatePicker/TreeSelect
+        // Input或Cascader/DatePicker/TreeSelect组件不支持clear，使用change模拟clear事件
         if (($event?.type === 'click' && !$event.target.value) || isEmpty($event)) {
           emit('clear', emitData())
         }
       },
-      // Select
-      clear: () => emit('clear', emitData()),
-      // Input/InputNumber
-      pressEnter: () => emit('ok', emitData()),
-      // Input
+      clear: () => {
+        // Select
+        emit('clear', emitData())
+      },
+      // 实现enter搜索功能
+      pressEnter: () => {
+        // Input/InputNumber组件
+        emit('ok', emitData())
+      },
+      // 实现修饰符功能
       input: () => {
+        // Input：使用input模拟trim方法
         proxyModifier()
       }
     }
