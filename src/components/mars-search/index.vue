@@ -71,7 +71,8 @@ export default defineComponent({
       columns => {
         getColumns.value = columns.map(column => {
           const props = column?.props || {}
-          const { options = [], treeData = [] } = props
+          const options = props?.options || []
+          const treeData = props?.treeData || []
           if (column.type === 'ASelect') {
             return { ...column, props: { ...props, options: options.map(val => omit(val, ['disabled'])) } }
           } else if (column.type === 'ACascader') {

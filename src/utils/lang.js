@@ -66,6 +66,7 @@ export const omitEmpty = value => {
  * @param callback
  */
 export const recursive = (tree, callback) => {
+  if (!Array.isArray(tree)) tree = []
   let node,
     list = [...tree]
   while ((node = list.shift())) {
