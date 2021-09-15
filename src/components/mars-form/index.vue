@@ -237,7 +237,7 @@ export default defineComponent({
       const allDefaultValue = ['defaultValue', 'defaultPickerValue']
       return columns.reduce((prev, next) => {
         // 在使用useForm时，需要手动设置默认值
-        let value = allDefaultValue.map(val => next?.props[val]).find(val => val != null)
+        let value = allDefaultValue.map(val => next?.props[val]).find(Boolean)
         // 格式化时间（antd不支持new Date()）
         if (hasMoment(next)) {
           value = dateToMoment(value, next?.props?.valueFormat)
@@ -245,7 +245,11 @@ export default defineComponent({
         if (isEmpty(value)) {
           value = hasMultiple(next) ? [] : undefined
         }
-        prev[next.field] = value
+        // TODO: AAutoComplete组件默认值为undefined时，点击重置无效
+        if (next.type === 'AAutoComplete') {
+          value = ''
+        }
+        prev[next.field] = isEmpty(modelRef) ? value : modelRef[next.field]
         return prev
       }, {})
     }

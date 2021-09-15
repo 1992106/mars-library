@@ -170,8 +170,15 @@ export default defineComponent({
     store.dispatch('dict/getEnumerator')
     const enumerator = computed(() => store.getters['dict/enumerator'])
 
-    const inputChange = $event => {
-      console.log($event, 'inputChange')
+    const state = reactive({
+      options: []
+    })
+
+    const searchChange = $event => {
+      console.log($event, 'searchChange')
+      setTimeout(() => {
+        state.options = [{ value: '1' }, { value: '2' }, { value: '3' }]
+      })
     }
 
     const searchOptions = reactive({
@@ -181,11 +188,17 @@ export default defineComponent({
           title: '输入框',
           field: 'input',
           rules: [],
-          props: { defaultValue: '123', placeholder: '请输入' },
-          events: { change: inputChange }
+          props: { defaultValue: '123', placeholder: '请输入' }
         },
         { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
-        { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
+        {
+          type: 'AAutoComplete',
+          title: '自动完成',
+          field: 'autoComplete',
+          rules: [],
+          props: { options: computed(() => state.options) },
+          events: { search: searchChange }
+        },
         {
           type: 'ASelect',
           title: '下拉框',
@@ -337,8 +350,7 @@ export default defineComponent({
           title: '输入框',
           field: 'input',
           rules: [],
-          props: { defaultValue: '123', placeholder: '请输入' },
-          events: { change: inputChange }
+          props: { defaultValue: '123', placeholder: '请输入' }
         },
         { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
         { type: 'AAutoComplete', title: '自动完成', field: 'autoComplete', rules: [] },
