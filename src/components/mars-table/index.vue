@@ -40,18 +40,7 @@
   </div>
 </template>
 <script>
-import {
-  defineComponent,
-  computed,
-  mergeProps,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  ref,
-  toRefs,
-  unref
-} from 'vue'
+import { defineComponent, computed, mergeProps, onBeforeUnmount, onMounted, reactive, ref, toRefs, unref } from 'vue'
 import { debounce } from 'lodash-es'
 export default defineComponent({
   name: 'MarsTable',
@@ -137,29 +126,31 @@ export default defineComponent({
      * methods
      */
     // 监听视窗大小改变
-    const onResize = () => {
-      nextTick(() => {
-        // TODO: 待优化
-        const $xTable = unref(tableRef)
-        const $xTableHeader = $xTable?.$el?.querySelector('.ant-table-header> table')
-        const tableHeaderHeight = $xTableHeader?.offsetHeight || 0
-        const pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 0
-        const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
-        const paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
-        const height = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
-        if (Number.isFinite(height) && height > 0) {
-          state.scroll['y'] = height
-        }
-      })
-    }
+    const onResize = debounce(() => {
+      // TODO: 待优化
+      const $xTable = unref(tableRef)
+      const $xTableHeader = $xTable?.$el?.querySelector('.ant-table .ant-table-header>table')
+      const tableHeaderHeight = $xTableHeader?.offsetHeight || 0
+      const pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 0
+      const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
+      const paginationHeight = $xTable?.$el?.nextElementSibling?.offsetHeight || 0
+      const height = pageHeight - HeaderHeight - paginationHeight - tableHeaderHeight
+      if (Number.isFinite(height) && height > 0) {
+        state.scroll['y'] = height
+      }
+    }, 200)
+    let observer
     onMounted(() => {
       if (props.resize && unref(tableRef)) {
-        setTimeout(onResize, 200)
-        window.addEventListener('resize', debounce(onResize, 200))
+        observer = new MutationObserver(onResize)
+        observer.observe(unref(tableRef)?.$el, { attributes: true, childList: true, subtree: true })
+        // onResize()
+        // window.addEventListener('resize', onResize)
       }
     })
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
+      observer.disconnect()
+      // window.removeEventListener('resize', onResize)
     })
     // 行的类名（默认设置斑马纹）
     const handleRowClassName = (record, index) => {

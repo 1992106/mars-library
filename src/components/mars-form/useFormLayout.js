@@ -24,7 +24,7 @@ export function useFormLayout() {
         node.classList.remove('active')
       })
     }
-    // TODO: 手动触发resize事件，调整表格高度
+    // TODO: 手动触发resize事件，调整表单高度
     dispatchResize()
   }
 
