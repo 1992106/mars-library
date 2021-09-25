@@ -126,10 +126,11 @@ export default defineComponent({
      * methods
      */
     // 监听视窗大小改变
+    let observer
     const onResize = debounce(() => {
       // TODO: 待优化
       const $xTable = unref(tableRef)
-      const $xTableHeader = $xTable?.$el?.querySelector('.ant-table .ant-table-header>table')
+      const $xTableHeader = $xTable?.$el?.querySelector('.ant-table .ant-table-header>table') // TODO: 初始化无法获取
       const tableHeaderHeight = $xTableHeader?.offsetHeight || 0
       const pageHeight = $xTable?.$el?.parentNode?.offsetHeight || 0
       const HeaderHeight = $xTable?.$el?.previousElementSibling?.offsetHeight || 0
@@ -138,19 +139,24 @@ export default defineComponent({
       if (Number.isFinite(height) && height > 0) {
         state.scroll['y'] = height
       }
+      // TODO: 可以获取$xTableHeader时，可停止观察。
+      if ($xTableHeader && observer) {
+        observer.disconnect()
+      }
     }, 200)
-    let observer
     onMounted(() => {
       if (props.resize && unref(tableRef)) {
+        // TODO: 由于$xTableHeader在antd中是异步动态生成，初始化时获取不到dom，导致表格高度计算错误。
+        // TODO: 所以使用MutationObserver事件监听动态生成的$xTableHeader。
         observer = new MutationObserver(onResize)
         observer.observe(unref(tableRef)?.$el, { attributes: true, childList: true, subtree: true })
         // onResize()
-        // window.addEventListener('resize', onResize)
+        window.addEventListener('resize', onResize)
       }
     })
     onBeforeUnmount(() => {
-      observer.disconnect()
-      // window.removeEventListener('resize', onResize)
+      observer && observer.disconnect()
+      window.removeEventListener('resize', onResize)
     })
     // 行的类名（默认设置斑马纹）
     const handleRowClassName = (record, index) => {
