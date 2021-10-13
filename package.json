@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.2.8-2",
+  "version": "0.2.8-3",
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",

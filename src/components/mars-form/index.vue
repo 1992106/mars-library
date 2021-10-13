@@ -97,7 +97,8 @@ export default defineComponent({
         props: {
           allowClear: true,
           showSearch: true,
-          optionFilterProp: 'label'
+          optionFilterProp: 'label',
+          getPopupContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['clear']
       },
@@ -110,7 +111,8 @@ export default defineComponent({
           allowClear: true,
           showSearch: true,
           treeCheckable: true,
-          maxTagCount: 1
+          maxTagCount: 1,
+          getPopupContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
@@ -118,7 +120,8 @@ export default defineComponent({
         props: {
           allowClear: true,
           showSearch: true,
-          placeholder: ''
+          placeholder: '',
+          getPopupContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
@@ -126,7 +129,8 @@ export default defineComponent({
         props: {
           allowClear: true,
           format: 'YYYY-MM-DD',
-          valueFormat: 'YYYY-MM-DD'
+          valueFormat: 'YYYY-MM-DD',
+          getCalendarContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
@@ -134,7 +138,8 @@ export default defineComponent({
         props: {
           allowClear: true,
           format: 'YYYY-wo',
-          valueFormat: 'YYYY-MM-DD'
+          valueFormat: 'YYYY-MM-DD',
+          getCalendarContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
@@ -142,7 +147,8 @@ export default defineComponent({
         props: {
           allowClear: true,
           format: 'YYYY-MM',
-          valueFormat: 'YYYY-MM-DD'
+          valueFormat: 'YYYY-MM-DD',
+          getCalendarContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
@@ -150,13 +156,15 @@ export default defineComponent({
         props: {
           allowClear: true,
           format: 'YYYY-MM-DD',
-          valueFormat: 'YYYY-MM-DD'
+          valueFormat: 'YYYY-MM-DD',
+          getCalendarContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       },
       ATimePicker: {
         props: {
-          allowClear: true
+          allowClear: true,
+          getPopupContainer: triggerNode => triggerNode?.parentNode
         },
         events: ['change']
       }
