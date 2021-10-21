@@ -25,7 +25,7 @@
 <script>
 import { computed, defineComponent, ref, toRaw, watch } from 'vue'
 import { isEmpty, recursive, omitEmpty } from '@/utils'
-import { omit } from 'lodash-es'
+import { omit, cloneDeep } from 'lodash-es'
 export default defineComponent({
   name: 'MarsSearch',
   inheritAttrs: false,
@@ -71,9 +71,9 @@ export default defineComponent({
       columns => {
         getColumns.value = columns.map(column => {
           const props = column?.props || {}
-          const options = props?.options || []
-          const treeData = props?.treeData || []
-          if (column.type === 'ASelect') {
+          const options = cloneDeep(props?.options || [])
+          const treeData = cloneDeep(props?.treeData || [])
+          if (['ASelect', 'AAutoComplete'].includes(column.type)) {
             return { ...column, props: { ...props, options: options.map(val => omit(val, ['disabled'])) } }
           } else if (column.type === 'ACascader') {
             recursive(options, node => {
