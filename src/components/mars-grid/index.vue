@@ -157,7 +157,7 @@ export default defineComponent({
       defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
       defaultFilterConfig: { remote: true, filterMethod: () => true },
       defaultScrollX: { enabled: false },
-      defaultScrollY: { enabled: true, gt: 10 }
+      defaultScrollY: { enabled: true, gt: 20 }
     }
     /**
      * data
