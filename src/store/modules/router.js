@@ -34,7 +34,7 @@ const routers = {
 
     // 添加进keep-alive列表
     addCachedTabList(state, route) {
-      if (!route.meta.ignoreKeepAlive && state.cachedTabList.findIndex(c => c.fullPath === route.fullPath) === -1) {
+      if (!route.meta.ignoreKeepAlive && state.cachedTabList.findIndex(c => c.path === route.path) === -1) {
         state.cachedTabList.push(route)
       }
     },
