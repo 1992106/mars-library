@@ -12,20 +12,22 @@ export function useFormLayout() {
     const lastLeft = getLastNodeLeft(lastNode) // 搜索按钮组left
     const index = childNodes.findIndex(node => {
       const { top, left } = node.getBoundingClientRect()
-      return top === firstTop && left + node.offsetWidth > lastLeft
+      return top === firstTop && left + node.offsetWidth + 16 > lastLeft // padding-right: 16px
     })
     if (index !== -1) {
       const rest = childNodes.slice(index)
       rest.forEach(node => {
-        node.classList.add('active')
+        node.classList.add('hidden')
       })
     } else {
       childNodes.forEach(node => {
-        node.classList.remove('active')
+        node.classList.remove('hidden')
       })
     }
     // TODO: 手动触发resize事件，调整表格高度
-    dispatchResize()
+    setTimeout(() => {
+      dispatchResize()
+    }, 1000)
   }
 
   const getLastNodeLeft = lastNode => {

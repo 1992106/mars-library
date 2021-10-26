@@ -38,7 +38,7 @@
   </a-form>
 </template>
 <script>
-import { computed, defineComponent, mergeProps, onMounted, reactive, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, mergeProps, nextTick, onMounted, reactive, ref, toRaw, watch } from 'vue'
 import { Form } from 'ant-design-vue'
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue'
 import { dateToMoment, isEmpty, momentToDate } from '@/utils'
@@ -69,7 +69,8 @@ export default defineComponent({
     okText: { type: String, default: '确定' },
     showCancel: { type: Boolean, default: true },
     cancelText: { type: String, default: '取消' },
-    showExpand: null
+    defaultExpand: { type: Boolean, default: false },
+    showExpand: { type: Boolean, default: true }
   },
   emits: ['ok', 'cancel', 'clear'],
   components: {
@@ -331,18 +332,22 @@ export default defineComponent({
 
     // 表单布局
     const { updateLayout, hasExpand } = useFormLayout()
-    const isExpand = ref(true)
+    const isExpand = ref(props.defaultExpand)
     const handleExpand = () => {
       isExpand.value = !isExpand.value
       updateLayout()
     }
     const isShowExpand = ref(false)
     onMounted(() => {
-      if (typeof props.showExpand === 'undefined') {
+      if (props.showExpand === true) {
         isShowExpand.value = hasExpand()
-      } else {
-        isShowExpand.value = props.showExpand
       }
+      // 默认收起
+      nextTick(() => {
+        if (props.defaultExpand === false && props.showExpand === true) {
+          updateLayout()
+        }
+      })
     })
 
     return {
@@ -364,7 +369,7 @@ export default defineComponent({
 .mars-form {
   .ant-form-item {
     line-height: 40px;
-    &.active {
+    &.hidden {
       display: none !important;
     }
   }
