@@ -10,9 +10,10 @@ export function useFormLayout() {
     const firstNode = childNodes[0]
     const { top: firstTop } = firstNode.getBoundingClientRect()
     const lastLeft = getLastNodeLeft(lastNode) // 搜索按钮组left
+    const paddingRight = hasClass(proxy.$el, 'ant-form-inline') ? 16 : 0 // padding-right: 16px
     const index = childNodes.findIndex(node => {
       const { top, left } = node.getBoundingClientRect()
-      return top === firstTop && left + node.offsetWidth + 16 > lastLeft // padding-right: 16px
+      return top === firstTop && left + node.offsetWidth + paddingRight > lastLeft
     })
     if (index !== -1) {
       const rest = childNodes.slice(index)
@@ -31,7 +32,7 @@ export function useFormLayout() {
   }
 
   const getLastNodeLeft = lastNode => {
-    const maxWidth = proxy.$el.offsetWidth
+    const maxWidth = document.documentElement.offsetWidth
     // 搜索按钮组的宽度
     const width = getLastNodeRealWidth(lastNode)
     return maxWidth - width
@@ -39,7 +40,7 @@ export function useFormLayout() {
 
   const getLastNodeRealWidth = lastNode => {
     const [searchBtn, extraBtn] = Array.from(lastNode.children)
-    return searchBtn.offsetWidth + extraBtn ? getNodeRealWidth(extraBtn) : 0
+    return searchBtn.offsetWidth + (extraBtn ? getNodeRealWidth(extraBtn) : 0)
   }
 
   const getNodeRealWidth = lastNode => {
@@ -47,6 +48,11 @@ export function useFormLayout() {
     return childNodes.reduce((total, node) => {
       return total + node.offsetWidth
     }, 0)
+  }
+
+  const hasClass = (el, className) => {
+    let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
+    return reg.test(el.className)
   }
 
   const dispatchResize = () => {
