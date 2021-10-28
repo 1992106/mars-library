@@ -13,6 +13,8 @@ export function useFormLayout() {
     const paddingRight = hasClass(proxy.$el, 'ant-form-inline') ? 16 : 0 // padding-right: 16px
     const index = childNodes.findIndex(node => {
       const { top, left, width } = node.getBoundingClientRect()
+      console.log(left, width, paddingRight, node)
+      console.log(left + width + paddingRight, lastLeft)
       return top === firstTop && left + width + paddingRight > lastLeft
     })
     if (index !== -1) {
@@ -40,7 +42,14 @@ export function useFormLayout() {
 
   const getLastNodeRealWidth = lastNode => {
     const [searchBtn, extraBtn] = Array.from(lastNode.children)
-    return searchBtn.offsetWidth + (extraBtn ? extraBtn.offsetWidth : 0)
+    return searchBtn.offsetWidth + (extraBtn ? getNodeRealWidth(extraBtn) : 0)
+  }
+
+  const getNodeRealWidth = lastNode => {
+    const childNodes = Array.from(lastNode.children)
+    return childNodes.reduce((total, node) => {
+      return total + node.offsetWidth
+    }, 0)
   }
 
   const hasClass = (el, className) => {
