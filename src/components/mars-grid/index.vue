@@ -30,7 +30,7 @@
     :filter-config="getFilterConfig"
     :tree-config="getTreeConfig"
     :toolbar-config="{
-      zoom: true,
+      zoom: customSetting,
       custom: false,
       refresh: false,
       slots: { buttons: 'toolbar_buttons', tools: 'toolbar_tools' }
@@ -53,7 +53,9 @@
       <slot name="toolBar"></slot>
     </template>
     <template #toolbar_tools>
-      <ColumnSetting :columns="customColumns" @change="handleSettingChange"></ColumnSetting>
+      <template v-if="customSetting">
+        <ColumnSetting :columns="customColumns" @change="handleSettingChange"></ColumnSetting>
+      </template>
     </template>
     <!--slot-->
     <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
@@ -132,7 +134,9 @@ export default defineComponent({
     cellStyle: [Object, Function],
     // 给行附加样式
     rowStyle: [Object, Function],
-    // 本地Storage名称（拖拽列和自定义表头时需要本地储存）
+    // 自定义设置
+    customSetting: { type: Boolean, default: false },
+    // 本地Storage名称（拖拽列和自定义表头时需要本地储存）,
     storageName: String
   },
   emits: [
