@@ -11,7 +11,7 @@ const MyIcon = defineComponent({
   props: {
     type: { type: String, require: true },
     size: { type: [Number, String], default: 14 },
-    color: { type: String, default: 'unset' },
+    color: { type: String },
     spin: { type: Boolean },
     rotate: { type: Number },
     class: { type: String },
@@ -31,8 +31,8 @@ const MyIcon = defineComponent({
       const fs = parseFloat(size)
 
       return {
-        color,
         fontSize: `${fs}px`,
+        ...(color ? { color } : {}),
         ...(rotate ? { transform: `rotate(${rotate}deg)` } : {}),
         ...props.style
       }
@@ -42,7 +42,7 @@ const MyIcon = defineComponent({
       <IconFont
         type={props.type}
         {...attrs}
-        class={`'my-icon' ${props.class} ${props.spin && 'anticon-spin'}`}
+        class={`my-icon ${props.class || ''} ${props.spin ? 'anticon-spin' : ''}`}
         style={unref(wrapStyleRef)}
       />
     )

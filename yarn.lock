@@ -4407,6 +4407,11 @@ vite@^2.6.10:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vue-draggable-next@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/vue-draggable-next/-/vue-draggable-next-2.1.1.tgz#49886da82f116d11b3e4df7674320fdacf5d7e04"
+  integrity sha512-f5lmA7t6LMaL4viR7dU30zzvqJzaKQs0ymL0Jy9UDT9uiZ2tXF3MzPzEvpTH2UODXZJkT+SnjeV1fXHMsgXLYA==
+
 vue-eslint-parser@^7.10.0, vue-eslint-parser@^7.11.0:
   version "7.11.0"
   resolved "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-7.11.0.tgz#214b5dea961007fcffb2ee65b8912307628d0daf"

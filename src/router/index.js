@@ -63,7 +63,7 @@ export const routes = [
       },
       {
         path: 'form',
-        name: 'form',
+        name: 'Form',
         component: () => import('@/views/Form.vue'),
         meta: {
           title: '表单',
@@ -84,7 +84,7 @@ export const routes = [
     children: [
       {
         path: 'vxeTable',
-        name: 'vxeTable',
+        name: 'VxeTable',
         component: () => import('@/views/VxeTable.vue'),
         meta: {
           title: 'VxeTable'
@@ -92,7 +92,7 @@ export const routes = [
       },
       {
         path: 'marsGrid',
-        name: 'marsGrid',
+        name: 'MarsGridList',
         component: () => import('@/views/MarsGrid.vue'),
         meta: {
           title: 'MarsGrid'
@@ -100,7 +100,7 @@ export const routes = [
       },
       {
         path: 'antTable',
-        name: 'antTable',
+        name: 'AntTable',
         component: () => import('@/views/AntTable.vue'),
         meta: {
           title: 'AntTable'
@@ -108,7 +108,7 @@ export const routes = [
       },
       {
         path: 'marsTable',
-        name: 'marsTable',
+        name: 'MarsTableList',
         component: () => import('@/views/MarsTable.vue'),
         meta: {
           title: 'MarsTable'

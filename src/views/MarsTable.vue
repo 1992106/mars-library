@@ -24,6 +24,7 @@ import { computed, defineComponent, reactive, ref, unref } from 'vue'
 import { DownOutlined, FormOutlined } from '@ant-design/icons-vue'
 import { useSearch } from '@/hooks/useSearch'
 export default defineComponent({
+  name: 'MarsTableList',
   components: {
     DownOutlined,
     FormOutlined

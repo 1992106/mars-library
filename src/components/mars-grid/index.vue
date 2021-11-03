@@ -9,7 +9,7 @@
     resizable
     v-bind="$attrs"
     :stripe="stripe"
-    :columns="columns"
+    :columns="customColumns"
     :data="data"
     :loading="loading"
     :scroll-x="getScrollX"
@@ -29,7 +29,12 @@
     :edit-rules="editRules"
     :filter-config="getFilterConfig"
     :tree-config="getTreeConfig"
-    :toolbar-config="{ slots: { buttons: 'toolbar_buttons' } }"
+    :toolbar-config="{
+      zoom: true,
+      custom: false,
+      refresh: false,
+      slots: { buttons: 'toolbar_buttons', tools: 'toolbar_tools' }
+    }"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
@@ -44,8 +49,11 @@
     <template #form>
       <slot name="searchBar"></slot>
     </template>
-    <template #toolbar>
+    <template #toolbar_buttons>
       <slot name="toolBar"></slot>
+    </template>
+    <template #toolbar_tools>
+      <ColumnSetting :columns="customColumns" @change="handleSettingChange"></ColumnSetting>
     </template>
     <!--slot-->
     <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
@@ -68,8 +76,10 @@
   </vxe-grid>
 </template>
 <script>
-import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps } from 'vue'
-import { momentToDate } from '@/utils'
+import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps, watchEffect } from 'vue'
+import { isEmpty, momentToDate } from '@/utils'
+import ColumnSetting from './ColumnSetting.vue'
+import { columnsToStorage, storageToColumns } from './utils'
 
 export default defineComponent({
   name: 'MarsGrid',
@@ -122,7 +132,7 @@ export default defineComponent({
     cellStyle: [Object, Function],
     // 给行附加样式
     rowStyle: [Object, Function],
-    // 本地Storage名称（拖拽列时需要本地储存）
+    // 本地Storage名称（拖拽列和自定义表头时需要本地储存）
     storageName: String
   },
   emits: [
@@ -140,6 +150,9 @@ export default defineComponent({
     'clear-filter',
     'toggle-tree-expand'
   ],
+  components: {
+    ColumnSetting
+  },
   setup(props, { emit }) {
     /**
      * 默认值
@@ -162,7 +175,19 @@ export default defineComponent({
     /**
      * data
      */
-    const state = reactive({})
+    const getColumnsFromStorage = () => {
+      if (props.storageName) {
+        const storageColumns = localStorage.getItem(props.storageName)
+        const columns = storageColumns ? JSON.parse(storageColumns || '[]') : []
+        if (!isEmpty(columns)) {
+          const sourceColumns = props.columns
+          return storageToColumns(columns, sourceColumns)
+        }
+      }
+    }
+    const state = reactive({
+      customColumns: getColumnsFromStorage() || props.columns
+    })
     /**
      * refs
      */
@@ -173,7 +198,7 @@ export default defineComponent({
     const generateSlots = (columns, slots = []) => {
       columns.forEach(column => {
         slots.push(column)
-        column.children && generateSlots(column.children, slots)
+        column?.children && generateSlots(column?.children, slots)
       })
       return slots
     }
@@ -258,6 +283,14 @@ export default defineComponent({
       emit('checkbox-all', { records, reserves, indeterminates, checked, $event })
       // gridRef.value.reloadData()
     }
+    // 监听selectedValue，如果为空，清空勾选
+    watchEffect(() => {
+      if (isEmpty(props.selectedValue)) {
+        const $xGrid = unref(gridRef)
+        $xGrid?.clearCheckboxRow() // 清空勾选
+        $xGrid?.clearRadioRow() // 清空单选框
+      }
+    })
     // 单元格点击事件
     const handleCellClick = ({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) => {
       emit('cell-click', { row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event })
@@ -302,19 +335,37 @@ export default defineComponent({
       emit('toggle-tree-expand', { expanded, row, column, columnIndex, $columnIndex, $event })
     }
     // 拖拽列
-    const handleResizableChange = ({ column }) => {
-      if (props.storageName && gridRef) {
-        const $xGrid = unref(gridRef)
-        column.width = column.renderWidth
-        column.resizeWidth = 0 // 拖拽后要清理  这个字段优先级高于renderWidth
-        $xGrid.refreshColumn()
-        localStorage.setItem(props.storageName, JSON.stringify($xGrid.getColumns()))
+    const handleResizableChange = async ({ column }) => {
+      // 更新column宽度
+      const field = column?.property || column?.slots?.default || column?.type
+      const customColumns = state.customColumns.find(v => {
+        const vField = v?.field || v?.slots?.default || v?.type
+        return vField === field
+      })
+      if (customColumns) {
+        customColumns.width = column.renderWidth
+      }
+      setColumnsToStorage()
+    }
+    // 配置列
+    const handleSettingChange = columns => {
+      const $xGrid = unref(gridRef)
+      state.customColumns = columns
+      $xGrid.reloadColumn(columns)
+      setColumnsToStorage()
+    }
+
+    const setColumnsToStorage = () => {
+      if (props.storageName) {
+        const storageColumns = columnsToStorage(state.customColumns)
+        if (storageColumns) {
+          localStorage.setItem(props.storageName, JSON.stringify(storageColumns))
+        }
       }
     }
 
     return {
       ...toRefs(state),
-      defaultPickerOptions: defaultState.defaultPickerOptions,
       getSlots,
       getPaginationConfig,
       getRadioConfig,
@@ -336,13 +387,19 @@ export default defineComponent({
       handleFilterChange,
       handleClearFilter,
       handleToggleTreeExpand,
-      handleResizableChange
+      handleResizableChange,
+      handleSettingChange
     }
   }
 })
 </script>
 <style lang="scss" scoped>
 .mars-grid {
+  :deep(.vxe-toolbar) {
+    .vxe-tools--operate {
+      margin-left: 12px;
+    }
+  }
   :deep(.vxe-table--header) {
     .vxe-cell {
       display: flex;

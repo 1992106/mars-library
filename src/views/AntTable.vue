@@ -74,10 +74,10 @@ const data = [
   }
 ]
 export default defineComponent({
+  name: 'AntTable',
   components: {
     SearchOutlined
   },
-
   setup() {
     const state = reactive({
       searchText: '',

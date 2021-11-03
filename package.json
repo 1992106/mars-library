@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.2.8-11",
+  "version": "0.2.9",
   "main": "dist/mars-library.cjs.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
@@ -33,6 +33,7 @@
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "vue": "^3.2.20",
+    "vue-draggable-next": "^2.1.1",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
     "vxe-table": "^4.0.30"

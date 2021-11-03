@@ -11,6 +11,7 @@ import XEUtils from 'xe-utils'
 import XEAjax from 'xe-ajax'
 
 export default defineComponent({
+  name: 'VxeTable',
   setup() {
     const xGrid = ref({})
 

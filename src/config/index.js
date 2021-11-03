@@ -33,7 +33,7 @@ const setting = {
   header_progress: true,
 
   // iconfont字体URL
-  iconfont_url: '//at.alicdn.com/t/font_2581533_qh2ly6e2l0h.js'
+  iconfont_url: '//at.alicdn.com/t/font_2581533_h4tuh5tujdp.js'
 }
 
 export default setting

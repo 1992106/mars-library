@@ -23,6 +23,7 @@ import { useStore } from 'vuex'
 import { useSearch } from '@/hooks/useSearch'
 
 export default defineComponent({
+  name: 'MarsGridList',
   setup() {
     const xGrid = ref({})
     const data = []
@@ -43,110 +44,106 @@ export default defineComponent({
       })
     }
     const gridOptions = reactive({
+      storageName: 'MarsGridList',
       height: 'auto',
       columns: [
-        { type: 'checkbox', title: '全选', width: 80 },
-        { title: '操作', width: 100, slots: { default: 'operate' } },
-        { type: 'seq', width: 60 },
+        { type: 'checkbox', title: '全选', width: 80, fixed: 'left' },
+        { title: '操作', width: 100, slots: { default: 'operate' }, fixed: 'left' },
+        { type: 'seq', width: 60, fixed: 'left' },
         { field: 'name', title: 'Name', editRender: { name: 'input' } },
         {
-          title: '基础信息',
-          children: [
-            {
-              field: 'nickname',
-              title: 'Nickname',
-              editRender: { name: 'input' },
-              filters: [{ data: null }],
-              filterRender: { name: 'FilterInput' }
-            },
-            {
-              field: 'age',
-              title: 'Age',
-              editRender: { name: 'input' },
-              filters: [{ data: '' }],
-              filterRender: { name: 'MyInput' }
-            },
-            {
-              field: 'sex_ids',
-              title: 'Sexs',
-              headerAlign: 'center',
-              align: 'center',
-              editRender: {
-                name: 'ASelect',
-                options: [
-                  { label: 'Man', value: '0' },
-                  { label: 'Woman', value: '1' }
-                ],
-                props: {
-                  mode: 'multiple'
-                }
-              },
-              filters: [{ data: [] }],
-              filterRender: {
-                name: 'MySelect',
-                props: {
-                  mode: 'multiple',
-                  options: [
-                    { label: 'Man', value: '0', disabled: true },
-                    { label: 'Woman', value: '1' }
-                  ]
-                }
-              }
-            },
-            {
-              field: 'sex',
-              title: 'Sex',
-              headerAlign: 'center',
-              align: 'center',
-              params: {
-                filterAlias: 'sex_id'
-              },
-              filters: [{ data: null }],
-              filterRender: {
-                name: 'MySelect',
-                props: {
-                  options: [
-                    { label: 'Man', value: '0', disabled: true },
-                    { label: 'Woman', value: '1' }
-                  ]
-                }
-              }
-            },
-            {
-              field: 'date',
-              title: 'Date',
-              // editRender: { name: 'ADatePicker' }
-              filters: [{ data: null }],
-              filterRender: {
-                name: 'MyDatePicker'
-              }
-            },
-            {
-              field: 'role',
-              title: 'Role',
-              editRender: {
-                name: '$select',
-                options: [
-                  { label: 'Develop', value: 'Develop' },
-                  { label: 'Test', value: 'Test' },
-                  { label: 'PM', value: 'PM' },
-                  { label: 'Designer', value: 'Designer' }
-                ]
-              },
-              filters: [{ data: [] }],
-              filterRender: {
-                name: 'MyTreeSelect',
-                props: {
-                  treeData: [
-                    { label: 'Develop', value: 'Develop' },
-                    { label: 'Test', value: 'Test' },
-                    { label: 'PM', value: 'PM' },
-                    { label: 'Designer', value: 'Designer' }
-                  ]
-                }
-              }
+          field: 'nickname',
+          title: 'Nickname',
+          editRender: { name: 'input' },
+          filters: [{ data: null }],
+          filterRender: { name: 'FilterInput' }
+        },
+        {
+          field: 'age',
+          title: 'Age',
+          editRender: { name: 'input' },
+          filters: [{ data: '' }],
+          filterRender: { name: 'MyInput' }
+        },
+        {
+          field: 'sex_ids',
+          title: 'Sexs',
+          headerAlign: 'center',
+          align: 'center',
+          editRender: {
+            name: 'ASelect',
+            options: [
+              { label: 'Man', value: '0' },
+              { label: 'Woman', value: '1' }
+            ],
+            props: {
+              mode: 'multiple'
             }
-          ]
+          },
+          filters: [{ data: [] }],
+          filterRender: {
+            name: 'MySelect',
+            props: {
+              mode: 'multiple',
+              options: [
+                { label: 'Man', value: '0', disabled: true },
+                { label: 'Woman', value: '1' }
+              ]
+            }
+          }
+        },
+        {
+          field: 'sex',
+          title: 'Sex',
+          headerAlign: 'center',
+          align: 'center',
+          params: {
+            filterAlias: 'sex_id'
+          },
+          filters: [{ data: null }],
+          filterRender: {
+            name: 'MySelect',
+            props: {
+              options: [
+                { label: 'Man', value: '0', disabled: true },
+                { label: 'Woman', value: '1' }
+              ]
+            }
+          }
+        },
+        {
+          field: 'date',
+          title: 'Date',
+          // editRender: { name: 'ADatePicker' }
+          filters: [{ data: null }],
+          filterRender: {
+            name: 'MyDatePicker'
+          }
+        },
+        {
+          field: 'role',
+          title: 'Role',
+          editRender: {
+            name: '$select',
+            options: [
+              { label: 'Develop', value: 'Develop' },
+              { label: 'Test', value: 'Test' },
+              { label: 'PM', value: 'PM' },
+              { label: 'Designer', value: 'Designer' }
+            ]
+          },
+          filters: [{ data: [] }],
+          filterRender: {
+            name: 'MyTreeSelect',
+            props: {
+              treeData: [
+                { label: 'Develop', value: 'Develop' },
+                { label: 'Test', value: 'Test' },
+                { label: 'PM', value: 'PM' },
+                { label: 'Designer', value: 'Designer' }
+              ]
+            }
+          }
         },
         { field: 'address', title: 'Address', showOverflow: true, editRender: { name: 'input' } }
       ],
