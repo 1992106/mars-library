@@ -44,6 +44,7 @@ export default defineComponent({
       })
     }
     const gridOptions = reactive({
+      customSetting: true,
       storageName: 'MarsGridList',
       height: 'auto',
       columns: [

@@ -91,6 +91,7 @@
 </template>
 <script>
 import { computed, defineComponent, reactive, toRefs, unref, watch } from 'vue'
+import MyIcon from '@/components/Iconfont'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { cloneDeep } from 'lodash-es'
 import { columnsToStorage, storageToColumns } from './utils'
@@ -98,6 +99,7 @@ import { columnsToStorage, storageToColumns } from './utils'
 export default defineComponent({
   name: 'ColumnSetting',
   components: {
+    MyIcon,
     draggable: VueDraggableNext
   },
   props: {
@@ -136,7 +138,16 @@ export default defineComponent({
     }
 
     // 全选
-    const handleCheckAll = () => {
+    const handleCheckAll = $event => {
+      state.leftFixed.forEach(item => {
+        item.visible = $event.target.checked
+      })
+      state.middleList.forEach(item => {
+        item.visible = $event.target.checked
+      })
+      state.rightFixed.forEach(item => {
+        item.visible = $event.target.checked
+      })
       state.indeterminate = false
     }
 
@@ -247,26 +258,34 @@ export default defineComponent({
     border-bottom: 1px solid $border-color-grey;
   }
   .setting-body {
-    padding: 6px 10px 6px 20px;
+    max-height: 400px;
+    padding: 6px 0;
+    overflow-y: auto;
     .box {
       margin-bottom: 6px;
       &:last-child {
         margin-bottom: 0;
       }
       .title {
+        padding: 0 10px 0 20px;
+        font-size: 12px;
         color: $text-color-grey;
       }
       .group {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 2px 10px 2px 20px;
         .ant-space {
           display: none;
         }
-        &:hover > .ant-space {
-          display: inline-flex;
-          .anticon {
-            color: $color-base;
+        &:hover {
+          background-color: #1890ff1a;
+          > .ant-space {
+            display: inline-flex;
+            .anticon {
+              color: $color-base;
+            }
           }
         }
       }
