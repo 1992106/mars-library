@@ -1,4 +1,5 @@
 import { isEmpty } from '@/utils'
+import { omit } from 'lodash-es'
 
 const typeMap = {
   seq: '序号',
@@ -26,11 +27,12 @@ export const columnsToStorage = columns => {
       title = typeMap[val?.type]
       field = val?.type
     }
+    const width = val?.width || val?.minWidth
     return {
       field,
       title,
-      fixed: val?.fixed,
-      width: val?.width || val?.minWidth,
+      ...(val?.fixed ? { fixed: val?.fixed } : {}),
+      ...(width ? { width } : {}),
       visible: isEmpty(val?.visible) ? true : val?.visible
     }
   })
@@ -42,10 +44,11 @@ export const storageToColumns = (storageColumns, columns) => {
       const field = v?.field || v?.slots?.default || v?.type
       return field === val?.field
     })
+    const restColumn = omit(column, ['fixed', 'width', 'visible'])
     return {
-      ...(column ? column : {}),
+      ...(restColumn ? restColumn : {}),
       ...(val?.fixed ? { fixed: val?.fixed } : {}),
-      width: val?.width,
+      ...(val?.width ? { width: val?.width } : {}),
       visible: val?.visible
     }
   })

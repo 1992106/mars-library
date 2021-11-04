@@ -93,7 +93,7 @@
 import { computed, defineComponent, reactive, toRefs, unref, watch } from 'vue'
 import MyIcon from '@/components/Iconfont'
 import { VueDraggableNext } from 'vue-draggable-next'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, omit } from 'lodash-es'
 import { columnsToStorage, storageToColumns } from './utils'
 
 export default defineComponent({
@@ -218,13 +218,14 @@ export default defineComponent({
     // 取消
     const handleCancel = () => {
       state.visible = false
+      handleReset()
     }
 
     // 确定
     const handleOk = () => {
       const list = [
         ...state.leftFixed.map(val => ({ ...val, fixed: 'left' })),
-        ...state.middleList,
+        ...state.middleList.map(val => omit(val, ['fixed'])),
         ...state.rightFixed.map(val => ({ ...val, fixed: 'right' }))
       ]
       const sourceColumns = cloneDeep(state.sourceColumns)
@@ -250,7 +251,7 @@ export default defineComponent({
 .mars-grid-setting {
   margin: -6px -8px;
   color: $text-color;
-  width: 180px;
+  width: 200px;
   .setting-head {
     padding: 6px 12px;
     @include flexRAC;

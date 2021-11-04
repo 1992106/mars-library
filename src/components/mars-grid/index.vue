@@ -400,8 +400,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mars-grid {
   :deep(.vxe-toolbar) {
+    .vxe-tools--wrapper {
+      .vxe-button {
+        margin: 10px 0 10px 20px;
+      }
+    }
     .vxe-tools--operate {
-      margin-left: 12px;
+      .vxe-button {
+        margin: 10px 0 10px 10px;
+      }
     }
   }
   :deep(.vxe-table--header) {
