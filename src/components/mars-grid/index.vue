@@ -54,7 +54,11 @@
     </template>
     <template #toolbar_tools>
       <template v-if="customSetting">
-        <ColumnSetting :columns="customColumns" @change="handleSettingChange"></ColumnSetting>
+        <ColumnSetting
+          :columns="customColumns"
+          :backupColumns="backupColumns"
+          @change="handleSettingChange"
+        ></ColumnSetting>
       </template>
     </template>
     <!--slot-->
@@ -81,7 +85,8 @@
 import { defineComponent, reactive, ref, computed, toRefs, unref, mergeProps, watchEffect } from 'vue'
 import { isEmpty, momentToDate } from '@/utils'
 import ColumnSetting from './ColumnSetting.vue'
-import { columnsToStorage, storageToColumns } from './utils'
+import { columnsToStorage, getField, mergeStorageAndColumns, storageToColumns } from './utils'
+import { cloneDeep } from 'lodash-es'
 
 export default defineComponent({
   name: 'MarsGrid',
@@ -185,12 +190,14 @@ export default defineComponent({
         const columns = storageColumns ? JSON.parse(storageColumns || '[]') : []
         if (!isEmpty(columns)) {
           const sourceColumns = props.columns
-          return storageToColumns(columns, sourceColumns)
+          const list = mergeStorageAndColumns(columns, sourceColumns) // 对比localStorage和Props（删除移除的，添加新增的）
+          return storageToColumns(list, sourceColumns)
         }
       }
     }
     const state = reactive({
-      customColumns: getColumnsFromStorage() || props.columns
+      customColumns: getColumnsFromStorage() || props.columns,
+      backupColumns: cloneDeep(props.columns)
     })
     /**
      * refs
@@ -317,8 +324,8 @@ export default defineComponent({
     const handleFilterChange = ({ column, property, values, datas, filterList, $event }) => {
       const filters = {}
       filterList.forEach(({ column, property, values, datas }) => {
-        // TODO:
-        const alias = column?.params?.filterAlias || property
+        // TODO: filterAlias后面废弃
+        const alias = column?.filterRender?.alias || column?.params?.filterAlias || property
         if (column?.filterRender) {
           filters[alias] = momentToDate(datas[0])
         } else {
@@ -341,11 +348,7 @@ export default defineComponent({
     // 拖拽列
     const handleResizableChange = async ({ column }) => {
       // 更新column宽度
-      const field = column?.property || column?.slots?.default || column?.type
-      const customColumns = state.customColumns.find(v => {
-        const vField = v?.field || v?.slots?.default || v?.type
-        return vField === field
-      })
+      const customColumns = state.customColumns.find(v => getField(column) === getField(v))
       if (customColumns) {
         customColumns.width = column.renderWidth
       }

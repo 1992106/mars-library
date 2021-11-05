@@ -104,6 +104,7 @@ export default defineComponent({
           filters: [{ data: null }],
           filterRender: {
             name: 'MySelect',
+            alias: 'sex_id',
             props: {
               options: [
                 { label: 'Man', value: '0', disabled: true },
@@ -203,7 +204,7 @@ export default defineComponent({
           field: 'select',
           rules: [],
           props: {
-            mode: 'multiple',
+            // mode: 'multiple',
             options: [
               { value: '1', label: '男', disabled: true },
               { value: '2', label: '女' }

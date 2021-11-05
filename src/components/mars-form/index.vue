@@ -175,7 +175,9 @@ export default defineComponent({
       },
       clear: () => {
         // Select
-        emit('clear', emitData())
+        nextTick(() => {
+          emit('clear', emitData())
+        })
       },
       // 实现enter搜索功能
       pressEnter: () => {

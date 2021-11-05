@@ -90,7 +90,7 @@
   </a-tooltip>
 </template>
 <script>
-import { computed, defineComponent, reactive, toRefs, unref, watch } from 'vue'
+import { defineComponent, reactive, toRefs, watch } from 'vue'
 import MyIcon from '@/components/Iconfont'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { cloneDeep, omit } from 'lodash-es'
@@ -104,13 +104,15 @@ export default defineComponent({
   },
   props: {
     // 自定义列
-    columns: { type: Array, required: true, default: () => [] }
+    columns: { type: Array, required: true, default: () => [] },
+    // 备份自定义列
+    backupColumns: { type: Array, required: true, default: () => [] }
   },
   emits: ['change'],
   setup: function (props, { emit }) {
     const state = reactive({
       sourceColumns: [],
-      backupColumns: [], // 备份配置
+      revokeColumns: [], // 撤销备份
       visible: false,
       indeterminate: false,
       checkAll: false,
@@ -122,18 +124,15 @@ export default defineComponent({
       rightFixed: []
     })
 
-    const getColumns = computed(() => {
-      return columnsToStorage(props.columns)
-    })
-
     const handleClick = () => {
       state.visible = !state.visible
       if (state.visible) {
         state.sourceColumns = cloneDeep(props.columns)
-        state.backupColumns = cloneDeep(unref(getColumns))
-        state.leftFixed = unref(getColumns).filter(val => val?.fixed === 'left')
-        state.middleList = unref(getColumns).filter(val => !val?.fixed)
-        state.rightFixed = unref(getColumns).filter(val => val?.fixed === 'right')
+        const columns = columnsToStorage(props.columns)
+        state.revokeColumns = cloneDeep(columns)
+        state.leftFixed = columns.filter(val => val?.fixed === 'left')
+        state.middleList = columns.filter(val => !val?.fixed)
+        state.rightFixed = columns.filter(val => val?.fixed === 'right')
       }
     }
 
@@ -209,7 +208,7 @@ export default defineComponent({
 
     // 重置
     const handleReset = () => {
-      const backupColumns = cloneDeep(state.backupColumns)
+      const backupColumns = cloneDeep(columnsToStorage(props.backupColumns))
       state.leftFixed = backupColumns.filter(val => val?.fixed === 'left')
       state.middleList = backupColumns.filter(val => !val?.fixed)
       state.rightFixed = backupColumns.filter(val => val?.fixed === 'right')
@@ -218,7 +217,24 @@ export default defineComponent({
     // 取消
     const handleCancel = () => {
       state.visible = false
-      handleReset()
+    }
+
+    // 监听取消操作，重置默认选项
+    watch(
+      () => state.visible,
+      visible => {
+        if (visible === false) {
+          handleRevoke()
+        }
+      }
+    )
+
+    // 撤销上一次
+    const handleRevoke = () => {
+      const revokeColumns = cloneDeep(state.revokeColumns)
+      state.leftFixed = revokeColumns.filter(val => val?.fixed === 'left')
+      state.middleList = revokeColumns.filter(val => !val?.fixed)
+      state.rightFixed = revokeColumns.filter(val => val?.fixed === 'right')
     }
 
     // 确定
