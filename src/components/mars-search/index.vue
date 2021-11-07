@@ -20,6 +20,9 @@
         <slot name="extra"></slot>
       </div>
     </mars-form>
+    <div class="mars-shortcut" v-if="showShortcut">
+      <slot name="shortcut"></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +66,7 @@ export default defineComponent({
 
     // 是否显示
     const showExtra = computed(() => !!slots['extra'])
+    const showShortcut = computed(() => !!slots['shortcut'])
 
     // 监听columns，删除disabled
     const getColumns = ref([])
@@ -145,6 +149,7 @@ export default defineComponent({
       checked,
       handleOnly,
       showExtra,
+      showShortcut,
       handleSearch,
       handleClear,
       handleReset,
@@ -185,6 +190,11 @@ export default defineComponent({
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
+  }
+  .mars-shortcut {
+    border-top: 1px $border-color dashed;
+    padding: 10px 10px 0 10px;
+    margin-top: 10px;
   }
 }
 </style>

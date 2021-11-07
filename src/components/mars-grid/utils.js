@@ -20,7 +20,7 @@ export const generateLeaf = (columns, list = []) => {
 }
 
 export const getField = column => {
-  return column?.field || column?.slots?.default || column?.type
+  return column?.field || column?.slots?.default || column?.type || column?.title
 }
 
 const getPrevious = (column, columns) => {
@@ -38,20 +38,18 @@ export const mergeStorageAndColumns = (oldColumns, newColumns) => {
   // 删除没有的
   const restColumns = oldColumns.filter(item => columnsFieldMap.includes(item?.field))
   // 找到新增的
-  const otherColumns = newColumns.filter(item => {
-    const field = getField(item)
-    return !listFieldMap.includes(field)
-  })
+  const otherColumns = newColumns.filter(item => !listFieldMap.includes(getField(item)))
   otherColumns.forEach(item => {
     const newPrevious = getPrevious(item, newColumns)
     const isPrevious = hasPrevious(newPrevious, restColumns)
     let newIndex
     if (isPrevious) {
-      newIndex = restColumns.findIndex(val => val?.field === getField(item))
+      newIndex = restColumns.findIndex(val => val?.field === getField(newPrevious)) + 1
     } else {
       newIndex = restColumns.findIndex(val => !val?.fixed)
     }
-    restColumns.splice(newIndex, 0, item)
+    const columns = columnsToStorage([item])
+    restColumns.splice(newIndex, 0, columns[0])
   })
   return restColumns
 }
@@ -76,7 +74,11 @@ export const columnsToStorage = columns => {
 export const storageToColumns = (storageColumns, columns) => {
   return (storageColumns || []).map(val => {
     const column = (columns || []).find(v => val?.field === getField(v))
-    const restColumn = omit(column || {}, ['fixed', 'width', 'minWidth'])
+    const omitList = ['fixed', 'width', 'minWidth']
+    if (column?.field === column?.title) {
+      omitList.push('field')
+    }
+    const restColumn = omit(column || {}, omitList)
     return {
       ...(restColumn ? restColumn : {}),
       ...(val?.fixed ? { fixed: val?.fixed } : {}),
