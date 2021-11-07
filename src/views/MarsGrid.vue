@@ -6,6 +6,10 @@
           <template #extra>
             <a-button @click="visible = true">添加modal弹窗</a-button>
           </template>
+          <template #shortcut>
+            快捷筛选：
+            <a-space>shortcut</a-space>
+          </template>
         </mars-search>
       </template>
       <template #toolBar><div>toolBar</div></template>
