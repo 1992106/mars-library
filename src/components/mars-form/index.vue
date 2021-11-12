@@ -315,6 +315,11 @@ export default defineComponent({
       emit('cancel', emitData())
     }
 
+    // 设置表单值
+    const setFieldValue = (field, value) => {
+      Object.assign(modelRef, { [field]: value })
+    }
+
     const reverses = ref(['ok', 'cancel'])
     watch(
       () => [props.reverse, props.showOk, props.showCancel],
@@ -360,6 +365,7 @@ export default defineComponent({
       reverses,
       handleOk,
       handleCancel,
+      setFieldValue,
       isExpand,
       isShowExpand,
       handleExpand

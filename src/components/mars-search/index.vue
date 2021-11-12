@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import { computed, defineComponent, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, nextTick, ref, toRaw, watch } from 'vue'
 import { isEmpty, recursive, omitEmpty } from '@/utils'
 import { omit, cloneDeep } from 'lodash-es'
 export default defineComponent({
@@ -130,12 +130,29 @@ export default defineComponent({
 
     // 搜索方法
     const onSearch = () => {
-      formRef.value?.handleOk && formRef.value.handleOk()
+      if (formRef.value?.handleOk) {
+        nextTick(() => {
+          formRef.value.handleOk()
+        })
+      }
     }
 
     // 重置方法
     const onReset = () => {
-      formRef.value?.handleCancel && formRef.value.handleCancel()
+      if (formRef.value?.handleCancel) {
+        nextTick(() => {
+          formRef.value.handleCancel()
+        })
+      }
+    }
+
+    // 设置字段和值
+    const onSetFieldValue = obj => {
+      if (!isEmpty(obj) && formRef.value?.setFieldValue) {
+        Object.keys(obj).forEach(field => {
+          formRef.value.setFieldValue(field, obj[field])
+        })
+      }
     }
 
     // 获取最新数据
@@ -155,6 +172,7 @@ export default defineComponent({
       handleReset,
       onSearch,
       onReset,
+      onSetFieldValue,
       getData
     }
   }
