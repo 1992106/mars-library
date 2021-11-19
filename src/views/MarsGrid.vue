@@ -193,6 +193,13 @@ export default defineComponent({
           rules: [],
           props: { defaultValue: '123', placeholder: '请输入' }
         },
+        {
+          type: 'ATextarea',
+          title: '文本域',
+          field: 'textarea',
+          rules: [],
+          props: { defaultValue: '测试', placeholder: '请输入' }
+        },
         { type: 'AInputNumber', title: '数字输入框', field: 'inputNumber', rules: [] },
         {
           type: 'AAutoComplete',

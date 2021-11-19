@@ -85,6 +85,12 @@ export default defineComponent({
         },
         events: ['change', 'pressEnter', 'input']
       },
+      ATextarea: {
+        props: {
+          allowClear: true
+        },
+        events: ['change', 'pressEnter', 'input']
+      },
       AInputNumber: {
         events: ['pressEnter']
       },
@@ -181,12 +187,12 @@ export default defineComponent({
       },
       // 实现enter搜索功能
       pressEnter: () => {
-        // Input/InputNumber组件
+        // Input/InputNumber/Textarea组件
         emit('ok', emitData())
       },
       // 实现修饰符功能
       input: () => {
-        // Input：使用input模拟trim方法
+        // Input/Textarea：使用input模拟trim方法
         proxyModifier()
       }
     }
@@ -214,6 +220,16 @@ export default defineComponent({
         const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
         const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
+        if (allProps?.maxlength) {
+          allProps['data-maxlength'] = allProps.maxlength
+          delete allProps.maxlength
+        }
+        //  TODO：文本域模拟替换excel换行符（input不支持）
+        if (column?.type === 'ATextarea' && allProps?.multi) {
+          allProps['data-multi'] = allProps.multi
+          allProps.autosize = { minRows: 1, maxRows: 1 }
+          delete allProps.multi
+        }
         // events
         let defaultEvents = defaultAllState.events || []
         if (!allProps.allowClear) {
@@ -277,17 +293,33 @@ export default defineComponent({
 
     const { validate, resetFields, validateInfos } = Form.useForm(modelRef, rulesRef)
     // 获取组件名
-    const getTypeByField = field => {
-      return getColumns.value.find(val => val?.field === field).type
+    const getTypeByColumn = field => {
+      return getColumns.value.find(val => val?.field === field)
     }
     // 实现内置修饰符
     const proxyModifier = () => {
       Object.keys(modelRef).forEach(field => {
         const value = modelRef[field]
-        const type = getTypeByField(field)
-        // trim
+        const column = getTypeByColumn(field)
+        const type = column.type
+        // trim/限制长度
         if (['AInput'].includes(type) && typeof value === 'string') {
-          modelRef[field] = value.trim()
+          const maxlength = column.props['data-maxlength'] || Number.MAX_SAFE_INTEGER
+          modelRef[field] = value.trim().slice(0, maxlength)
+        } else if (['ATextarea'].includes(type) && typeof value === 'string') {
+          // 文本域模拟替换excel换行符
+          const multi = column.props['data-multi']
+          const maxlength = column.props['data-maxlength'] || Number.MAX_SAFE_INTEGER
+          if (multi) {
+            modelRef[field] = value
+              .split(/[\t\n\r]/g)
+              .filter(Boolean)
+              .map(val => val.trim())
+              .slice(0, maxlength)
+              .join(',')
+          } else {
+            modelRef[field] = value.trim().slice(0, maxlength)
+          }
         }
       })
     }
