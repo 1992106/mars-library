@@ -90,6 +90,10 @@ export default defineComponent({
               delete node.disableCheckbox
             })
             return { ...column, props: { ...props, treeData } }
+          } else if (column.type === 'AInput') {
+            return { ...column, props: { maxlength: 100, ...props } }
+          } else if (column.type === 'ATextarea') {
+            return { ...column, props: { maxlength: 100, multi: true, ...props } }
           } else {
             return column
           }
@@ -194,6 +198,12 @@ export default defineComponent({
       span[class='ant-calendar-picker-input ant-input'] {
         width: 300px;
       }
+    }
+    // 文本域模拟替换excel换行符
+    textarea[data-multi='true'] {
+      overflow: hidden;
+      white-space: nowrap;
+      padding-right: 24px;
     }
   }
   .only-btn {
