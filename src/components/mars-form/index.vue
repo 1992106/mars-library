@@ -212,7 +212,6 @@ export default defineComponent({
     }
     // 获取格式化后的columns
     const getColumns = computed(() => {
-      console.log('getColumns')
       return props.columns.map(column => {
         const { props = {}, events = {} } = column
         const defaultAllState = defaultState[column?.type] || {}
