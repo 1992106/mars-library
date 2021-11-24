@@ -38,7 +38,7 @@
   </a-form>
 </template>
 <script>
-import { computed, defineComponent, mergeProps, nextTick, onMounted, reactive, ref, toRaw, watch } from 'vue'
+import { computed, defineComponent, mergeProps, nextTick, onMounted, reactive, ref, toRaw, unref, watch } from 'vue'
 import { Form } from 'ant-design-vue'
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue'
 import { dateToMoment, isEmpty, momentToDate } from '@/utils'
@@ -212,6 +212,7 @@ export default defineComponent({
     }
     // 获取格式化后的columns
     const getColumns = computed(() => {
+      console.log('getColumns')
       return props.columns.map(column => {
         const { props = {}, events = {} } = column
         const defaultAllState = defaultState[column?.type] || {}
@@ -254,9 +255,10 @@ export default defineComponent({
     const hasMoment = column => {
       return ['ADatePicker', 'AWeekPicker', 'AMonthPicker', 'ARangePicker', 'ATimePicker'].includes(column?.type)
     }
+
     const allDefaultValue = ['defaultValue', 'defaultPickerValue']
-    const getModel = columns => {
-      return columns.reduce((prev, next) => {
+    const getModel = computed(() => {
+      return unref(getColumns).reduce((prev, next) => {
         // 在使用useForm时，需要手动设置默认值
         let value = allDefaultValue.map(val => next?.props[val]).find(Boolean)
         // 格式化时间（antd不支持new Date()）
@@ -273,28 +275,23 @@ export default defineComponent({
         prev[next.field] = isEmpty(modelRef) ? value : modelRef[next.field]
         return prev
       }, {})
-    }
-    const getRules = columns => {
-      return columns.reduce((prev, next) => {
+    })
+    const getRules = computed(() => {
+      return unref(getColumns).reduce((prev, next) => {
         if (!isEmpty(next?.rules)) {
           prev[next.field] = next?.rules
         }
         return prev
       }, {})
-    }
+    })
+
     const modelRef = reactive({})
     const rulesRef = reactive({})
-    watch(
-      () => getColumns,
-      columns => {
-        console.log(222222)
-        Object.assign(modelRef, getModel(columns.value))
-        Object.assign(rulesRef, getRules(columns.value))
-      },
-      { deep: true, immediate: true }
+    const { validate, resetFields, validateInfos } = Form.useForm(
+      Object.assign(modelRef, unref(getModel)),
+      Object.assign(rulesRef, unref(getRules))
     )
 
-    const { validate, resetFields, validateInfos } = Form.useForm(modelRef, rulesRef)
     // 获取组件名
     const getTypeByColumn = field => {
       return getColumns.value.find(val => val?.field === field)

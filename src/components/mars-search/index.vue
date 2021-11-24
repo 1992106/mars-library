@@ -70,7 +70,6 @@ export default defineComponent({
 
     // columns删除disabled属性
     const getColumns = computed(() => {
-      console.log(1111111)
       return props.columns.map(column => {
         const props = column?.props || {}
         const options = cloneDeep(props?.options || [])
