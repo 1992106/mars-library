@@ -68,39 +68,35 @@ export default defineComponent({
     const showExtra = computed(() => !!slots['extra'])
     const showShortcut = computed(() => !!slots['shortcut'])
 
-    // 监听columns，删除disabled
-    const getColumns = ref([])
-    watch(
-      () => props.columns,
-      columns => {
-        getColumns.value = columns.map(column => {
-          const props = column?.props || {}
-          const options = cloneDeep(props?.options || [])
-          const treeData = cloneDeep(props?.treeData || [])
-          if (['ASelect', 'AAutoComplete'].includes(column.type)) {
-            return { ...column, props: { ...props, options: options.map(val => omit(val, ['disabled'])) } }
-          } else if (column.type === 'ACascader') {
-            recursive(options, node => {
-              delete node.disabled
-            })
-            return { ...column, props: { ...props, options } }
-          } else if (column.type === 'ATreeSelect') {
-            recursive(treeData, node => {
-              delete node.disabled
-              delete node.disableCheckbox
-            })
-            return { ...column, props: { ...props, treeData } }
-          } else if (column.type === 'AInput') {
-            return { ...column, props: { maxlength: 100, ...props } }
-          } else if (column.type === 'ATextarea') {
-            return { ...column, props: { maxlength: 100, multi: true, ...props } }
-          } else {
-            return column
-          }
-        })
-      },
-      { immediate: true, deep: true }
-    )
+    // columns删除disabled属性
+    const getColumns = computed(() => {
+      console.log(1111111)
+      return props.columns.map(column => {
+        const props = column?.props || {}
+        const options = cloneDeep(props?.options || [])
+        const treeData = cloneDeep(props?.treeData || [])
+        if (['ASelect', 'AAutoComplete'].includes(column.type)) {
+          return { ...column, props: { ...props, options: options.map(val => omit(val, ['disabled'])) } }
+        } else if (column.type === 'ACascader') {
+          recursive(options, node => {
+            delete node.disabled
+          })
+          return { ...column, props: { ...props, options } }
+        } else if (column.type === 'ATreeSelect') {
+          recursive(treeData, node => {
+            delete node.disabled
+            delete node.disableCheckbox
+          })
+          return { ...column, props: { ...props, treeData } }
+        } else if (column.type === 'AInput') {
+          return { ...column, props: { maxlength: 100, ...props } }
+        } else if (column.type === 'ATextarea') {
+          return { ...column, props: { maxlength: 100, multi: true, ...props } }
+        } else {
+          return column
+        }
+      })
+    })
 
     const searchParams = ref({})
 

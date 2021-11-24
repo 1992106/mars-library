@@ -228,7 +228,7 @@ export default defineComponent({
           }
           if (allProps?.multi) {
             allProps['data-multi'] = allProps.multi
-            allProps.autosize = { minRows: 1, maxRows: 1 }
+            allProps.autoSize = { minRows: 1, maxRows: 1 }
             delete allProps.multi
           }
         }
@@ -254,8 +254,8 @@ export default defineComponent({
     const hasMoment = column => {
       return ['ADatePicker', 'AWeekPicker', 'AMonthPicker', 'ARangePicker', 'ATimePicker'].includes(column?.type)
     }
+    const allDefaultValue = ['defaultValue', 'defaultPickerValue']
     const getModel = columns => {
-      const allDefaultValue = ['defaultValue', 'defaultPickerValue']
       return columns.reduce((prev, next) => {
         // 在使用useForm时，需要手动设置默认值
         let value = allDefaultValue.map(val => next?.props[val]).find(Boolean)
@@ -287,6 +287,7 @@ export default defineComponent({
     watch(
       () => getColumns,
       columns => {
+        console.log(222222)
         Object.assign(modelRef, getModel(columns.value))
         Object.assign(rulesRef, getRules(columns.value))
       },
