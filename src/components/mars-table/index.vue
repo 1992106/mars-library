@@ -2,7 +2,11 @@
   <div class="mars-table">
     <div class="mars-table-header">
       <slot name="searchBar"></slot>
-      <slot name="toolBar"></slot>
+      <template v-if="hasToolBar">
+        <div class="mars-toolbar">
+          <slot name="toolBar"></slot>
+        </div>
+      </template>
     </div>
     <a-table
       ref="tableRef"
@@ -85,7 +89,7 @@ export default defineComponent({
     customHeaderCell: Function
   },
   emits: ['search', 'update:pagination', 'change'],
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     /**
      * 默认值
      */
@@ -185,6 +189,7 @@ export default defineComponent({
       emit('update:pagination', pagination)
       emit('search')
     }
+    const hasToolBar = computed(() => !!slots['toolBar'])
     return {
       ...toRefs(state),
       getScroll,
@@ -195,7 +200,8 @@ export default defineComponent({
       handleRowClassName,
       handleChange,
       handlePageChange,
-      handleShowSizeChange
+      handleShowSizeChange,
+      hasToolBar
     }
   }
 })
@@ -206,6 +212,11 @@ export default defineComponent({
   flex-direction: column;
   background-color: #fff;
   height: 100%;
+  &-header {
+    .mars-toolbar {
+      margin: 10px 0;
+    }
+  }
   .ant-pagination {
     padding: 10px;
     text-align: right;

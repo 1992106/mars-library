@@ -50,7 +50,9 @@
       <slot name="searchBar"></slot>
     </template>
     <template #toolbar_buttons>
-      <slot name="toolBar"></slot>
+      <div v-if="hasToolBar" class="mars-toolbar">
+        <slot name="toolBar"></slot>
+      </div>
     </template>
     <template #toolbar_tools>
       <template v-if="customSetting">
@@ -162,7 +164,7 @@ export default defineComponent({
   components: {
     ColumnSetting
   },
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     /**
      * 默认值
      */
@@ -371,6 +373,8 @@ export default defineComponent({
       }
     }
 
+    const hasToolBar = computed(() => !!slots['toolBar'])
+
     return {
       ...toRefs(state),
       getSlots,
@@ -395,7 +399,8 @@ export default defineComponent({
       handleClearFilter,
       handleToggleTreeExpand,
       handleResizableChange,
-      handleSettingChange
+      handleSettingChange,
+      hasToolBar
     }
   }
 })
@@ -403,6 +408,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mars-grid {
   :deep(.vxe-toolbar) {
+    height: auto;
+    .mars-toolbar {
+      margin: 10px 0;
+    }
     .vxe-tools--wrapper {
       .vxe-button {
         margin: 10px 0 10px 20px;

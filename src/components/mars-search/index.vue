@@ -179,7 +179,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .mars-search {
-  margin-bottom: 10px;
   :deep(.mars-form) {
     .ant-input-affix-wrapper,
     .ant-select {
