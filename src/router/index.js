@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { BaseLayout } from '@/src/layout'
+import { BaseLayout } from '@/src/layouts'
 
 export const routes = [
   {
