@@ -6,7 +6,7 @@ import store from '@/src/store'
 import router from '@/src/router'
 
 // 全局axios默认值
-axios.defaults.baseURL = !setting.mock ? setting.base_url : ''
+axios.defaults.baseURL = !setting.mock ? setting.api_url : ''
 axios.defaults.timeout = setting.request_timeout
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 

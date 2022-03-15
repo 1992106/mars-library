@@ -5,7 +5,7 @@ import store from '@/src/store'
 import router from '@/src/router'
 
 const fetchPost = (url, body) => {
-  const aplUrl = setting.mock ? url : `${setting.base_url}${url}`
+  const aplUrl = setting.mock ? url : `${setting.api_url}${url}`
   const token = getAccessToken()
   return new Promise((resolve, reject) => {
     fetch(aplUrl, {

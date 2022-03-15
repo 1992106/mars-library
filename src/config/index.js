@@ -3,10 +3,7 @@ const setting = {
   title: 'Mars library',
 
   // 请求路径
-  // base_url: 'http://localhost:8888/api',
-  // http://oc.dev.patpat.vip/erp/micro_app/
-  // http://oc.dev.patpat.vip
-  base_url: 'http://mars.dev.patpat.vip',
+  api_url: '',
 
   // 是否使用mock
   mock: false,
@@ -18,7 +15,7 @@ const setting = {
   authorization_name: 'Authorization',
 
   // 本地储存token的名字
-  token_name: 'mars-scm',
+  token_name: 'mars-library',
 
   // token前缀,设置为null则不启用 { headers: { Authorization: 'Bearer ${token}'}}
   token_prefix: 'Bearer',
@@ -37,4 +34,3 @@ const setting = {
 }
 
 export default setting
-// export { setting as default }
