@@ -146,13 +146,13 @@ export default defineComponent({
       modelRef,
       ranges: {
         // eslint-disable-next-line prettier/prettier
-        '今天': [moment(), moment()],
+        今天: [moment(), moment()],
         // eslint-disable-next-line prettier/prettier
-        '本周': [moment().startOf('week'), moment().endOf('week')],
+        本周: [moment().startOf('week'), moment().endOf('week')],
         // eslint-disable-next-line prettier/prettier
-        '本月': [moment().startOf('month'), moment().endOf('month')],
+        本月: [moment().startOf('month'), moment().endOf('month')],
         // eslint-disable-next-line prettier/prettier
-        '三个月': [moment(new Date()).subtract(2, 'months').startOf('month'), moment().endOf('month')]
+        三个月: [moment(new Date()).subtract(2, 'months').startOf('month'), moment().endOf('month')]
       },
       disabledDate,
       handleOpenChange,

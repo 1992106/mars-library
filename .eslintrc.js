@@ -4,7 +4,13 @@ module.exports = {
     es6: true,
     node: true
   },
-  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:vue/vue3-essential',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+    'prettier' // eslint-config-prettier缩写
+  ],
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -14,7 +20,7 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['vue', '@typescript-eslint', 'prettier'], // eslint-plugin-vue @typescript-eslint/eslint-plugin eslint-plugin-prettier 缩写
   globals: {},
   rules: {
     'prettier/prettier': [2, { endOfLine: 'lf' }],
@@ -27,6 +33,9 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/ban-ts-ignore': 0,
+    '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 0,
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 0,

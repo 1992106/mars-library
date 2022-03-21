@@ -26,6 +26,7 @@ const config = {
   ],
   resolve: {
     alias: {
+      '@/': path.resolve(__dirname, 'src'),
       '@/src': path.resolve(__dirname, 'src'),
       '@/views': path.resolve(__dirname, 'src/views'),
       '@/components': path.resolve(__dirname, 'src/components'),
@@ -49,16 +50,16 @@ const config = {
       'ant-design-vue/es/locale/zh_CN',
       'moment/dist/locale/zh-cn',
       'ant-design-vue/es/locale/en_US',
-      'moment/dist/locale/eu',
-      'axios/dist/axios'
+      'moment/dist/locale/eu'
     ],
     exclude: []
   },
   build: {
     terserOptions: {
       compress: {
-        keep_infinity: true,
-        drop_console: true
+        keep_infinity: true, // 防止 Infinity 被压缩成 1/0
+        drop_console: true, // 生产环境去除 console
+        drop_debugger: true // 生产环境去除 debugger
       }
     }
   }
@@ -78,23 +79,22 @@ export default ({ command, mode }) => {
         exports: 'named',
         globals: {
           vue: 'vue',
-          'lodash-es': 'lodash-es',
-          moment: 'moment',
           'ant-design-vue': 'ant-design-vue',
-          '@ant-design/icons-vue': '@ant-design/icons-vue'
+          '@ant-design/icons-vue': '@ant-design/icons-vue',
+          'vxe-table': 'vxe-table',
+          'vue-draggable-next': 'vue-draggable-next',
+          'lodash-es': 'lodash-es',
+          moment: 'moment'
         }
       },
       external: [
         'vue',
-        'vue-router',
-        'vuex',
         'ant-design-vue',
         '@ant-design/icons-vue',
         'vxe-table',
-        'axios',
+        'vue-draggable-next',
         'lodash-es',
-        'moment',
-        'nprogress'
+        'moment'
       ]
     }
   }

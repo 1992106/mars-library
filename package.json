@@ -1,7 +1,7 @@
 {
   "name": "mars-library",
   "version": "0.3.5",
-  "main": "dist/mars-library.cjs.js",
+  "main": "dist/mars-library.umd.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
   "browser": "dist/mars-library.umd.js",
@@ -23,6 +23,7 @@
     "lint": "npm run lint:eslint & npm run lint:stylelint",
     "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx,.vue --fix",
     "lint:stylelint": "stylelint \"src/**/*.{css,scss,sass,less,vue}\" --fix",
+    "prettier": "prettier --write .",
     "cz": "git cz",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && yarn"
   },
@@ -37,7 +38,9 @@
     "vue-draggable-next": "^2.1.1",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
-    "vxe-table": "^4.0.30"
+    "vxe-table": "^4.0.30",
+    "xe-ajax": "^4.0.5",
+    "xe-utils": "^3.4.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
@@ -72,14 +75,14 @@
     "vite-plugin-html": "^2.1.1",
     "vite-plugin-mock": "^2.9.6",
     "vue-eslint-parser": "^7.11.0",
-    "vxe-table-plugin-antd": "^3.0.5",
-    "xe-ajax": "^4.0.5",
-    "xe-utils": "^3.4.0"
+    "vxe-table-plugin-antd": "^3.0.5"
   },
   "peerDependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.2.8",
+    "lodash-es": "^4.17.21",
     "vue": "^3.2.20",
+    "vue-draggable-next": "^2.1.1",
     "vxe-table": "^4.0.30"
   },
   "repository": {
@@ -98,18 +101,12 @@
     "url": "https://github.com/1992106/mars-library/issues"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    "*.{js,ts,jsx,tsx,vue}": [
       "prettier --write",
       "eslint --fix",
       "git add"
     ],
-    "src/**/*.vue": [
-      "prettier --write",
-      "stylelint --fix",
-      "eslint --fix",
-      "git add"
-    ],
-    "src/**/*.{css,scss,sass,less}": [
+    "src/**/*.{css,scss,sass,less,vue}": [
       "prettier --write",
       "stylelint --fix",
       "git add"

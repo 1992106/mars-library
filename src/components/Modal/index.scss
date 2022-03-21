@@ -21,7 +21,7 @@
   @include flexRCC;
   height: 100%;
   margin-left: -32px;
-  &>span {
+  & > span {
     width: 40px;
     &:last-child {
       margin-right: 10px;

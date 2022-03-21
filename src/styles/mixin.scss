@@ -50,13 +50,13 @@
 // 文本溢出显示省略号
 @mixin ellipsis {
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 // 多行文本溢出显示省略号
 @mixin multi-ellipsis($num: 2) {
-  overflow : hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: $num;
