@@ -6,8 +6,7 @@
       type="editable-card"
       class="multi-tabs-box"
       @edit="onEdit"
-      @tabClick="onTabClick"
-    >
+      @tabClick="onTabClick">
       <a-tab-pane v-for="pane in visitedRoutes" :key="pane.path" style="height: 0" :closable="visitedRoutes.length > 1">
         <template #tab>
           {{ pane.meta.title }}
@@ -92,9 +91,11 @@ export default defineComponent({
   background: $bg-color;
   margin: 0;
   padding-top: 6px;
+
   :deep(.ant-tabs-bar) {
     padding-left: 16px;
     margin-bottom: 0;
+
     .anticon {
       margin: 0 0 0 8px;
       color: rgba(0, 0, 0, 0.45);
@@ -104,6 +105,7 @@ export default defineComponent({
       overflow: hidden;
       vertical-align: middle;
       transition: all 0.3s;
+
       &:hover {
         color: rgba(0, 0, 0, 0.85);
       }

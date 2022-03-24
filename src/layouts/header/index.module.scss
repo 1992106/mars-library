@@ -9,9 +9,11 @@
   height: $header-height !important;
   line-height: $header-height !important;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
   .breadcrumb {
     @include flexRAC;
     height: 100%;
+
     .collapsed {
       padding: 0 24px 0 0;
       cursor: pointer;

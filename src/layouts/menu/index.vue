@@ -7,8 +7,7 @@
       :openKeys="openKeys"
       :selected-keys="selectedKeys"
       @click="onClick"
-      @openChange="onOpenChange"
-    >
+      @openChange="onOpenChange">
       <template v-for="item in routes" :key="item.name">
         <MenuItem :menu-info="item" />
       </template>
@@ -19,10 +18,11 @@
 <script>
 import { defineComponent, reactive, watch, computed, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { routes as routeList } from '@/src/router'
 import MenuItem from './item.vue'
+import { routes as routeList } from '@/src/router'
 
 export default defineComponent({
+  name: 'MyMenu',
   components: {
     MenuItem
   },

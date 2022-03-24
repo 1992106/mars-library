@@ -26,6 +26,7 @@ export default {
   white-space: nowrap;
   position: relative;
   z-index: 3;
+
   img {
     height: 32px;
   }

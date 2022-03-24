@@ -12,8 +12,7 @@
       v-model:visible="drawerVisible"
       :destroyOnClose="true"
       wrap-class-name="mars-export-wrap"
-      @close="handleClose"
-    >
+      @close="handleClose">
       <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="创建日期" v-bind="validateInfos.date">
           <a-range-picker
@@ -22,8 +21,7 @@
             :ranges="ranges"
             :disabledDate="disabledDate"
             @openChange="handleOpenChange"
-            @calendarChange="handleCalendarChange"
-          />
+            @calendarChange="handleCalendarChange" />
         </a-form-item>
         <template v-if="columns.length">
           <div><strong>导出字段选择</strong></div>
@@ -33,8 +31,7 @@
                 :is="'ASwitch'"
                 checked-children="开"
                 un-checked-children="关"
-                v-model:checked="modelRef[column.field]"
-              ></component>
+                v-model:checked="modelRef[column.field]"></component>
             </a-form-item>
           </template>
         </template>
@@ -169,17 +166,20 @@ export default defineComponent({
   &-wrap {
     .ant-drawer-wrapper-body {
       overflow: hidden;
+
       .ant-drawer-body {
         height: calc(100% - 53px - 55px);
         overflow: auto;
       }
     }
+
     .ant-form {
       .ant-form-item ~ .ant-form-item {
         margin-bottom: 0;
       }
     }
   }
+
   &-buttons {
     position: absolute;
     right: 0;

@@ -8,8 +8,7 @@
       :columns="getColumns"
       @ok="handleSearch"
       @clear="handleClear"
-      @cancel="handleReset"
-    >
+      @cancel="handleReset">
       <template #only>
         <div class="only-btn" v-if="showOnly">
           <a-switch v-model:checked="checked" @change="handleOnly" />
@@ -184,10 +183,12 @@ export default defineComponent({
     .ant-select {
       width: 150px;
     }
+
     .tree-select {
       width: 100%;
       min-width: 150px;
     }
+
     .ant-calendar-picker {
       span[class='ant-calendar-picker-input ant-input'] {
         width: 300px;
@@ -200,19 +201,23 @@ export default defineComponent({
       padding-right: 24px;
     }
   }
+
   .only-btn {
     display: flex;
     min-width: 105px;
+
     .ant-switch {
       margin-right: 5px;
     }
   }
+
   .extra-btn {
     flex: 1;
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
   }
+
   .mars-shortcut {
     border-top: 1px $border-color dashed;
     padding: 10px 10px 0 10px;

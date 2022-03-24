@@ -6,8 +6,7 @@
           :is="column.type"
           v-model:[column.modelValue]="modelRef[column.field]"
           v-bind="column?.props || {}"
-          v-on="column?.events || {}"
-        ></component>
+          v-on="column?.events || {}"></component>
       </a-form-item>
     </template>
     <div class="mars-form-buttons">
@@ -407,13 +406,16 @@ export default defineComponent({
 .mars-form {
   .ant-form-item {
     line-height: 40px;
+
     &.hidden {
       display: none !important;
     }
   }
+
   &-buttons {
     display: flex;
     flex: 1;
+
     :deep(.expand) {
       cursor: pointer;
       min-width: 50px;

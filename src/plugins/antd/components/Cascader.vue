@@ -5,8 +5,7 @@
       :options="options"
       v-model:value="option.data"
       @change="onChange"
-      @popupVisibleChange="onVisibleChange"
-    ></Cascader>
+      @popupVisibleChange="onVisibleChange"></Cascader>
   </div>
 </template>
 <script>

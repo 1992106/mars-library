@@ -4,8 +4,7 @@
       v-bind="treeSelectProps"
       :treeData="treeData"
       v-model:value="option.data"
-      @change="onChange"
-    ></TreeSelect>
+      @change="onChange"></TreeSelect>
   </div>
 </template>
 <script>

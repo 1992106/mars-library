@@ -26,8 +26,7 @@
       :customRow="customRow"
       :customHeaderRow="customHeaderRow"
       :customCell="customCell"
-      :customHeaderCell="customHeaderCell"
-    >
+      :customHeaderCell="customHeaderCell">
       <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
         <slot :name="slot" v-bind="scope"></slot>
       </template>
@@ -39,8 +38,7 @@
       :pageSize="pagination.pageSize"
       :total="total"
       @change="handlePageChange"
-      @showSizeChange="handleShowSizeChange"
-    />
+      @showSizeChange="handleShowSizeChange" />
   </div>
 </template>
 <script>
@@ -212,15 +210,18 @@ export default defineComponent({
   flex-direction: column;
   background-color: #fff;
   height: 100%;
+
   &-header {
     .mars-toolbar {
       margin: 10px 0;
     }
   }
+
   .ant-pagination {
     padding: 10px;
     text-align: right;
   }
+
   :deep(.table-striped) {
     background-color: #fafafa;
   }

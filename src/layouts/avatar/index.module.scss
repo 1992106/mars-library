@@ -7,6 +7,7 @@
   font-size: $font-size-base;
   cursor: pointer;
   transition: background 0.3s;
+
   &:global(.ant-dropdown-open) {
     background-color: $bg-color-hover;
   }

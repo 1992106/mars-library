@@ -44,8 +44,7 @@
     @checkbox-change="handleCheckboxChange"
     @checkbox-all="handleCheckboxAll"
     @cell-click="handleCellClick"
-    @resizable-change="handleResizableChange"
-  >
+    @resizable-change="handleResizableChange">
     <template #form>
       <slot name="searchBar"></slot>
     </template>
@@ -59,8 +58,7 @@
         <ColumnSetting
           :columns="customColumns"
           :backupColumns="backupColumns"
-          @change="handleSettingChange"
-        ></ColumnSetting>
+          @change="handleSettingChange"></ColumnSetting>
       </template>
     </template>
     <!--slot-->
@@ -77,8 +75,7 @@
           :pageSize="pagination.pageSize"
           :total="total"
           @change="handlePageChange"
-          @showSizeChange="handleShowSizeChange"
-        />
+          @showSizeChange="handleShowSizeChange" />
       </slot>
     </template>
   </vxe-grid>
@@ -409,29 +406,35 @@ export default defineComponent({
 .mars-grid {
   :deep(.vxe-toolbar) {
     height: auto;
+
     .mars-toolbar {
       margin: 10px 0;
     }
+
     .vxe-tools--wrapper {
       .vxe-button {
         margin: 10px 0 10px 20px;
       }
     }
+
     .vxe-tools--operate {
       .vxe-button {
         margin: 10px 0 10px 10px;
       }
     }
   }
+
   :deep(.vxe-table--header) {
     .vxe-cell {
       display: flex;
       align-items: center;
+
       .vxe-cell--title {
         flex: 1;
       }
     }
   }
+
   .ant-pagination {
     padding: 10px;
     text-align: right;

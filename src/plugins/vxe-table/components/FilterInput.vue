@@ -5,8 +5,7 @@
       v-model="demo1.option.data"
       placeholder="支持回车筛选"
       @keyup="keyupEvent"
-      @input="changeOptionEvent"
-    ></vxe-input>
+      @input="changeOptionEvent"></vxe-input>
   </div>
 </template>
 

@@ -9,8 +9,7 @@
       width="800"
       height="400"
       v-model="demo1.modalVisible"
-      @confirm="confirmEvent"
-    >
+      @confirm="confirmEvent">
       <template #default>
         <vxe-grid ref="xGrid" v-bind="gridOptions" @page-change="pageChangeEvent"></vxe-grid>
       </template>
@@ -148,13 +147,16 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .edit-down-pulldown {
   width: auto;
   flex-grow: 1;
 }
+
 :deep(.edit-down-input) .vxe-input--inner {
   border-radius: 4px 0 0 4px;
 }
+
 .edit-popup-button.vxe-button {
   flex-shrink: 0;
   border-radius: 0 4px 4px 0;

@@ -9,14 +9,12 @@
             :value="selectedKeys[0]"
             style="width: 188px; margin-bottom: 8px; display: block"
             @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-            @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
-          />
+            @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)" />
           <a-button
             type="primary"
             size="small"
             style="width: 90px; margin-right: 8px"
-            @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
-          >
+            @click="handleSearch(selectedKeys, confirm, column.dataIndex)">
             <template #icon><SearchOutlined /></template>
             Search
           </a-button>
@@ -29,8 +27,7 @@
       <template #customRender="{ text, column }">
         <span v-if="searchText && searchedColumn === column.dataIndex">
           <template
-            v-for="(fragment, i) in text.toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
+            v-for="(fragment, i) in text.toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))">
             <mark v-if="fragment.toLowerCase() === searchText.toLowerCase()" class="highlight" :key="i">
               {{ fragment }}
             </mark>

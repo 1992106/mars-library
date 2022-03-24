@@ -7,8 +7,7 @@
     v-model:visible="modalVisible"
     :destroyOnClose="true"
     wrap-class-name="mars-modal-wrap"
-    :footer="null"
-  >
+    :footer="null">
     <mars-form
       layout="horizontal"
       :reverse="true"
@@ -17,8 +16,7 @@
       :wrapper-col="wrapperCol"
       :columns="columns"
       @ok="handleOk"
-      @cancel="handleCancel"
-    ></mars-form>
+      @cancel="handleCancel"></mars-form>
   </my-modal>
 </template>
 <script>
@@ -74,6 +72,7 @@ export default defineComponent({
 .mars-modal-wrap {
   .mars-form {
     margin-bottom: 63px;
+
     &-buttons {
       position: absolute;
       right: 0;

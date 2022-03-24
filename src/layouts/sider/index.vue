@@ -5,8 +5,7 @@
     collapsible
     v-model:collapsed="siderVisible"
     :collapsedWidth="48"
-    :width="200"
-  >
+    :width="200">
     <my-logo :collapsed="collapsed" />
     <my-menu :collapsed="collapsed" />
   </a-layout-sider>

@@ -23,13 +23,14 @@ module.exports = {
   plugins: ['vue', '@typescript-eslint', 'prettier'], // eslint-plugin-vue @typescript-eslint/eslint-plugin eslint-plugin-prettier 缩写
   globals: {},
   rules: {
-    'prettier/prettier': [2, { endOfLine: 'lf' }],
+    'prettier/prettier': [2, { endOfLine: 'lf', bracketSameLine: true }],
     'vue/no-unused-components': 0,
     'vue/no-unused-vars': 0,
     'vue/no-v-for-template-key-on-child': 0,
     'vue/no-v-model-argument': 0,
     'vue/no-multiple-template-root': 0,
     'vue/no-v-for-template-key': 0,
+    'vue/multi-word-component-names': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/ban-ts-ignore': 0,

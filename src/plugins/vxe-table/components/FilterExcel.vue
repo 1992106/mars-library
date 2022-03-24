@@ -23,8 +23,7 @@
                 v-for="(cItem, cIndex) in cList"
                 :key="cIndex"
                 class="my-fe-child-menu-item"
-                @click="childMenuClickEvent(cItem)"
-              >
+                @click="childMenuClickEvent(cItem)">
                 <span>{{ cItem.label }}</span>
               </li>
             </ul>
@@ -48,8 +47,7 @@
               demo1.option.data.vals.indexOf(val) === -1
                 ? 'fa fa-square-o my-fe-search-item-icon'
                 : 'fa fa-check-square-o my-fe-search-item-icon'
-            ]"
-          ></i>
+            ]"></i>
           <span>{{ val }}</span>
         </li>
       </ul>
@@ -183,11 +181,13 @@ export default defineComponent({
 .my-filter-excel {
   user-select: none;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group {
   position: relative;
   margin: 0;
   padding: 0;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group::after {
   content: '';
   position: absolute;
@@ -196,27 +196,33 @@ export default defineComponent({
   bottom: 0;
   border-bottom: 1px solid #e2e4e7;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link {
   position: relative;
   padding: 4px 20px 4px 30px;
   cursor: pointer;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link:hover {
   background-color: #c5c5c5;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link-left-icon {
   position: absolute;
   left: 10px;
   top: 6px;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link-right-icon {
   position: absolute;
   right: 10px;
   top: 6px;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link:hover .my-fe-menu-child-list {
   display: block;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link .my-fe-menu-child-list {
   display: none;
   position: absolute;
@@ -227,10 +233,12 @@ export default defineComponent({
   border: 1px solid #dadce0;
   box-shadow: 3px 3px 4px -2px rgba(0, 0, 0, 0.6);
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link .my-fe-child-menu-group-list {
   position: relative;
   padding: 0;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link .my-fe-child-menu-group-list::after {
   content: '';
   position: absolute;
@@ -239,6 +247,7 @@ export default defineComponent({
   bottom: 0;
   border-bottom: 1px solid #e2e4e7;
 }
+
 .my-filter-excel .my-fe-top .my-fe-menu-group .my-fe-menu-link .my-fe-child-menu-group-list > .my-fe-child-menu-item {
   position: relative;
   padding: 4px 20px 4px 30px;
@@ -246,6 +255,7 @@ export default defineComponent({
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .my-filter-excel,
 .my-fe-top,
 .my-fe-menu-group,
@@ -254,13 +264,16 @@ export default defineComponent({
 > .my-fe-child-menu-item:hover {
   background-color: #c5c5c5;
 }
+
 .my-filter-excel .my-fe-search {
   padding: 0 10px 0 30px;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-top {
   position: relative;
   padding: 5px 0;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-top > input {
   border: 1px solid #ababab;
   padding: 0 20px 0 2px;
@@ -268,11 +281,13 @@ export default defineComponent({
   height: 22px;
   line-height: 22px;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-top > .my-fe-search-icon {
   position: absolute;
   right: 5px;
   top: 10px;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-list {
   margin: 0;
   border: 1px solid #e2e4e7;
@@ -280,33 +295,42 @@ export default defineComponent({
   overflow: auto;
   height: 140px;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-list .my-fe-search-item {
   cursor: pointer;
   padding: 2px 0;
 }
+
 .my-filter-excel .my-fe-search .my-fe-search-list .my-fe-search-item .my-fe-search-item-icon {
   width: 16px;
 }
+
 .my-filter-excel .my-fe-footer {
   text-align: right;
   padding: 10px 10px 10px 0;
 }
+
 .my-fe-popup .my-fe-popup-filter {
   padding-left: 30px;
 }
+
 .my-fe-popup .my-fe-popup-filter > .my-fe-popup-filter-select {
   width: 120px;
 }
+
 .my-fe-popup .my-fe-popup-filter > .my-fe-popup-filter-input {
   margin-left: 15px;
   width: 380px;
 }
+
 .my-fe-popup .my-fe-popup-describe {
   padding: 20px 0 10px 0;
 }
+
 .my-fe-popup .my-fe-popup-concat {
   padding-left: 50px;
 }
+
 .my-fe-popup .my-fe-popup-footer {
   text-align: right;
 }

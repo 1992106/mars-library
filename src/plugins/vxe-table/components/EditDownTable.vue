@@ -8,8 +8,7 @@
           suffix-icon="fa fa-caret-down"
           @keyup="keyupEvent"
           @click="clickEvent"
-          @suffix-click="suffixClick"
-        ></vxe-input>
+          @suffix-click="suffixClick"></vxe-input>
       </template>
       <template #dropdown>
         <div class="edit-down-wrapper">
@@ -153,6 +152,7 @@ export default defineComponent({
 .edit-down-pulldown {
   width: 100%;
 }
+
 .edit-down-wrapper {
   width: 600px;
   height: 300px;

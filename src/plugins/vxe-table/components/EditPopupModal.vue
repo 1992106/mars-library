@@ -8,8 +8,7 @@
       width="800"
       height="400"
       v-model="demo1.modalVisible"
-      @confirm="confirmEvent"
-    >
+      @confirm="confirmEvent">
       <template #default>
         <vxe-grid ref="xGrid" v-bind="gridOptions" @page-change="pageChangeEvent"></vxe-grid>
       </template>
@@ -128,10 +127,12 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .edit-popup-input {
   width: auto;
   flex-grow: 1;
 }
+
 .edit-popup-button {
   flex-shrink: 0;
 }

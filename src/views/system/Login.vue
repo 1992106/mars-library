@@ -100,10 +100,12 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   padding-top: 100px;
+
   .form {
     display: flex;
     flex-direction: column;
     flex: 0 0 300px;
+
     :deep(.ant-form-item) {
       width: 100%;
       display: block;

@@ -9,8 +9,7 @@
         v-model="demo1.option.data.name"
         type="text"
         placeholder="请输入名称"
-        @input="changeOptionEvent()"
-      ></vxe-input>
+        @input="changeOptionEvent()"></vxe-input>
     </div>
     <div class="my-fc-footer">
       <vxe-button status="primary" @click="confirmEvent">确认</vxe-button>
@@ -85,9 +84,11 @@ export default defineComponent({
   width: 260px;
   padding: 5px 15px 10px 15px;
 }
+
 .my-filter-complex .my-fc-type {
   padding: 8px 0;
 }
+
 .my-filter-complex .my-fc-footer {
   text-align: center;
 }
