@@ -66,7 +66,7 @@ const config = {
   }
 }
 // https://vitejs.dev/config/
-export default ({ command, mode }) => {
+export default ({ mode }) => {
   const { plugins = [], build = {} } = config
 
   if (mode === 'lib') {
@@ -100,7 +100,7 @@ export default ({ command, mode }) => {
     }
   }
 
-  if (command === 'serve') {
+  if (mode === 'development') {
     config.server = {
       port: 8888,
       open: true
