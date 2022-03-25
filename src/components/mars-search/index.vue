@@ -26,7 +26,7 @@
 </template>
 <script>
 import { computed, defineComponent, nextTick, ref, toRaw, watch } from 'vue'
-import { isEmpty, recursive, omitEmpty } from '@/utils'
+import { isEmpty, recursive, toEmpty } from '@/utils'
 import { omit, cloneDeep } from 'lodash-es'
 export default defineComponent({
   name: 'MarsSearch',
@@ -100,7 +100,7 @@ export default defineComponent({
 
     const emitData = () => {
       return {
-        ...omitEmpty(toRaw(searchParams.value)),
+        ...toEmpty(toRaw(searchParams.value)),
         ...(props.showOnly ? { [props.onlyField]: checked.value } : {})
       }
     }

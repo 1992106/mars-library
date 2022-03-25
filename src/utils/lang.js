@@ -40,24 +40,40 @@ export const isEmpty = value => {
 }
 
 /**
- * 去除对象/数组空值
- * @param value
+ * 删除【对象/数组】空值
+ * @param object
  * @returns {*}
  */
-export const omitEmpty = value => {
-  if (getType(value) === 'object') {
+export const toEmpty = object => {
+  if (getType(object) === 'object') {
     let newObj = {}
-    Object.keys(value).forEach(key => {
-      if (!isEmpty(value[key])) {
-        newObj[key] = value[key]
+    Object.keys(object).forEach(key => {
+      if (!isEmpty(object[key])) {
+        newObj[key] = object[key]
       }
     })
     return newObj
   }
-  if (Array.isArray(value)) {
-    return value.filter(val => !isEmpty(val))
+  if (Array.isArray(object)) {
+    return object.filter(val => !isEmpty(val))
   }
-  return value
+  return object
+}
+
+/**
+ * 深度去前后空格
+ * @param object
+ */
+export const deepTrim = object => {
+  Object.keys(object).forEach(key => {
+    if (['object', 'array'].includes(getType(object[key]))) {
+      deepTrim(object[key])
+    } else {
+      if (getType(object[key]) === 'string') {
+        object[key] = object[key].trim()
+      }
+    }
+  })
 }
 
 /**
