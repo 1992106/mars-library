@@ -30,7 +30,7 @@
     :filter-config="getFilterConfig"
     :tree-config="getTreeConfig"
     :toolbar-config="{
-      zoom: customSetting,
+      zoom: customZoom,
       custom: false,
       refresh: false,
       slots: { buttons: 'toolbar_buttons', tools: 'toolbar_tools' }
@@ -138,6 +138,8 @@ export default defineComponent({
     cellStyle: [Object, Function],
     // 给行附加样式
     rowStyle: [Object, Function],
+    // 自定义缩放
+    customZoom: { type: Boolean, default: true },
     // 自定义设置
     customSetting: { type: Boolean, default: false },
     // 本地Storage名称（拖拽列和自定义表头时需要本地储存）,

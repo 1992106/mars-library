@@ -57,7 +57,7 @@ export const mergeStorageAndColumns = (oldColumns, newColumns) => {
 export const columnsToStorage = columns => {
   return (columns || []).map(val => {
     let title = val?.title
-    if (val?.type) {
+    if (!title && val?.type) {
       title = typeMap[val?.type]
     }
     return {
