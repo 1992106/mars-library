@@ -41,7 +41,9 @@
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
+    @filter-visible="handleFilterVisible"
     @clear-filter="handleClearFilter"
+    @toggle-row-expand="handleToggleRowExpand"
     @toggle-tree-expand="handleToggleTreeExpand"
     @radio-change="handleRadioChange"
     @checkbox-change="handleCheckboxChange"
@@ -49,7 +51,7 @@
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange">
     <!--搜索栏-->
-    <template #form>
+    <template v-if="hasSearchBar" #form>
       <slot name="searchBar"></slot>
     </template>
     <!--工具栏-->
@@ -96,7 +98,7 @@ export default defineComponent({
   name: 'MarsGrid',
   inheritAttrs: false,
   props: {
-    // 自定义行数据唯一主键的字段名（已废弃）
+    // 自定义行数据唯一主键的字段名（废弃）
     rowId: { type: String, default: 'id' },
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
@@ -172,7 +174,9 @@ export default defineComponent({
     'edit-closed',
     'valid-error',
     'filter-change',
+    'filter-visible',
     'clear-filter',
+    'toggle-row-expand',
     'toggle-tree-expand'
   ],
   components: {
@@ -190,7 +194,7 @@ export default defineComponent({
         showTotal: total => `共 ${total} 条`,
         pageSizeOptions: ['20', '40', '60', '80', '100']
       },
-      defaultRowConfig: { keyField: props.rowId, isHover: true, isCurrent: true },
+      defaultRowConfig: { isHover: true, isCurrent: true },
       defaultColumnConfig: { resizable: true },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
@@ -242,7 +246,9 @@ export default defineComponent({
         )
     })
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
-    const getRowConfig = computed(() => mergeProps(defaultState.defaultRowConfig, props.rowConfig))
+    const getRowConfig = computed(() =>
+      mergeProps(defaultState.defaultRowConfig, props.rowConfig, ...(props.rowId ? { keyField: props.rowId } : {}))
+    )
     const getColumnConfig = computed(() => mergeProps(defaultState.defaultColumnConfig, props.columnConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
     const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
@@ -356,10 +362,27 @@ export default defineComponent({
       emit('search', filters)
       // gridRef.value.loadData()
     }
+    // 筛选面板显示隐藏
+    const handleFilterVisible = ({ column, property, visible, filterList, $event }) => {
+      emit('filter-visible', { column, property, visible, filterList, $event })
+    }
     // 清除所有筛选条件
     const handleClearFilter = ({ filterList, $event }) => {
       emit('clear-filter', { filterList, $event })
       emit('search', {})
+    }
+    // 当行展开或收起时会触发该事件
+    const handleToggleRowExpand = ({
+      expanded,
+      row,
+      rowIndex,
+      $rowIndex,
+      column,
+      columnIndex,
+      $columnIndex,
+      $event
+    }) => {
+      emit('toggle-row-expand', { expanded, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event })
     }
     // 当树节点展开或收起时会触发该事件
     const handleToggleTreeExpand = ({ expanded, row, column, columnIndex, $columnIndex, $event }) => {
@@ -391,10 +414,14 @@ export default defineComponent({
       }
     }
 
+    // 是否显示插槽
+    const hasSearchBar = computed(() => !!slots['searchBar'])
     const hasToolBar = computed(() => !!slots['toolBar'])
 
     return {
       ...toRefs(state),
+      hasSearchBar,
+      hasToolBar,
       getSlots,
       getPaginationConfig,
       getRowConfig,
@@ -416,11 +443,12 @@ export default defineComponent({
       handleEditClosed,
       handleValidError,
       handleFilterChange,
+      handleFilterVisible,
       handleClearFilter,
+      handleToggleRowExpand,
       handleToggleTreeExpand,
       handleResizableChange,
-      handleSettingChange,
-      hasToolBar
+      handleSettingChange
     }
   }
 })
