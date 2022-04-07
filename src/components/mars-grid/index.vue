@@ -247,7 +247,7 @@ export default defineComponent({
     })
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     const getRowConfig = computed(() =>
-      mergeProps(defaultState.defaultRowConfig, props.rowConfig, ...(props.rowId ? { keyField: props.rowId } : {}))
+      mergeProps(defaultState.defaultRowConfig, props.rowConfig, props.rowId ? { keyField: props.rowId } : {})
     )
     const getColumnConfig = computed(() => mergeProps(defaultState.defaultColumnConfig, props.columnConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
