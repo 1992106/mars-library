@@ -13,9 +13,6 @@
       <!--自定义slot-->
       <template v-else>
         <a-form-item :label="column?.title">
-          <!--<template #[column.slot]="scope">
-            <slot :name="column.slot" v-bind="scope"></slot>
-          </template>-->
           <slot :name="column.slot"></slot>
         </a-form-item>
       </template>
@@ -227,9 +224,9 @@ export default defineComponent({
         const defaultAllState = defaultState[column?.type] || {}
         // props
         const defaultProps = defaultAllState.props || {}
-        const otherProps = omit(column, ['type', 'title', 'field', 'rules', 'props', 'events'])
+        const otherProps = omit(column, ['type', 'title', 'field', 'slot', 'rules', 'props', 'events'])
         const allProps = toRaw(mergeProps(defaultProps, otherProps, props))
-        const allColumn = pick(column, ['type', 'title', 'field', 'rules'])
+        const allColumn = pick(column, ['type', 'title', 'field', 'slot', 'rules'])
         //  TODO：文本域模拟替换excel换行符（input不支持）
         if (column?.type === 'ATextarea') {
           if (allProps?.maxlength) {

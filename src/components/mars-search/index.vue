@@ -9,6 +9,9 @@
       @ok="handleSearch"
       @clear="handleClear"
       @cancel="handleReset">
+      <template v-for="slot of getSearchSlots" :key="slot" #[slot]="scope">
+        <slot :name="slot" v-bind="scope"></slot>
+      </template>
       <template #only>
         <div class="only-btn" v-if="showOnly">
           <a-switch v-model:checked="checked" @change="handleOnly" />
@@ -62,6 +65,12 @@ export default defineComponent({
         checked.value = only
       }
     )
+
+    // 搜索插槽
+    const getSearchSlots = computed(() => {
+      const columns = props.columns
+      return (columns || []).map(col => col.slot).filter(Boolean)
+    })
 
     // 是否显示
     const showExtra = computed(() => !!slots['extra'])
@@ -163,6 +172,7 @@ export default defineComponent({
       formRef,
       checked,
       handleOnly,
+      getSearchSlots,
       showExtra,
       showShortcut,
       handleSearch,
