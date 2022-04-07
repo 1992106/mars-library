@@ -22,11 +22,12 @@
       :locale="locale"
       :row-selection="rowSelection"
       :rowClassName="handleRowClassName"
-      @change="handleChange"
       :customRow="customRow"
       :customHeaderRow="customHeaderRow"
-      :customCell="customCell"
-      :customHeaderCell="customHeaderCell">
+      :transform-cell-text="getTransformCellText"
+      @change="handleChange"
+      @expand="handleExpand"
+      @expandedRowsChange="handleExpandedRowsChange">
       <template v-for="slot of getSlots" :key="slot" #[slot]="scope">
         <slot :name="slot" v-bind="scope"></slot>
       </template>
@@ -44,6 +45,7 @@
 <script>
 import { defineComponent, computed, mergeProps, onBeforeUnmount, onMounted, reactive, ref, toRefs, unref } from 'vue'
 import { debounce } from 'lodash-es'
+import { isEmpty } from '@/utils'
 export default defineComponent({
   name: 'MarsTable',
   inheritAttrs: false,
@@ -83,10 +85,9 @@ export default defineComponent({
     locale: { type: Object, default: () => ({ filterConfirm: '筛选', filterReset: '重置', emptyText: '暂无数据' }) },
     customRow: Function,
     customHeaderRow: Function,
-    customCell: Function,
-    customHeaderCell: Function
+    transformCellText: { type: Function, default: null }
   },
-  emits: ['search', 'update:pagination', 'change'],
+  emits: ['search', 'update:pagination', 'change', 'expand', 'expandedRowsChange'],
   setup(props, { emit, slots }) {
     /**
      * 默认值
@@ -122,6 +123,9 @@ export default defineComponent({
           ['customRender', 'title', 'filterDropdown', 'filterIcon'].map(val => col.slots[val]).filter(Boolean)
         )
     )
+    const getTransformCellText = computed(() => {
+      return props.transformCellText ? props.transformCellText : ({ text }) => (isEmpty(text) ? '--' : text)
+    })
     const getScroll = computed(() => mergeProps(state.scroll, props.scroll))
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
     /**
@@ -187,18 +191,33 @@ export default defineComponent({
       emit('update:pagination', pagination)
       emit('search')
     }
+
+    // 点击展开图标时触发
+    const handleExpand = (expanded, record) => {
+      emit('expand', expanded, record)
+    }
+
+    // 点击展开图标时触发
+    const handleExpandedRowsChange = expandedRows => {
+      emit('expandedRowsChange', expandedRows)
+    }
+
     const hasToolBar = computed(() => !!slots['toolBar'])
+
     return {
       ...toRefs(state),
       getScroll,
       getColumns,
       getSlots,
+      getTransformCellText,
       getPaginationConfig,
       tableRef,
       handleRowClassName,
       handleChange,
       handlePageChange,
       handleShowSizeChange,
+      handleExpand,
+      handleExpandedRowsChange,
       hasToolBar
     }
   }

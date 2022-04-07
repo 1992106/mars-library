@@ -6,16 +6,17 @@
     auto-resize
     show-overflow
     keep-source
-    resizable
     v-bind="$attrs"
     :stripe="stripe"
     :columns="customColumns"
     :data="data"
     :loading="loading"
+    :empty-text="emptyText"
     :scroll-x="getScrollX"
     :scroll-y="getScrollY"
-    :row-id="rowId"
     :height="height"
+    :row-config="getRowConfig"
+    :column-config="getColumnConfig"
     :row-class-name="rowClassName"
     :cell-class-name="cellClassName"
     :row-style="rowStyle"
@@ -26,8 +27,10 @@
     :tooltip-config="tooltipConfig"
     :merge-cells="mergeCells"
     :edit-config="getEditConfig"
+    :valid-config="validConfig"
     :edit-rules="editRules"
     :filter-config="getFilterConfig"
+    :expand-config="expandConfig"
     :tree-config="getTreeConfig"
     :toolbar-config="{
       zoom: customZoom,
@@ -45,9 +48,11 @@
     @checkbox-all="handleCheckboxAll"
     @cell-click="handleCellClick"
     @resizable-change="handleResizableChange">
+    <!--搜索栏-->
     <template #form>
       <slot name="searchBar"></slot>
     </template>
+    <!--工具栏-->
     <template #toolbar_buttons>
       <div v-if="hasToolBar" class="mars-toolbar">
         <slot name="toolBar"></slot>
@@ -91,7 +96,7 @@ export default defineComponent({
   name: 'MarsGrid',
   inheritAttrs: false,
   props: {
-    // 自定义行数据唯一主键的字段名
+    // 自定义行数据唯一主键的字段名（已废弃）
     rowId: { type: String, default: 'id' },
     // 自定义列
     columns: { type: Array, required: true, default: () => [] },
@@ -99,6 +104,7 @@ export default defineComponent({
     data: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
     total: { type: Number, default: 0 },
+    emptyText: { type: String, default: '暂无数据' },
     // 页码
     showPagination: { type: Boolean, default: true },
     pagination: { type: Object, default: () => ({ page: 1, pageSize: 20 }) },
@@ -107,6 +113,10 @@ export default defineComponent({
     height: [Number, String],
     // 斑马纹
     stripe: { type: Boolean, default: true },
+    // 行配置
+    rowConfig: Object,
+    // 列配置
+    columnConfig: Object,
     // 序号配置
     seqConfig: Object,
     // 勾选项
@@ -119,27 +129,32 @@ export default defineComponent({
     mergeCells: Array,
     // 编辑配置
     editConfig: Object,
+    // 校验配置项
+    validConfig: Object,
+    // 校验规则配置项
     editRules: Object,
     // 筛选配置
     filterConfig: Object,
     // tooltip 配置项
     tooltipConfig: Object,
-    // 树形结构配置项（不支持虚拟滚动）
+    // 展开行配置项（不支持虚拟滚动）
+    expandConfig: Object,
+    // 树形结构配置项
     treeConfig: { type: Object, default: () => ({ children: 'children' }) },
     // 横向虚拟滚动配置
     scrollX: Object,
     // 纵向虚拟滚动配置
     scrollY: Object,
-    // 给行附加 className
+    // 给行附加className
     rowClassName: [String, Function],
-    // 给单元格附加 className
+    // 给行附加样式
+    rowStyle: [Object, Function],
+    // 给单元格附加className
     cellClassName: [String, Function],
     // 给单元格附加样式
     cellStyle: [Object, Function],
-    // 给行附加样式
-    rowStyle: [Object, Function],
     // 自定义缩放
-    customZoom: { type: Boolean, default: true },
+    customZoom: { type: Boolean, default: false },
     // 自定义设置
     customSetting: { type: Boolean, default: false },
     // 本地Storage名称（拖拽列和自定义表头时需要本地储存）,
@@ -175,6 +190,8 @@ export default defineComponent({
         showTotal: total => `共 ${total} 条`,
         pageSizeOptions: ['20', '40', '60', '80', '100']
       },
+      defaultRowConfig: { keyField: props.rowId, isHover: true, isCurrent: true },
+      defaultColumnConfig: { resizable: true },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
@@ -225,6 +242,8 @@ export default defineComponent({
         )
     })
     const getPaginationConfig = computed(() => mergeProps(defaultState.defaultPaginationConfig, props.paginationConfig))
+    const getRowConfig = computed(() => mergeProps(defaultState.defaultRowConfig, props.rowConfig))
+    const getColumnConfig = computed(() => mergeProps(defaultState.defaultColumnConfig, props.columnConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
     const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
     const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
@@ -378,6 +397,8 @@ export default defineComponent({
       ...toRefs(state),
       getSlots,
       getPaginationConfig,
+      getRowConfig,
+      getColumnConfig,
       getRadioConfig,
       getCheckboxConfig,
       getEditConfig,

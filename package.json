@@ -1,6 +1,6 @@
 {
   "name": "mars-library",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "main": "dist/mars-library.umd.js",
   "module": "dist/mars-library.es.js",
   "unpkg": "dist/mars-library.umd.js",
@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "vite --force --host 0.0.0.0",
     "build": "vite build",
-    "build:lib": "vite build --mode lib",
+    "build:lib": "vite build --mode lib --debug",
     "serve": "vite preview",
     "lint": "npm run lint:eslint & npm run lint:stylelint",
     "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx,.vue --fix",
@@ -34,11 +34,11 @@
     "crypto-js": "^4.1.1",
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
-    "vue": "^3.2.20",
+    "vue": "^3.2.31",
     "vue-draggable-next": "^2.1.1",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
-    "vxe-table": "^4.0.30",
+    "vxe-table": "4.2.2",
     "xe-ajax": "^4.0.5",
     "xe-utils": "^3.4.0"
   },
@@ -81,9 +81,9 @@
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.2.8",
     "lodash-es": "^4.17.21",
-    "vue": "^3.2.20",
+    "vue": "^3.2.31",
     "vue-draggable-next": "^2.1.1",
-    "vxe-table": "^4.0.30"
+    "vxe-table": "4.2.2"
   },
   "repository": {
     "type": "git",

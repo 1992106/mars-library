@@ -4612,7 +4612,7 @@ vue-types@^3.0.0:
   dependencies:
     is-plain-object "3.0.1"
 
-vue@^3.2.20:
+vue@^3.2.31:
   version "3.2.31"
   resolved "https://registry.npmjs.org/vue/-/vue-3.2.31.tgz#e0c49924335e9f188352816788a4cca10f817ce6"
   integrity sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw==
@@ -4635,10 +4635,10 @@ vxe-table-plugin-antd@^3.0.5:
   resolved "https://registry.npmjs.org/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.5.tgz#717d6472abd7a8fe94157616aa16d115b8b15b98"
   integrity sha512-qZXIxNKSqdvfVncvVopId7byy9FYUW+ygX4vwUhPceHwsUq0eyX5SVX/LLafqfsnkq4l8+EZ4zQ5/xQ6AfZ31Q==
 
-vxe-table@^4.0.30:
-  version "4.2.0"
-  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.2.0.tgz#f3ba3a2164c6264d19f713ed0251ce254bbac812"
-  integrity sha512-ddb4OdTdhjT+E+5gu+NbJuTLJa/BlzUb98O0ZsVwGYUnMWoYqHh68JRkHxFona/Dxv6ir8HBX7kZamfoWhB+NQ==
+vxe-table@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.2.2.tgz#511401c2585675fb627d1d490c1cf93bb6d442e5"
+  integrity sha512-snt+HAKdDy4nmdhmRVf8j70dg7uTtITLbd+QlD1SV423dIjDZ3ERI5UNY3JwRyK+UDR0BJjF3uiTSEMkW/rFlQ==
 
 warning@^4.0.0:
   version "4.0.3"

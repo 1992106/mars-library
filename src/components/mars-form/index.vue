@@ -1,13 +1,24 @@
 <template>
   <a-form class="mars-form" :layout="layout" :label-col="labelCol" :wrapper-col="wrapperCol">
-    <template v-for="column in getColumns" :key="column.field">
-      <a-form-item :label="column?.title" v-bind="validateInfos[column.field]">
-        <component
-          :is="column.type"
-          v-model:[column.modelValue]="modelRef[column.field]"
-          v-bind="column?.props || {}"
-          v-on="column?.events || {}"></component>
-      </a-form-item>
+    <template v-for="column in getColumns" :key="column.field || column.slot">
+      <template v-if="column.type">
+        <a-form-item :label="column?.title" v-bind="validateInfos[column.field]">
+          <component
+            :is="column.type"
+            v-model:[column.modelValue]="modelRef[column.field]"
+            v-bind="column.props || {}"
+            v-on="column.events || {}"></component>
+        </a-form-item>
+      </template>
+      <!--自定义slot-->
+      <template v-else>
+        <a-form-item :label="column?.title">
+          <!--<template #[column.slot]="scope">
+            <slot :name="column.slot" v-bind="scope"></slot>
+          </template>-->
+          <slot :name="column.slot"></slot>
+        </a-form-item>
+      </template>
     </template>
     <div class="mars-form-buttons">
       <a-space>
