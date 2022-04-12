@@ -38,6 +38,9 @@
       refresh: false,
       slots: { buttons: 'toolbar_buttons', tools: 'toolbar_tools' }
     }"
+    :pager-config="{
+      enabled: false
+    }"
     @edit-closed="handleEditClosed"
     @valid-error="handleValidError"
     @filter-change="handleFilterChange"
@@ -165,7 +168,6 @@ export default defineComponent({
   emits: [
     'search',
     'update:pagination',
-    'page-change',
     'update:selected-value',
     'radio-change',
     'checkbox-change',
@@ -206,7 +208,16 @@ export default defineComponent({
     /**
      * data
      */
-    const getColumnsFromStorage = () => {
+    const getTransformCellText = columns => {
+      return columns.map(val => {
+        const { formatter } = val
+        return {
+          ...val,
+          ...(formatter ? { formatter } : { formatter: ({ cellValue }) => (isEmpty(cellValue) ? '--' : cellValue) })
+        }
+      })
+    }
+    const getCustomColumns = () => {
       if (props.storageName) {
         const storageColumns = localStorage.getItem(props.storageName)
         const columns = storageColumns ? JSON.parse(storageColumns || '[]') : []
@@ -215,10 +226,12 @@ export default defineComponent({
           const list = mergeStorageAndColumns(columns, sourceColumns) // 对比localStorage和Props（删除移除的，添加新增的）
           return storageToColumns(list, sourceColumns)
         }
+        return props.columns
       }
+      return props.columns
     }
     const state = reactive({
-      customColumns: getColumnsFromStorage() || props.columns,
+      customColumns: getTransformCellText(getCustomColumns()),
       backupColumns: cloneDeep(props.columns)
     })
     /**

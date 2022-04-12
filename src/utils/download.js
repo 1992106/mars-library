@@ -1,4 +1,5 @@
-import { request } from '@/utils/request'
+import { request } from '@/utils/axios'
+import { isEmpty } from '@/utils/lang'
 
 /**
  * 下载图片
@@ -71,8 +72,18 @@ const compressImage = async (src, width, height, quality = 0.5) => {
     const image = new Image()
     image.setAttribute('crossOrigin', 'Anonymous')
     image.onload = async () => {
-      width = width || image.width
-      height = height || image.height
+      // 有宽度无高度时，等比例计算高度
+      if (!isEmpty(width) && isEmpty(height)) {
+        height = (width / image.width) * image.height
+      }
+      // 有高度无宽度时：等比例计算宽度
+      if (!isEmpty(height) && isEmpty(width)) {
+        width = (height / image.height) * image.width
+      }
+      if (isEmpty(width) && isEmpty(height)) {
+        width = image.width
+        height = image.height
+      }
       const canvas = document.createElement('canvas')
       canvas.width = width
       canvas.height = height
