@@ -1,4 +1,5 @@
 import request from '@/utils/fetch'
+import { resetRouter } from '@/router'
 import { setAccessToken, getAccessToken, removeAccessToken, isEmpty } from '@/utils'
 
 const getLocalUserInfo = () => {
@@ -11,8 +12,8 @@ const getLocalUserInfo = () => {
 
 const user = {
   state: {
-    userInfo: getLocalUserInfo(),
-    token: getAccessToken()
+    token: getAccessToken(),
+    userInfo: getLocalUserInfo()
   },
   getters: {
     nickname: state => state.userInfo.nickname
@@ -40,11 +41,11 @@ const user = {
       }
       return false
     },
-
     logout({ commit }) {
       commit('setToken', '')
       commit('setUserInfo', {})
       commit('router/reset', null, { root: true })
+      resetRouter()
     }
   }
 }

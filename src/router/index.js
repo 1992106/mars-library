@@ -20,6 +20,14 @@ export const routes = [
     }
   },
   {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/system/403.vue'),
+    meta: {
+      hidden: true
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/system/Login.vue'),
@@ -126,7 +134,7 @@ const router = createRouter({
 export const resetRouter = () => {
   router.getRoutes().forEach(route => {
     const { name } = route
-    if (name && !['ErrorPage', 'Login', 'Redirect'].includes(name)) {
+    if (name && !['ErrorPage', '404', '403', 'Login', 'Redirect'].includes(name)) {
       router.hasRoute(name) && router.removeRoute(name)
     }
   })
