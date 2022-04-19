@@ -24,12 +24,13 @@
     :seq-config="seqConfig"
     :radio-config="getRadioConfig"
     :checkbox-config="getCheckboxConfig"
-    :tooltip-config="tooltipConfig"
+    :sort-config="getSortConfig"
+    :filter-config="getFilterConfig"
     :merge-cells="mergeCells"
     :edit-config="getEditConfig"
     :valid-config="validConfig"
     :edit-rules="editRules"
-    :filter-config="getFilterConfig"
+    :tooltip-config="tooltipConfig"
     :expand-config="expandConfig"
     :tree-config="getTreeConfig"
     :toolbar-config="{
@@ -132,16 +133,18 @@ export default defineComponent({
     radioConfig: Object,
     // 复选框配置
     checkboxConfig: Object,
-    // 合并单元格 (不能用于展开行，不建议用于固定列、树形结构)
-    mergeCells: Array,
+    // 排序配置
+    sortConfig: Object,
+    // 筛选配置
+    filterConfig: Object,
     // 编辑配置
     editConfig: Object,
     // 校验配置项
     validConfig: Object,
     // 校验规则配置项
     editRules: Object,
-    // 筛选配置
-    filterConfig: Object,
+    // 合并单元格 (不能用于展开行，不建议用于固定列、树形结构)
+    mergeCells: Array,
     // tooltip 配置项
     tooltipConfig: Object,
     // 展开行配置项（不支持虚拟滚动）
@@ -204,8 +207,9 @@ export default defineComponent({
       defaultColumnConfig: { resizable: true },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
-      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
+      defaultSortConfig: { remote: true, sortMethod: () => true },
       defaultFilterConfig: { remote: true, filterMethod: () => true },
+      defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
       defaultScrollX: { enabled: false },
       defaultScrollY: { enabled: true, gt: 20 }
     }
@@ -269,8 +273,9 @@ export default defineComponent({
     const getColumnConfig = computed(() => mergeProps(defaultState.defaultColumnConfig, props.columnConfig))
     const getRadioConfig = computed(() => mergeProps(defaultState.defaultRadioConfig, props.radioConfig))
     const getCheckboxConfig = computed(() => mergeProps(defaultState.defaultCheckboxConfig, props.checkboxConfig))
-    const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
+    const getSortConfig = computed(() => mergeProps(defaultState.defaultSortConfig, props.sortConfig))
     const getFilterConfig = computed(() => mergeProps(defaultState.defaultFilterConfig, props.filterConfig))
+    const getEditConfig = computed(() => mergeProps(defaultState.defaultEditConfig, props.editConfig))
     const getScrollX = computed(() => mergeProps(defaultState.defaultScrollX, props.scrollX))
     const getScrollY = computed(() => mergeProps(defaultState.defaultScrollY, props.scrollY))
     const getTreeConfig = computed(() => (props.stripe ? null : props.treeConfig))
@@ -376,8 +381,9 @@ export default defineComponent({
         }
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })
-      emit('search', filters, 'filter')
-      // gridRef.value.loadData()
+      if (getFilterConfig.value.remote) {
+        emit('search', filters, 'filter')
+      }
     }
     // 筛选面板显示隐藏
     const handleFilterVisible = ({ column, property, visible, filterList, $event }) => {
@@ -386,18 +392,24 @@ export default defineComponent({
     // 清除所有筛选条件
     const handleClearFilter = ({ filterList, $event }) => {
       emit('clear-filter', { filterList, $event })
-      emit('search', {}, 'filter')
+      if (getFilterConfig.value.remote) {
+        emit('search', {}, 'filter')
+      }
     }
     // 排序
     const handleSortChange = ({ column, property, order, sortBy, sortList, $event }) => {
       const sorts = order ? { sortBy: order.toUpperCase(), sortKey: property } : {}
       emit('sort-change', { column, property, order, sortBy, sortList, $event })
-      emit('search', sorts, 'sort')
+      if (getSortConfig.value.remote) {
+        emit('search', sorts, 'sort')
+      }
     }
     // 清除所有排序条件
     const handleClearSort = ({ sortList, $event }) => {
       emit('clear-sort', { sortList, $event })
-      emit('search', {}, 'sort')
+      if (getSortConfig.value.remote) {
+        emit('search', {}, 'sort')
+      }
     }
     // 当行展开或收起时会触发该事件
     const handleToggleRowExpand = ({
@@ -456,8 +468,9 @@ export default defineComponent({
       getColumnConfig,
       getRadioConfig,
       getCheckboxConfig,
-      getEditConfig,
+      getSortConfig,
       getFilterConfig,
+      getEditConfig,
       getScrollX,
       getScrollY,
       getTreeConfig,
