@@ -46,6 +46,8 @@
     @filter-change="handleFilterChange"
     @filter-visible="handleFilterVisible"
     @clear-filter="handleClearFilter"
+    @sort-change="handleSortChange"
+    @clear-sort="handleClearSort"
     @toggle-row-expand="handleToggleRowExpand"
     @toggle-tree-expand="handleToggleTreeExpand"
     @radio-change="handleRadioChange"
@@ -178,6 +180,8 @@ export default defineComponent({
     'filter-change',
     'filter-visible',
     'clear-filter',
+    'sort-change',
+    'clear-sort',
     'toggle-row-expand',
     'toggle-tree-expand'
   ],
@@ -372,7 +376,7 @@ export default defineComponent({
         }
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })
-      emit('search', filters)
+      emit('search', filters, 'filter')
       // gridRef.value.loadData()
     }
     // 筛选面板显示隐藏
@@ -382,7 +386,18 @@ export default defineComponent({
     // 清除所有筛选条件
     const handleClearFilter = ({ filterList, $event }) => {
       emit('clear-filter', { filterList, $event })
-      emit('search', {})
+      emit('search', {}, 'filter')
+    }
+    // 排序
+    const handleSortChange = ({ column, property, order, sortBy, sortList, $event }) => {
+      const sorts = order ? { sortBy: order.toUpperCase(), sortKey: property } : {}
+      emit('sort-change', { column, property, order, sortBy, sortList, $event })
+      emit('search', sorts, 'sort')
+    }
+    // 清除所有排序条件
+    const handleClearSort = ({ sortList, $event }) => {
+      emit('clear-sort', { sortList, $event })
+      emit('search', {}, 'sort')
     }
     // 当行展开或收起时会触发该事件
     const handleToggleRowExpand = ({
@@ -458,6 +473,8 @@ export default defineComponent({
       handleFilterChange,
       handleFilterVisible,
       handleClearFilter,
+      handleSortChange,
+      handleClearSort,
       handleToggleRowExpand,
       handleToggleTreeExpand,
       handleResizableChange,
