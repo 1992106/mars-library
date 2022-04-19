@@ -207,8 +207,8 @@ export default defineComponent({
       defaultColumnConfig: { resizable: true },
       defaultRadioConfig: { labelField: '_', highlight: true, checkMethod: () => true },
       defaultCheckboxConfig: { labelField: '_', highlight: true, checkMethod: () => true },
-      defaultSortConfig: { remote: true, sortMethod: () => true },
-      defaultFilterConfig: { remote: true, filterMethod: () => true },
+      defaultSortConfig: { remote: true },
+      defaultFilterConfig: { remote: true },
       defaultEditConfig: { trigger: 'click', mode: 'cell', showStatus: true },
       defaultScrollX: { enabled: false },
       defaultScrollY: { enabled: true, gt: 20 }
@@ -381,7 +381,7 @@ export default defineComponent({
         }
       })
       emit('filter-change', { column, property, values, datas, filterList, $event })
-      if (getFilterConfig.value.remote) {
+      if (getFilterConfig.value?.remote) {
         emit('search', filters, 'filter')
       }
     }
@@ -392,7 +392,7 @@ export default defineComponent({
     // 清除所有筛选条件
     const handleClearFilter = ({ filterList, $event }) => {
       emit('clear-filter', { filterList, $event })
-      if (getFilterConfig.value.remote) {
+      if (getFilterConfig.value?.remote) {
         emit('search', {}, 'filter')
       }
     }
@@ -400,14 +400,14 @@ export default defineComponent({
     const handleSortChange = ({ column, property, order, sortBy, sortList, $event }) => {
       const sorts = order ? { sortBy: order.toUpperCase(), sortKey: property } : {}
       emit('sort-change', { column, property, order, sortBy, sortList, $event })
-      if (getSortConfig.value.remote) {
+      if (getSortConfig.value?.remote) {
         emit('search', sorts, 'sort')
       }
     }
     // 清除所有排序条件
     const handleClearSort = ({ sortList, $event }) => {
       emit('clear-sort', { sortList, $event })
-      if (getSortConfig.value.remote) {
+      if (getSortConfig.value?.remote) {
         emit('search', {}, 'sort')
       }
     }
