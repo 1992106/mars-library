@@ -1,4 +1,4 @@
-import { isEmpty } from '@/utils'
+import { isEmpty, recursive } from '@/utils'
 import { omit } from 'lodash-es'
 
 const typeMap = {
@@ -75,10 +75,13 @@ export const storageToColumns = (storageColumns, columns) => {
   return (storageColumns || []).map(val => {
     const column = (columns || []).find(v => val?.field === getField(v))
     const omitList = ['fixed', 'width', 'minWidth']
-    if (column?.field === column?.title) {
-      omitList.push('field')
-    }
     const restColumn = omit(column || {}, omitList)
+    // 递归遍历子设置元素visible
+    if (!isEmpty(column.children)) {
+      recursive(column.children, column => {
+        column.visible = val?.visible
+      })
+    }
     return {
       ...(restColumn ? restColumn : {}),
       ...(val?.fixed ? { fixed: val?.fixed } : {}),
