@@ -218,10 +218,14 @@ export default defineComponent({
      */
     const getTransformCellText = columns => {
       return columns.map(val => {
-        const { formatter } = val
+        const { formatter, editRender } = val
         return {
           ...val,
-          ...(formatter ? { formatter } : { formatter: ({ cellValue }) => (isEmpty(cellValue) ? '--' : cellValue) })
+          ...(formatter
+            ? { formatter }
+            : !editRender // 编辑时，会影响下拉框回显
+            ? { formatter: ({ cellValue }) => (isEmpty(cellValue) ? '--' : cellValue) }
+            : {})
         }
       })
     }
