@@ -40,15 +40,13 @@ const routers = {
     },
 
     // 删除顶部tab页
-    delVisitedRoutes(state, { router, key }) {
+    delVisitedRoutes(state, { route, key }) {
       const tabLen = state.visitedRoutes.length
       // 始终保留一个tab
       if (tabLen > 1) {
-        const { currentRoute } = router
         const idx = state.visitedRoutes.findIndex(item => item.path === key)
-        const isCurrentTab = unref(currentRoute).path === key
+        const isCurrentTab = route.path === key
         let target = {}
-
         // 如果关闭的是当前tab页
         if (isCurrentTab) {
           // 如果是最后一个tab页，则需要往前移一个tab
@@ -64,9 +62,9 @@ const routers = {
     },
 
     // 删除keep-alive列表中的一项
-    delCachedTabList(state, path) {
+    delCachedTabList(state, route) {
       if (!state.cachedTabList?.length) return
-      const cachedIdx = state.cachedTabList.findIndex(item => item.path === path)
+      const cachedIdx = state.cachedTabList.findIndex(val => val.path === route.fullPath)
       if (cachedIdx !== -1) {
         state.cachedTabList.splice(cachedIdx, 1)
       }
@@ -89,9 +87,11 @@ const routers = {
     },
 
     // 删除tab页
-    delVisitedRoutes({ commit }, { router, key }) {
-      commit('delVisitedRoutes', { router, key })
-      commit('delCachedTabList', key)
+    delVisitedRoutes({ commit }, { route, key }) {
+      commit('delVisitedRoutes', { route, key })
+      if (setting.keep_alive) {
+        commit('delCachedTabList', route)
+      }
     },
 
     goToVisitedPage({ state }, _path) {

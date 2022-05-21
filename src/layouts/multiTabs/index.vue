@@ -53,7 +53,8 @@ export default defineComponent({
 
     const onEdit = (key, action) => {
       if (action === 'remove') {
-        store.dispatch('router/delVisitedRoutes', { router, key })
+        const { currentRoute } = router
+        store.dispatch('router/delVisitedRoutes', { route: unref(currentRoute), key })
       }
     }
 
@@ -67,7 +68,7 @@ export default defineComponent({
       const { currentRoute, replace } = router
       const route = unref(currentRoute)
       const { path, params, query } = route
-      store.commit('router/delCachedTabList', path)
+      store.commit('router/delCachedTabList', route)
       replace({
         path: `/redirect${path}`,
         query,
